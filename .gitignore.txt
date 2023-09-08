@@ -1,3 +1,16 @@
+#FOR JAVA 
+*.class
+
+.mtj.tmp/
+
+
+*.jar
+*.war
+*.ear
+
+hs_err_pid*
+
+#FOR REACT 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
