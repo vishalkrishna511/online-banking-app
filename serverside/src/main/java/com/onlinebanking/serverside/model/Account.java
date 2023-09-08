@@ -19,7 +19,7 @@ import lombok.Data;
 public class Account {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-		private long accNo;
+	private long accNo;
 	@Column(nullable = false)
 	private String accType;
 	@Column(nullable = false)
