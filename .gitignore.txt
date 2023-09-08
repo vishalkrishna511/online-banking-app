@@ -3,7 +3,8 @@
 
 .mtj.tmp/
 
-
+application.properties
+*.properties
 *.jar
 *.war
 *.ear
