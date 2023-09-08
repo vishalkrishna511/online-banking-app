@@ -16,8 +16,8 @@ public class TransactionController {
 	
 	@PostMapping("/addTransaction")
 	public String addTransaction(@RequestBody Transaction c) {
-		Transaction response = transactionService.save(c);
-		return "Saved successfully";
+		String response = transactionService.save(c);
+		return response;
 	}
 	
 }

@@ -11,7 +11,12 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	public Customer save(Customer customer) {
-		return customerRepository.save(customer);
+	public String save(Customer customer) {
+		Customer response = customerRepository.save(customer);;
+		if (response != null) {
+			return "Customer data saved successfully!";
+		} else {
+			return "An error occured while saving customer data";
+		}
 	}
 }

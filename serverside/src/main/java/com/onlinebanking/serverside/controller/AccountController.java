@@ -16,7 +16,7 @@ public class AccountController {
 	
 	@PostMapping("/addAccount")
 	public String addAccount(@RequestBody Account a) {
-		Account response = accountService.save(a);
-		return "Saved Successfully";
+		String response = accountService.save(a);
+		return response;
 	}
 }

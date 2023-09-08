@@ -11,7 +11,12 @@ public class AccountService {
     @Autowired
     private AccRepository accRepository;
 
-    public Account save(Account account) {
-        return accRepository.save(account);
+    public String save(Account account) {
+        Account response = accRepository.save(account);
+        if (response != null) {
+			return "Account data saved successfully!";
+		} else {
+			return "An error occured while saving account data";
+		}
     }
 }

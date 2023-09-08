@@ -16,8 +16,8 @@ public class CustomerController {
 	
 	@PostMapping("/addCustomer")
 	public String addCustomer(@RequestBody Customer c) {
-		Customer response = customerService.save(c);
-		return "Saved successfully";
+		String response = customerService.save(c);
+		return response;
 	}
 	
 }

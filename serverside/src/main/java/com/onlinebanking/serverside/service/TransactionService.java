@@ -11,7 +11,12 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public Transaction save(Transaction transaction) {
-        return transactionRepository.save(transaction);
+    public String save(Transaction transaction) {
+        Transaction response = transactionRepository.save(transaction);
+        if (response != null) {
+			return "Transaction data saved successfully!";
+		} else {
+			return "An error occured while saving transaction data";
+		}
     }
 }
