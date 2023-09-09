@@ -12,11 +12,15 @@ public class CustomerService {
 	private CustomerRepository customerRepository;
 
 	public String save(Customer customer) {
-		Customer response = customerRepository.save(customer);;
-		if (response != null) {
-			return "Customer data saved successfully!";
-		} else {
-			return "An error occured while saving customer data";
+		try {
+			Customer response = customerRepository.save(customer);
+			if (response != null) {
+				return "Customer data saved successfully!";
+			} else {
+				return "An error occured while saving customer data";
+			}
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 }

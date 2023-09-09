@@ -12,11 +12,15 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     public String save(Transaction transaction) {
-        Transaction response = transactionRepository.save(transaction);
-        if (response != null) {
-			return "Transaction data saved successfully!";
-		} else {
-			return "An error occured while saving transaction data";
-		}
+        try {
+            Transaction response = transactionRepository.save(transaction);
+            if (response != null) {
+                return "Transaction data saved successfully!";
+            } else {
+                return "An error occured while saving transaction data";
+            }
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }

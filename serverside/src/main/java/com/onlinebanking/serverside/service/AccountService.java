@@ -12,11 +12,15 @@ public class AccountService {
     private AccRepository accRepository;
 
     public String save(Account account) {
-        Account response = accRepository.save(account);
-        if (response != null) {
-			return "Account data saved successfully!";
-		} else {
-			return "An error occured while saving account data";
-		}
+        try {
+            Account response = accRepository.save(account);
+            if (response != null) {
+                return "Account data saved successfully!";
+            } else {
+                return "An error occured while saving account data";
+            }
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }
