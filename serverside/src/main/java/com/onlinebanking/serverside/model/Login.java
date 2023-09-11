@@ -1,38 +1,36 @@
 package com.onlinebanking.serverside.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import lombok.Data;
-
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Login {
-	
-	@Id
-	@Column(nullable = false)
-	private String userId ;
-	
-	@Column(nullable = false)
-	private String pswd;
+    public Long getUserId() {
+        return userId;
+    }
 
-	public String getUserId() {
-		return userId;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getPswd() {
+        return pswd;
+    }
 
-	public String getPswd() {
-		return pswd;
-	}
-
-	public void setPswd(String pswd) {
-		this.pswd = pswd;
-	}
-	
-	
-
+    public void setPswd(String pswd) {
+        this.pswd = pswd;
+    }
+    @Id
+    @Column(nullable = false)
+    private Long userId;
+    @Column(nullable = false)
+    private String pswd;
 }
