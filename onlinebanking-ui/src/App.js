@@ -15,6 +15,8 @@ function App() {
           </Route>
           <Route exact path='/login' element={<LoginPage />} >
           </Route>
+          <Route exact path='/error' element={<ErrorPage/>} >
+        </Route>
         </Routes>
       </BrowserRouter>
     </div>
