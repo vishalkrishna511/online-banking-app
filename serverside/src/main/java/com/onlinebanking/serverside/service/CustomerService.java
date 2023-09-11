@@ -13,15 +13,16 @@ public class CustomerService {
 	@Autowired
 	LoginService loginService;
 
-
 	public Customer save(Customer customer) {
 		Customer response = customerRepository.findByUserId(customer.getUserId());
 		if (response == null) {
-			loginService.getLoginObject(customer.getUserId(), customer.getPswd());
-			return customerRepository.save(customer);
+			Customer resp = customerRepository.save(customer);
+			if (resp == null)
+				return null;
+			loginService.getLoginObject(resp.getUserId(), resp.getPswd());
+			return resp;
 		} else
 			return null;
 	}
 
-	
 }

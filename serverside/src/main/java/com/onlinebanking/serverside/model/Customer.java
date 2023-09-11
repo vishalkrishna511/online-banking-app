@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -18,6 +20,7 @@ public class Customer {
 
 	@Id
 	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long userId;
 	@Column(nullable = false)
 	private String name;
@@ -144,7 +147,5 @@ public class Customer {
 	public void setAccnts(List<Account> accnts) {
 		this.accnts = accnts;
 	}
-	
-	
 
 }
