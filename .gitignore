@@ -3,7 +3,7 @@
 
 .mtj.tmp/
 
-application.properties
+serverside/src/main/resources/application.properties
 *.properties
 *.jar
 *.war
