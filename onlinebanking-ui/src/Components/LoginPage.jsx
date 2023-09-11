@@ -30,7 +30,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,15 +45,15 @@ const navigate = useNavigate();
     console.log(loginData)
 
     axios.post(loginBackendUrl, loginData)
-     .then((response) => {
+      .then((response) => {
         // Successfully logged in
         navigate('/');
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         // Log in failed
         navigate('/error');
 
-    });
+      });
 
   };
 
@@ -105,7 +105,7 @@ const navigate = useNavigate();
             >
               Sign In
             </Button>
-            <Grid container>
+            <Grid container justifyContent='center' >
               <Grid item>
                 <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
