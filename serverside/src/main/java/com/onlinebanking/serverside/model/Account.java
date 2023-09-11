@@ -11,17 +11,29 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long accNo;
 	@Column(nullable = false)
 	private String accType;
+
+	public long getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(long accNo) {
+		this.accNo = accNo;
+	}
+
 	@Column(nullable = false)
 	private double balance;
 	@Column(nullable = false)
@@ -39,5 +51,5 @@ public class Account {
 	@ManyToOne
 	@JoinColumn(name="userId")
 	private Customer user;
-	
+
 }

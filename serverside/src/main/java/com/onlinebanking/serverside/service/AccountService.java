@@ -11,16 +11,12 @@ public class AccountService {
     @Autowired
     private AccRepository accRepository;
 
-    public String save(Account account) {
-        try {
-            Account response = accRepository.save(account);
-            if (response != null) {
-                return "Account data saved successfully!";
-            } else {
-                return "An error occured while saving account data";
-            }
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+    public Account save(Account account) {
+
+        Account response = accRepository.findByAccNo(account.getAccNo());
+        if (response == null) {
+            return accRepository.save(account);
+        } else return null;
+
     }
 }

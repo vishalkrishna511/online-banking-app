@@ -9,6 +9,6 @@ import com.onlinebanking.serverside.model.Transaction;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-//	public List<Transaction> findByAccountNumber(long accno, String status);
+public Transaction findByTxnId(long txn);
 
 }

@@ -12,6 +12,14 @@ import lombok.Data;
 @Entity 
 @Data
 public class Transaction {
+	public long getTxnId() {
+		return txnId;
+	}
+
+	public void setTxnId(long txnId) {
+		this.txnId = txnId;
+	}
+
 	@Id
 	@GeneratedValue
 	@Column	(nullable = false)

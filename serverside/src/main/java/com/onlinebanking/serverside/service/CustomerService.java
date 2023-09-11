@@ -11,17 +11,10 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	public String save(Customer customer) {
-		try {
-			System.out.println(customer.getUserId());
-			Customer response = customerRepository.save(customer);
-			if (response != null) {
-				return "Customer data saved successfully!";
-			} else {
-				return "An error occured while saving customer data";
-			}
-		} catch (Exception e) {
-			return e.getMessage();
-		}
+	public Customer save(Customer customer) {
+		Customer response = customerRepository.findByUserId(customer.getUserId());
+		if (response == null) {
+			return customerRepository.save(customer);
+		} else return null;
 	}
 }

@@ -7,5 +7,5 @@ import com.onlinebanking.serverside.model.Account;
 
 @Repository
 public interface AccRepository extends JpaRepository<Account, Long> {
-
+    public Account findByAccNo(long AccNo);
 }

@@ -1,6 +1,9 @@
 package com.onlinebanking.serverside.controller;
 
+import com.onlinebanking.serverside.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,9 +18,13 @@ public class TransactionController {
 	private TransactionService transactionService;
 	
 	@PostMapping("/addTransaction")
-	public String addTransaction(@RequestBody Transaction c) {
-		String response = transactionService.save(c);
-		return response;
+	public ResponseEntity<?> addTransaction(@RequestBody Transaction c) {
+
+		Transaction response = transactionService.save(c);
+		if(response == null) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflicting Transaction details");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 }
