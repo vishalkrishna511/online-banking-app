@@ -1,6 +1,5 @@
 package com.onlinebanking.serverside.controller;
 
-import com.onlinebanking.serverside.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,13 +8,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.onlinebanking.serverside.model.Customer;
+import com.onlinebanking.serverside.model.Login;
 import com.onlinebanking.serverside.service.CustomerService;
+import com.onlinebanking.serverside.service.LoginService;
+
+
 
 @RestController
 public class CustomerController {
 	
 	@Autowired
-	private CustomerService customerService;
+	CustomerService customerService;
+	
+	@Autowired
+	LoginService LoginService;
 	
 	@PostMapping("/addCustomer")
 	public ResponseEntity<?> addCustomer(@RequestBody Customer c) {
@@ -26,6 +32,11 @@ public class CustomerController {
 			}
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
+	}
+	
+	@PostMapping("/login")
+	public String validateCustomer(@RequestBody Login login) {
+		return LoginService.validateCustomer(login);
 	}
 	
 }

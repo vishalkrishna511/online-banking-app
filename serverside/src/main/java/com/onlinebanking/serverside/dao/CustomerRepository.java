@@ -1,6 +1,5 @@
 package com.onlinebanking.serverside.dao;
 
-import com.onlinebanking.serverside.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
