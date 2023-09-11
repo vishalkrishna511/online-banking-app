@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +41,7 @@ public class Account {
 	@Column(nullable = false)
 	private String openingDate;
 	@Column(nullable = false)
+	@Pattern(regexp = "\\d{11}", message = "IFSC must be 11 digits")
 	private String ifsc;
 	@Column(nullable = false)
 	private String branch;
