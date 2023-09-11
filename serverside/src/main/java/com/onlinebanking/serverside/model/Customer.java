@@ -15,17 +15,17 @@ import lombok.Data;
 @Data
 
 public class Customer {
-	
+
 	@Id
 	@Column(nullable = false)
-	private String userId;
+	private Long userId;
 	@Column(nullable = false)
 	private String name;
 	@Column(nullable = false)
 	private String pswd;
 	@Column(nullable = false)
 	private String email;
-	@Column( nullable = false)
+	@Column(nullable = false)
 	private long mobile;
 	@Column(unique = true, nullable = false)
 	private String aadhar;
@@ -37,8 +37,8 @@ public class Customer {
 	private String country;
 	private String fatherName;
 	private String motherName;
-	
-	@OneToMany(mappedBy="user", fetch=FetchType.EAGER, cascade =  CascadeType.ALL)
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Account> accnts;
-	
+
 }

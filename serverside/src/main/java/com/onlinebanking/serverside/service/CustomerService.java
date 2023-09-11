@@ -13,6 +13,7 @@ public class CustomerService {
 
 	public String save(Customer customer) {
 		try {
+			System.out.println(customer.getUserId());
 			Customer response = customerRepository.save(customer);
 			if (response != null) {
 				return "Customer data saved successfully!";
