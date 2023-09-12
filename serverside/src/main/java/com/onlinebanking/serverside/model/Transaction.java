@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 
 import lombok.Data;
 
@@ -27,10 +29,13 @@ public class Transaction {
 	@Column	(nullable = false)
 	private String txnType;
 	@Column	(nullable = false)
+	@Positive(message = "Amount should be positive")
 	private double amt;
 	@Column	(nullable = false)
+	@Pattern(regexp = "\\d{12}", message = "Debit Account number must be 12 digits")
 	private long debitAccnt;
 	@Column	(nullable = false)
+	@Pattern(regexp = "\\d{12}", message = "Credit Account number must be 12 digits")
 	private long creditAccnt;
 	@Column	(nullable = false)
 	private String timeStamp;

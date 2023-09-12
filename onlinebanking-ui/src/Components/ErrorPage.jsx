@@ -1,9 +1,12 @@
+import { Typography } from "@mui/material";
 import React from "react";
 
-export default function Homepage (){
+export default function Homepage() {
     return (
         <>
-        <div>Error Page Screen</div>
+            <Typography color="red">
+                {"Invalid Credentials or User not registered!"}
+            </Typography>
         </>
 
 

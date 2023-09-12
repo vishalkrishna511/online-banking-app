@@ -8,30 +8,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
-    @Autowired
-    private LoginRepository loginRepository;
+	@Autowired
+	private LoginRepository loginRepository;
 
-    public void getLoginObject(long uId, String pswd) {
-        /* -> To Refactor the code for LoginModel*/
-        Login login = new Login();
-        login.setUserId(uId);
-        login.setPswd(pswd);
-        loginRepository.save(login);
-    }
+	public void getLoginObject(long uId, String pswd) {
+		/* -> To Refactor the code for LoginModel */
+		Login login = new Login();
+		login.setUserId(uId);
+		login.setPswd(pswd);
+		loginRepository.save(login);
+	}
 
-	public String validateCustomer(Login l) {
-		String result = "Invalid Credentials or Not Registered Customer";
+	public Boolean validateCustomer(Login l) {
+		Boolean result = false;
 
 		Login response = loginRepository.findByUserId(l.getUserId());
-		if(response == null) {
+		if (response == null) {
 			return result;
 		}
-		if(response.getPswd().equals(l.getPswd())) {
-			result = "Credentials matched! Login Success";
+		if (response.getPswd().equals(l.getPswd())) {
+			result = true;
 		}
 
 		return result;
 	}
-	
-    
+
 }
