@@ -54,6 +54,12 @@ public class AccountService {
 	}
 
 	private static String generateIFSC(String city, String state) {
+		if (city.length() < 4) {
+			city = city + "0000";
+		}
+		if (state.length() < 2) {
+			state = state + "ZZ";
+		}
 		String cityCode = city.substring(0, 4).toUpperCase();
 		String stateCode = state.substring(0, 2).toUpperCase();
 		String partialCode = city.substring(0, 3).toUpperCase() + state.substring(0, 2).toUpperCase();
