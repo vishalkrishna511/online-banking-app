@@ -2,12 +2,13 @@ package com.onlinebanking.serverside.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.onlinebanking.serverside.dao.AccRepository;
 import com.onlinebanking.serverside.model.Account;
@@ -73,8 +74,20 @@ public class AccountService {
 		return ifscCode;
 	}
 
-	public List<Account> viewAccount(long userId){
+	public List<Account> viewAccount(long userId) {
 		Customer customer = customerService.getCustomer(userId);
 		return accRepository.findByUser(customer);
 	}
+
+	public Account getAccountDetails(long accNo) throws ResponseStatusException {
+
+		Account account = null;
+		account = accRepository.findByAccNo(accNo);
+
+		if (account == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account Found With Account No :  " + accNo);
+		}
+		return account;
+	}
+
 }

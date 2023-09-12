@@ -14,9 +14,5 @@ import com.onlinebanking.serverside.model.Account;
 public interface AccRepository extends JpaRepository<Account, Long> {
 	public Account findByAccNo(long AccNo);
 
-//	@Query("SELECT acc_no FROM Account WHERE user_id=1")
-//	public List<Account> FindByUserId(Long id);
-//	@Query("SELECT acc_no FROM bankdb.account WHERE user_id :userId")
-//	List<Long> findAccountNumbersByUserId(@Param("userId") Long userId);
 	public List<Account> findByUser(Customer userId);
 }

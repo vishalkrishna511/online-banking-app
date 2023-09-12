@@ -1,7 +1,5 @@
 package com.onlinebanking.serverside.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.onlinebanking.serverside.exceptions.CustomerNotFoundException;
-import com.onlinebanking.serverside.exceptions.NoDataFoundExpection;
-import com.onlinebanking.serverside.model.Account;
 import com.onlinebanking.serverside.model.Customer;
 import com.onlinebanking.serverside.model.Login;
 import com.onlinebanking.serverside.service.CustomerService;
@@ -51,13 +47,8 @@ public class CustomerController {
 	}
 
 	@GetMapping("/getCustomer/{id}")
-	public Customer getCustomerDetails(@PathVariable("id") Long id) throws CustomerNotFoundException {
+	public Customer getCustomerDetails(@PathVariable("id") Long id) throws ResponseStatusException {
 		return customerService.getCustomerDetails(id);
 	}
-
-//	@GetMapping("fetchAccounts/{id}")
-//	public List<Long> fetchAccounts(@PathVariable("id") Long id) throws NoDataFoundExpection {
-//		return customerService.fetchAccounts(id);
-//	}
 
 }
