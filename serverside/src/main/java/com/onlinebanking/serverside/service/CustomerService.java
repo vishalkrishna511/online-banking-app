@@ -34,6 +34,9 @@ public class CustomerService {
 		} else
 			return null;
 	}
+	public Customer getCustomer(long userId){
+		return customerRepository.findByUserId(userId);
+	}
 
 	public Customer getCustomerDetails(Long id) throws CustomerNotFoundException {
 

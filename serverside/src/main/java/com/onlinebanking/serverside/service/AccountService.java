@@ -2,6 +2,8 @@ package com.onlinebanking.serverside.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +71,10 @@ public class AccountService {
 		}
 		String ifscCode = cityCode + asciiCode.toString() + stateCode;
 		return ifscCode;
+	}
+
+	public List<Account> viewAccount(long userId){
+		Customer customer = customerService.getCustomer(userId);
+		return accRepository.findByUser(customer);
 	}
 }
