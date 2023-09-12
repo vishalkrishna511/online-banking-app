@@ -21,7 +21,7 @@ public class CustomerController {
 	CustomerService customerService;
 
 	@Autowired
-	LoginService LoginService;
+	LoginService loginService;
 
 	@PostMapping("/addCustomer")
 	public ResponseEntity<?> addCustomer(@RequestBody Customer c) {
@@ -35,8 +35,8 @@ public class CustomerController {
 	}
 
 	@PostMapping("/login")
-	public String validateCustomer(@RequestBody Login login) {
-		return LoginService.validateCustomer(login);
+	public Boolean validateCustomer(@RequestBody Login login) {
+		return loginService.validateCustomer(login);
 	}
 
 }
