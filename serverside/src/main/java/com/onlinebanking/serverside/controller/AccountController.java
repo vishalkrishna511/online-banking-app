@@ -1,5 +1,7 @@
 package com.onlinebanking.serverside.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +34,14 @@ public class AccountController {
 		return ResponseEntity.status(HttpStatus.OK).body("Account Created");
 	}
 
-	@GetMapping("/viewAccount/{userId}")
+	@GetMapping("/fetchAccounts/{userId}")
 	public ResponseEntity<?> viewAccount(@PathVariable("userId") long userId) {
-		return ResponseEntity.status(HttpStatus.OK).body(accountService.viewAccount(userId));
+
+		List<Account> response = accountService.viewAccount(userId);
+		if (response.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Account created");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@GetMapping("/getAccountDetails/{accNo}")
