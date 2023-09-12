@@ -222,7 +222,7 @@ export default function RegistrationPage() {
                                     fullWidth
                                     name="Confirm password"
                                     label="Confirm Password"
-                                    type="Confirm password"
+                                    type="password"
                                     id="Confirm password"
                                     autoComplete="new-password"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
