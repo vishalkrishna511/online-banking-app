@@ -49,93 +49,93 @@ public class Customer {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Account> accnts;
-//
-//	public long getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(long userId) {
-//		this.userId = userId;
-//	}
-//
-//	public String getName() {
-//		return name;
-//	}
-//
-//	public void setName(String name) {
-//		this.name = name;
-//	}
-//
-//	public String getPswd() {
-//		return pswd;
-//	}
-//
-//	public void setPswd(String pswd) {
-//		this.pswd = pswd;
-//	}
-//
-//	public String getEmail() {
-//		return email;
-//	}
-//
-//	public void setEmail(String email) {
-//		this.email = email;
-//	}
-//
-//	public String getMobile() {
-//		return mobile;
-//	}
-//
-//	public void setMobile(String mobile) {
-//		this.mobile = mobile;
-//	}
-//
-//	public String getAadhar() {
-//		return aadhar;
-//	}
-//
-//	public void setAadhar(String aadhar) {
-//		this.aadhar = aadhar;
-//	}
-//
-//	public String getDob() {
-//		return dob;
-//	}
-//
-//	public void setDob(String dob) {
-//		this.dob = dob;
-//	}
-//
-//	public String getCity() {
-//		return city;
-//	}
-//
-//	public void setCity(String city) {
-//		this.city = city;
-//	}
-//
-//	public String getState() {
-//		return state;
-//	}
-//
-//	public void setState(String state) {
-//		this.state = state;
-//	}
-//
-//	public String getCountry() {
-//		return country;
-//	}
-//
-//	public void setCountry(String country) {
-//		this.country = country;
-//	}
-//
-//	public List<Account> getAccnts() {
-//		return accnts;
-//	}
-//
-//	public void setAccnts(List<Account> accnts) {
-//		this.accnts = accnts;
-//	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPswd() {
+		return pswd;
+	}
+
+	public void setPswd(String pswd) {
+		this.pswd = pswd;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getAadhar() {
+		return aadhar;
+	}
+
+	public void setAadhar(String aadhar) {
+		this.aadhar = aadhar;
+	}
+
+	public String getDob() {
+		return dob;
+	}
+
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public List<Account> getAccnts() {
+		return accnts;
+	}
+
+	public void setAccnts(List<Account> accnts) {
+		this.accnts = accnts;
+	}
 
 }
