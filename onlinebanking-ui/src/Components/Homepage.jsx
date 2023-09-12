@@ -110,6 +110,11 @@ export default function Homepage() {
                       className="home-button-text"
                       variant="body2"
                       color="text.secondary"
+                      style={{
+                        fontSize: 24,
+                        fontWeight: "500",
+                        color: "black",
+                      }}
                     >
                       Open a new account with Wells Fargo
                     </Typography>
@@ -169,8 +174,13 @@ export default function Homepage() {
                       className="home-button-text"
                       variant="body2"
                       color="text.secondary"
+                      style={{
+                        fontSize: 24,
+                        color: "white",
+                        fontWeight: "500",
+                      }}
                     >
-                      Check Details of Existing Accounts{" "}
+                      Check Details of Existing Accounts
                     </Typography>
                   </CardContent>
                 </CardActionArea>
