@@ -28,7 +28,7 @@ export default function Homepage() {
 
   React.useEffect(() => {
     // DO API CALL HERE
-    setLoading(true);
+    setLoading(false);
     setError("");
   }, []);
 
