@@ -15,121 +15,121 @@ import axios from "axios";
 import ErrorPage from "./ErrorPage";
 
 function Copyright(props) {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}
-        >
-            {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
 }
 
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
-    const navigate = useNavigate();
-    const [success, setSuccess] = useState(true);
-    const handleSubmit = (event) => {
-        event.preventDefault();
+  const navigate = useNavigate();
+  const [success, setSuccess] = useState(true);
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-        const loginBackendUrl = "http://localhost:8080/login";
-        const data = new FormData(event.currentTarget);
+    const loginBackendUrl = "http://localhost:8080/login";
+    const data = new FormData(event.currentTarget);
 
-        const loginData = {
-            userId: data.get("userid"),
-            pswd: data.get("password"),
-        };
-        console.log(loginData);
-
-        axios
-            .post(loginBackendUrl, loginData)
-            .then((response) => {
-                console.log(response);
-                if (response.data === true) {
-                    navigate("/");
-                }
-                else {
-                    // navigate("/error");
-                    setSuccess(false);
-
-                }
-            });
+    const loginData = {
+      userId: data.get("userid"),
+      pswd: data.get("password"),
     };
+    console.log(loginData);
 
-    return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    {!success && <ErrorPage />}
-                    <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        noValidate
-                        sx={{ mt: 1 }}
-                    >
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="userid"
-                            label="User Id"
-                            name="userid"
-                            autoComplete="userid"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
+    axios
+      .post(loginBackendUrl, loginData)
+      .then((response) => {
+        console.log(response);
+        if (response.data === true) {
+          navigate("/");
+        }
+        else {
+          // navigate("/error");
+          setSuccess(false);
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container justifyContent="center">
-                            <Grid item>
-                                <Link href="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Box>
+        }
+      });
+  };
 
-                <Copyright sx={{ mt: 8, mb: 4 }} />
-            </Container>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          {!success && <ErrorPage />}
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="userid"
+              label="User Id"
+              name="userid"
+              autoComplete="userid"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container justifyContent="center">
+              <Grid item>
+                <Link href="/register" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
+  );
 }
