@@ -23,22 +23,22 @@ import lombok.NoArgsConstructor;
 public class Account {
 	@Id
 	private long accNo;
-	
+
 	@Column(nullable = false)
 	private String accType;
 
 	@Column(nullable = false)
 	private double balance;
-	
+
 	@Column(nullable = false)
 	private String openingDate;
-	
+
 	@Column(nullable = false)
 	private String ifsc;
-	
+
 	@Column(nullable = false)
 	private String branch;
-	
+
 	private boolean isDisabled;
 
 	@OneToMany
@@ -120,7 +120,5 @@ public class Account {
 	public void setUser(Customer user) {
 		this.user = user;
 	}
-	
-	
 
 }

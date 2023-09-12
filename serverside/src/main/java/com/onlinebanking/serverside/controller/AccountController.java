@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.onlinebanking.serverside.model.Account;
 import com.onlinebanking.serverside.service.AccountService;
 
-import javax.validation.Valid;
-
 @RestController
 @Validated
 @CrossOrigin
 public class AccountController {
-	
+
 	@Autowired
 	AccountService accountService;
 
 	@PostMapping("/addAccount/{userId}")
 	public ResponseEntity<?> addAccount(@RequestBody Account account, @PathVariable("userId") Long userId) {
-		Account response = accountService.save(account,userId);
-		if(response == null) {
+		Account response = accountService.save(account, userId);
+		if (response == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Account Already Exists");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Account Created");
 	}
+	
+	
 }

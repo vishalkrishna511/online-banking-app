@@ -18,8 +18,8 @@ public class AccountService {
 
 	@Autowired
 	CustomerService customerService;
-	
-	 private static final AtomicLong counter = new AtomicLong(100000000000L);
+
+	private static final AtomicLong counter = new AtomicLong(100000000000L);
 
 	public Account save(Account account, Long userId) {
 
@@ -42,16 +42,16 @@ public class AccountService {
 		return null;
 
 	}
-	
-	 private Long generateAccountNumber() {
-	        return counter.incrementAndGet();
-	    }
-	 
-	 private String getCurrentDate() {
-	        LocalDate currentDate = LocalDate.now();
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-	        return currentDate.format(formatter);
-	    }
+
+	private Long generateAccountNumber() {
+		return counter.incrementAndGet();
+	}
+
+	private String getCurrentDate() {
+		LocalDate currentDate = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return currentDate.format(formatter);
+	}
 
 	private static String generateIFSC(String city, String state) {
 		String cityCode = city.substring(0, 4).toUpperCase();
