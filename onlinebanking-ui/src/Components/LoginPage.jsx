@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +12,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ErrorPage from "./ErrorPage";
 
 function Copyright(props) {
     return (
@@ -35,7 +36,7 @@ const defaultTheme = createTheme();
 
 export default function LoginPage() {
     const navigate = useNavigate();
-
+    const [success, setSuccess] = useState(true);
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -56,7 +57,9 @@ export default function LoginPage() {
                     navigate("/");
                 }
                 else {
-                    navigate("/error");
+                    // navigate("/error");
+                    setSuccess(false);
+
                 }
             });
     };
@@ -79,6 +82,7 @@ export default function LoginPage() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
+                    {!success && <ErrorPage />}
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
