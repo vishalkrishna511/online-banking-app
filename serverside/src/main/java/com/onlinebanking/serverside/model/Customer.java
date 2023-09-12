@@ -10,12 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 
 @Entity
 @Data
-
 public class Customer {
 
 	@Id
@@ -25,21 +28,25 @@ public class Customer {
 	@Column(nullable = false)
 	private String name;
 	@Column(nullable = false)
+	@Size(min = 8, max = 12, message = "Password should br from 8 to 12 Characters")
 	private String pswd;
 	@Column(nullable = false)
+	@Email(message = "Email should be proper")
 	private String email;
+	@Size(min = 10, max = 10, message = "Phone number must be 10 digits" )
 	@Column(nullable = false)
-	private long mobile;
+	private String mobile;
 	@Column(unique = true, nullable = false)
+	@Pattern(regexp = "\\d{12}", message = "Aadhar must be 12 digits")
 	private String aadhar;
 	@Column(nullable = false)
 	private String dob;
+	@Column(nullable = false)
 	private String city;
+	@Column(nullable = false)
 	private String state;
 	@Column(nullable = false)
 	private String country;
-	private String fatherName;
-	private String motherName;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Account> accnts;
@@ -76,11 +83,11 @@ public class Customer {
 		this.email = email;
 	}
 
-	public long getMobile() {
+	public String getMobile() {
 		return mobile;
 	}
 
-	public void setMobile(long mobile) {
+	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
 
@@ -122,22 +129,6 @@ public class Customer {
 
 	public void setCountry(String country) {
 		this.country = country;
-	}
-
-	public String getFatherName() {
-		return fatherName;
-	}
-
-	public void setFatherName(String fatherName) {
-		this.fatherName = fatherName;
-	}
-
-	public String getMotherName() {
-		return motherName;
-	}
-
-	public void setMotherName(String motherName) {
-		this.motherName = motherName;
 	}
 
 	public List<Account> getAccnts() {
