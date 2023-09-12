@@ -1,22 +1,23 @@
 package com.onlinebanking.serverside.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.onlinebanking.serverside.exceptions.CustomerNotFoundException;
 import com.onlinebanking.serverside.model.Customer;
 import com.onlinebanking.serverside.model.Login;
 import com.onlinebanking.serverside.service.CustomerService;
 import com.onlinebanking.serverside.service.LoginService;
-
-import javax.validation.Valid;
 
 
 
@@ -46,5 +47,10 @@ public class CustomerController {
 	public Boolean validateCustomer(@RequestBody Login login) {
 		return loginService.validateCustomer(login);
 	}
-
+	
+	@GetMapping("/getCustomer/{id}")
+	public Customer getCustomerDetails(@PathVariable("id") Long id) throws CustomerNotFoundException {
+			return customerService.getCustoerDetails(id);				
+	}
+	
 }
