@@ -26,7 +26,7 @@ public class CustomerService {
 			return null;
 	}
 
-	public Customer getCustoerDetails(Long id) throws CustomerNotFoundException {
+	public Customer getCustomerDetails(Long id) throws CustomerNotFoundException {
 
 		Customer customer = null;
 		customer = customerRepository.findByUserId(id);

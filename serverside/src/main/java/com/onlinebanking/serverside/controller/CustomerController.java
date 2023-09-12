@@ -50,7 +50,7 @@ public class CustomerController {
 	
 	@GetMapping("/getCustomer/{id}")
 	public Customer getCustomerDetails(@PathVariable("id") Long id) throws CustomerNotFoundException {
-			return customerService.getCustoerDetails(id);				
+			return customerService.getCustomerDetails(id);				
 	}
 	
 }
