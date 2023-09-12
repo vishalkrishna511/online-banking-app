@@ -114,7 +114,7 @@ export default function Homepage() {
                                 <DialogTitle>Customer Details</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
-                                        {data}
+                                        hey
                                     </DialogContentText>
                                     <TextField
                                         autoFocus
