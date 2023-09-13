@@ -25,8 +25,9 @@ import { CardActionArea } from "@mui/material";
 import "./Button.css";
 import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Homepage() {
+export default function Homepage({id}) {
   // change the color of the AppBar to match the theme
   // change it to red
   // how to change the color of the AppBar?
@@ -34,6 +35,17 @@ export default function Homepage() {
   // AppBar has a prop called sx
   // sx is a prop that takes an object
   // the object has a property called flexGrow
+
+  const navigate = useNavigate();
+
+
+  React.useEffect(() => {
+    const id = sessionStorage.getItem('userId');
+    if (!id) navigate("/login");
+    setUserId(id);
+    setLoading(false);
+  }, [])
+  const [userId, setUserId] = React.useState(1);
 
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
@@ -46,7 +58,7 @@ export default function Homepage() {
   };
   const handleClickOpen = () => {
     // i want to make an API call here first then open the dialog
-    axios.get("http://localhost:8080/getCustomer/3").then((response) => {
+    axios.get(`http://localhost:8080/getCustomer/${userId}`).then((response) => {
       console.log(response);
       setData(response.data);
       setOpen(true);
@@ -56,11 +68,6 @@ export default function Homepage() {
   const handleClose = () => {
     setOpen(false);
   };
-  React.useEffect(() => {
-    // DO API CALL HERE
-    setLoading(false);
-    setError("");
-  }, []);
 
   return (
     <div>

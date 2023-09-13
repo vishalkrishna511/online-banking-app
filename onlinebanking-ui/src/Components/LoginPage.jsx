@@ -55,6 +55,7 @@ export default function LoginPage() {
         console.log(response);
         if (response.data === true) {
           navigate("/");
+          sessionStorage.setItem("userId", data.get("userid"));
         }
         else {
           // navigate("/error");
