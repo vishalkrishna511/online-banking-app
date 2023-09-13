@@ -27,7 +27,7 @@ import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function Homepage({id}) {
+export default function Homepage({ id }) {
   // change the color of the AppBar to match the theme
   // change it to red
   // how to change the color of the AppBar?
@@ -130,46 +130,50 @@ export default function Homepage({id}) {
                   </CardContent>
                 </CardActionArea>
               </Card>
-              <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Customer Details</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    <div>
-                      <div>Name: {data.name}</div>
-                      <div>User ID: {data.userId}</div>
-                      <div>Aadhar: {data.aadhar}</div>
-                      <div>DOB: {data.dob}</div>
-                      <div>City: {data.city}</div>
-                      <div>Mobile: {data.mobile}</div>
-                      <div>State: {data.state}</div>
+              <Dialog open={open} onClose={handleClose}
+                maxWidth='lg'
+              >
+                <div style={{ width: "300px", color: "#D41C2C" }}>
+                  <DialogTitle>Customer Details</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
                       <div>
-                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                          <InputLabel id="demo-select-small-label">
-                            Acc Type
-                          </InputLabel>
-                          <Select
-                            labelId="demo-select-small-label"
-                            id="demo-select-small"
-                            value={accType}
-                            label="Type"
-                            onChange={handleChange}
-                          >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Savings</MenuItem>
-                            <MenuItem value={20}>Currents</MenuItem>
-                            <MenuItem value={30}>FD</MenuItem>
-                          </Select>
-                        </FormControl>
+                        <div>Name: {data.name}</div>
+                        <div>User ID: {data.userId}</div>
+                        <div>Aadhar: {data.aadhar}</div>
+                        <div>DOB: {data.dob}</div>
+                        <div>City: {data.city}</div>
+                        <div>Mobile: {data.mobile}</div>
+                        <div>State: {data.state}</div>
+                        <div>
+                          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                            <InputLabel id="demo-select-small-label">
+                              Acc Type
+                            </InputLabel>
+                            <Select
+                              labelId="demo-select-small-label"
+                              id="demo-select-small"
+                              value={accType}
+                              label="Type"
+                              onChange={handleChange}
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value={10}>Savings</MenuItem>
+                              <MenuItem value={20}>Currents</MenuItem>
+                              <MenuItem value={30}>FD</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
                       </div>
-                    </div>
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button onClick={handleClose}>Submit</Button>
-                </DialogActions>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>Submit</Button>
+                  </DialogActions>
+                </div>
               </Dialog>
             </Grid>
             <Grid container item md={5}>
