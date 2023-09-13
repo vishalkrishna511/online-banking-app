@@ -68,7 +68,7 @@ export default function Homepage() {
         <LoadingScreen loadingText="Fetching your data..." />
       ) : (
         <Box color={red} sx={{ flexGrow: 1 }}>
-          <AppBar style={{ background: "#2E3B55" }} position="static">
+          <AppBar style={{ background: "#D41C2C" }} position="static">
             <Toolbar>
               <IconButton
                 size="large"
@@ -113,7 +113,8 @@ export default function Homepage() {
                       style={{
                         fontSize: 24,
                         fontWeight: "500",
-                        color: "black",
+                        color: "#D41C2C",
+
                       }}
                     >
                       Open a new account with Wells Fargo
@@ -166,7 +167,7 @@ export default function Homepage() {
             <Grid container item md={5}>
               <Card
                 className="home-button"
-                style={{ backgroundColor: "rgb(251,55,0)" }}
+                style={{ backgroundColor: "rgb(212,28,44)" }}
               >
                 <CardActionArea>
                   <CardContent>
