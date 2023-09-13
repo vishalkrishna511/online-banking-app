@@ -92,6 +92,11 @@ export default function Homepage({id}) {
               <Button color="inherit">Payments</Button>
               <Button color="inherit">Deposits</Button>
               <Button color="inherit">Account</Button>
+              <Button onClick={() => {
+                sessionStorage.removeItem("userId");
+                window.location.reload();
+              }} color="inherit">Logout</Button>
+
             </Toolbar>
           </AppBar>
 
