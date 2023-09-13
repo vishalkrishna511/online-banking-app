@@ -14,7 +14,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -25,9 +24,8 @@ import { CardActionArea } from "@mui/material";
 import "./Button.css";
 import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-export default function Homepage({id}) {
+export default function Homepage() {
   // change the color of the AppBar to match the theme
   // change it to red
   // how to change the color of the AppBar?
@@ -36,17 +34,27 @@ export default function Homepage({id}) {
   // sx is a prop that takes an object
   // the object has a property called flexGrow
 
-  const navigate = useNavigate();
-
-
   React.useEffect(() => {
-    const id = sessionStorage.getItem('userId');
-    if (!id) navigate("/login");
-    setUserId(id);
-    setLoading(false);
-  }, [])
-  const [userId, setUserId] = React.useState(1);
+    GetUserData();
+  }, []);
 
+  const GetUserData = async () => {
+    try {
+      const id = sessionStorage.getItem('userId');
+      setUserId(id);
+      setLoading(true);
+      setError("");
+      const response = await axios.get(`http://localhost:8080/getCustomer/${id}`);
+      setData(response.data);
+    } catch (e) {
+      console.log(e);
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const [userId, setUserId] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
   const [data, setData] = React.useState({});
@@ -58,11 +66,7 @@ export default function Homepage({id}) {
   };
   const handleClickOpen = () => {
     // i want to make an API call here first then open the dialog
-    axios.get(`http://localhost:8080/getCustomer/${userId}`).then((response) => {
-      console.log(response);
-      setData(response.data);
-      setOpen(true);
-    });
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -105,7 +109,7 @@ export default function Homepage({id}) {
           <Grid container>
             <Grid item xs={1} />
             <Grid container item md={10}>
-              <label style={{ fontSize: 40 }}>Hello, Name</label>
+            <label style={{ fontSize: 40 }}>Hello, {data.name}</label>
             </Grid>
             <Grid item xs={1} />
           </Grid>

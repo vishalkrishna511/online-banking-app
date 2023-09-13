@@ -10,13 +10,13 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    console.log("EXECUTED");
     const id = sessionStorage.getItem("userId");
-    console.log(location.pathname);
+
     if (
       !id &&
       !location.pathname.includes("register") &&
-      !location.pathname.includes("login")
+      !location.pathname.includes("login") &&
+      !location.pathname.includes("error")
     ) {
       navigate("/login");
     } else if (
@@ -27,6 +27,7 @@ function App() {
       navigate("/");
     }
   }, []);
+
   return (
     <div className="App">
       <Routes>
