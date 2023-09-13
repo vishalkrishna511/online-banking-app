@@ -103,7 +103,8 @@ export default function Homepage() {
           <Grid container spacing={3}>
             <Grid item xs={1} />
             <Grid container item md={5}>
-              <Card className="home-button">
+              <Card className="home-button" style={{ borderRadius: "25px", border: '5px solid #D41C2C' }}
+              >
                 <CardActionArea onClick={handleClickOpen}>
                   <CardContent>
                     <Typography
@@ -167,7 +168,7 @@ export default function Homepage() {
             <Grid container item md={5}>
               <Card
                 className="home-button"
-                style={{ backgroundColor: "rgb(212,28,44)" }}
+                style={{ backgroundColor: "rgb(212,28,44)", borderRadius: "25px", border: '5px solid #FCCC44' }}
               >
                 <CardActionArea>
                   <CardContent>
