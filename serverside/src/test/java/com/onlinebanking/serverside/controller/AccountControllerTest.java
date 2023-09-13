@@ -8,15 +8,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AccountControllerTest {
 
     @Test
-    void addAccount() {
+    public void addAccount() {
 
     }
 
     @Test
-    void viewAccount() {
+    public void viewAccount() {
     }
 
     @Test
-    void getAccountDetails() {
+    public void getAccountDetails() {
     }
 }

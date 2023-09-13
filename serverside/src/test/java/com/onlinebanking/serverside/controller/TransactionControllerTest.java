@@ -38,7 +38,7 @@ class TransactionControllerTest {
 	ObjectMapper mapper = new ObjectMapper();
 
 	@Test
-	public void testAddTransaction() throws Exception {
+	public void AddTransaction() throws Exception {
 		Transaction transaction = new Transaction();
 		transaction.setAmt(99.99);
 		transaction.setCreditAccnt(100000000001L);
