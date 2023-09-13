@@ -40,11 +40,13 @@ export default function Homepage() {
 
   const GetUserData = async () => {
     try {
-      const id = sessionStorage.getItem('userId');
+      const id = sessionStorage.getItem("userId");
       setUserId(id);
       setLoading(true);
       setError("");
-      const response = await axios.get(`http://localhost:8080/getCustomer/${id}`);
+      const response = await axios.get(
+        `http://localhost:8080/getCustomer/${id}`
+      );
       setData(response.data);
     } catch (e) {
       console.log(e);
@@ -52,7 +54,7 @@ export default function Homepage() {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const [userId, setUserId] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
@@ -96,11 +98,15 @@ export default function Homepage() {
               <Button color="inherit">Payments</Button>
               <Button color="inherit">Deposits</Button>
               <Button color="inherit">Account</Button>
-              <Button onClick={() => {
-                sessionStorage.removeItem("userId");
-                window.location.reload();
-              }} color="inherit">Logout</Button>
-
+              <Button
+                onClick={() => {
+                  sessionStorage.removeItem("userId");
+                  window.location.reload();
+                }}
+                color="inherit"
+              >
+                Logout
+              </Button>
             </Toolbar>
           </AppBar>
 
@@ -109,7 +115,7 @@ export default function Homepage() {
           <Grid container>
             <Grid item xs={1} />
             <Grid container item md={10}>
-            <label style={{ fontSize: 40 }}>Hello, {data.name}</label>
+              <label style={{ fontSize: 40 }}>Hello, {data.name}</label>
             </Grid>
             <Grid item xs={1} />
           </Grid>
@@ -119,7 +125,9 @@ export default function Homepage() {
           <Grid container spacing={3}>
             <Grid item xs={1} />
             <Grid container item md={5}>
-              <Card className="home-button" style={{ borderRadius: "25px", border: '5px solid #D41C2C' }}
+              <Card
+                className="home-button"
+                style={{ borderRadius: "25px", border: "5px solid #D41C2C" }}
               >
                 <CardActionArea onClick={handleClickOpen}>
                   <CardContent>
@@ -131,7 +139,6 @@ export default function Homepage() {
                         fontSize: 24,
                         fontWeight: "500",
                         color: "#D41C2C",
-
                       }}
                     >
                       Open a new account with Wells Fargo
@@ -139,9 +146,7 @@ export default function Homepage() {
                   </CardContent>
                 </CardActionArea>
               </Card>
-              <Dialog open={open} onClose={handleClose}
-                maxWidth='lg'
-              >
+              <Dialog open={open} onClose={handleClose} maxWidth="lg">
                 <div style={{ width: "300px", color: "#D41C2C" }}>
                   <DialogTitle>Customer Details</DialogTitle>
                   <DialogContent>
@@ -155,7 +160,10 @@ export default function Homepage() {
                         <div>Mobile: {data.mobile}</div>
                         <div>State: {data.state}</div>
                         <div>
-                          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                          <FormControl
+                            sx={{ m: 1, minWidth: 120 }}
+                            size="small"
+                          >
                             <InputLabel id="demo-select-small-label">
                               Acc Type
                             </InputLabel>
@@ -188,7 +196,11 @@ export default function Homepage() {
             <Grid container item md={5}>
               <Card
                 className="home-button"
-                style={{ backgroundColor: "rgb(212,28,44)", borderRadius: "25px", border: '5px solid #FCCC44' }}
+                style={{
+                  backgroundColor: "rgb(212,28,44)",
+                  borderRadius: "25px",
+                  border: "5px solid #FCCC44",
+                }}
               >
                 <CardActionArea>
                   <CardContent>
