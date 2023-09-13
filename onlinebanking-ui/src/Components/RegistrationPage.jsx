@@ -26,11 +26,11 @@ function Copyright(props) {
             {...props}
         >
             {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="/register">
+                Team 6 Batch 3
             </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
+            {/* {new Date().getFullYear()}
+            {"."} */}
         </Typography>
     );
 }
@@ -110,9 +110,10 @@ export default function RegistrationPage() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
+
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                    <Avatar sx={{ m: 1, bgcolor: "#D41C2C" }}>
                         <LockIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
@@ -124,6 +125,7 @@ export default function RegistrationPage() {
                         onSubmit={handleSubmit}
                         sx={{ mt: 3 }}
                     >
+
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <TextField
@@ -145,6 +147,7 @@ export default function RegistrationPage() {
                                     name="email"
                                     autoComplete="email"
                                     onChange={(e) => setEmail(e.target.value)}
+
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -243,6 +246,7 @@ export default function RegistrationPage() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             disabled={loading}
+                            style={{ backgroundColor: "#D41C2C" }}
                         >
                             {loading ? "Signing up..." : "Sign up"}
                         </Button>
@@ -255,6 +259,7 @@ export default function RegistrationPage() {
                         </Grid>
                     </Box>
                 </Box>
+                <Copyright sx={{ mt: 3, mb: 4 }} />
             </Container>
         </ThemeProvider>
     );

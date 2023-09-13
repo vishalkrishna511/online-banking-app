@@ -23,11 +23,11 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/login">
+        Team 6 Batch 3
       </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+      {/* {new Date().getFullYear()}
+            {"."} */}
     </Typography>
   );
 }
@@ -49,20 +49,16 @@ export default function LoginPage() {
     };
     console.log(loginData);
 
-    axios
-      .post(loginBackendUrl, loginData)
-      .then((response) => {
-        console.log(response);
-        if (response.data === true) {
-          navigate("/");
-          sessionStorage.setItem("userId", data.get("userid"));
-        }
-        else {
-          // navigate("/error");
-          setSuccess(false);
-
-        }
-      });
+    axios.post(loginBackendUrl, loginData).then((response) => {
+      console.log(response);
+      if (response.data === true) {
+        navigate("/");
+        sessionStorage.setItem("userId", data.get("userid"));
+      } else {
+        // navigate("/error");
+        setSuccess(false);
+      }
+    });
   };
 
   return (
@@ -116,6 +112,7 @@ export default function LoginPage() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              style={{ backgroundColor: "#D41C2C" }}
             >
               Sign In
             </Button>
@@ -129,7 +126,7 @@ export default function LoginPage() {
           </Box>
         </Box>
 
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 4, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

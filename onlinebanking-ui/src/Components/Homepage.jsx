@@ -14,7 +14,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -25,9 +24,8 @@ import { CardActionArea } from "@mui/material";
 import "./Button.css";
 import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-export default function Homepage({id}) {
+export default function Homepage() {
   // change the color of the AppBar to match the theme
   // change it to red
   // how to change the color of the AppBar?
@@ -36,17 +34,29 @@ export default function Homepage({id}) {
   // sx is a prop that takes an object
   // the object has a property called flexGrow
 
-  const navigate = useNavigate();
-
-
   React.useEffect(() => {
-    const id = sessionStorage.getItem('userId');
-    if (!id) navigate("/login");
-    setUserId(id);
-    setLoading(false);
-  }, [])
-  const [userId, setUserId] = React.useState(1);
+    GetUserData();
+  }, []);
 
+  const GetUserData = async () => {
+    try {
+      const id = sessionStorage.getItem("userId");
+      setUserId(id);
+      setLoading(true);
+      setError("");
+      const response = await axios.get(
+        `http://localhost:8080/getCustomer/${id}`
+      );
+      setData(response.data);
+    } catch (e) {
+      console.log(e);
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [userId, setUserId] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
   const [data, setData] = React.useState({});
@@ -58,11 +68,7 @@ export default function Homepage({id}) {
   };
   const handleClickOpen = () => {
     // i want to make an API call here first then open the dialog
-    axios.get(`http://localhost:8080/getCustomer/${userId}`).then((response) => {
-      console.log(response);
-      setData(response.data);
-      setOpen(true);
-    });
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -92,6 +98,15 @@ export default function Homepage({id}) {
               <Button color="inherit">Payments</Button>
               <Button color="inherit">Deposits</Button>
               <Button color="inherit">Account</Button>
+              <Button
+                onClick={() => {
+                  sessionStorage.removeItem("userId");
+                  window.location.reload();
+                }}
+                color="inherit"
+              >
+                Logout
+              </Button>
             </Toolbar>
           </AppBar>
 
@@ -100,7 +115,7 @@ export default function Homepage({id}) {
           <Grid container>
             <Grid item xs={1} />
             <Grid container item md={10}>
-              <label style={{ fontSize: 40 }}>Hello, Name</label>
+              <label style={{ fontSize: 40 }}>Hello, {data.name}</label>
             </Grid>
             <Grid item xs={1} />
           </Grid>
@@ -110,7 +125,10 @@ export default function Homepage({id}) {
           <Grid container spacing={3}>
             <Grid item xs={1} />
             <Grid container item md={5}>
-              <Card className="home-button">
+              <Card
+                className="home-button"
+                style={{ borderRadius: "25px", border: "5px solid #D41C2C" }}
+              >
                 <CardActionArea onClick={handleClickOpen}>
                   <CardContent>
                     <Typography
@@ -121,7 +139,6 @@ export default function Homepage({id}) {
                         fontSize: 24,
                         fontWeight: "500",
                         color: "#D41C2C",
-
                       }}
                     >
                       Open a new account with Wells Fargo
@@ -129,52 +146,61 @@ export default function Homepage({id}) {
                   </CardContent>
                 </CardActionArea>
               </Card>
-              <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Customer Details</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    <div>
-                      <div>Name: {data.name}</div>
-                      <div>User ID: {data.userId}</div>
-                      <div>Aadhar: {data.aadhar}</div>
-                      <div>DOB: {data.dob}</div>
-                      <div>City: {data.city}</div>
-                      <div>Mobile: {data.mobile}</div>
-                      <div>State: {data.state}</div>
+              <Dialog open={open} onClose={handleClose} maxWidth="lg">
+                <div style={{ width: "300px", color: "#D41C2C" }}>
+                  <DialogTitle>Customer Details</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
                       <div>
-                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                          <InputLabel id="demo-select-small-label">
-                            Acc Type
-                          </InputLabel>
-                          <Select
-                            labelId="demo-select-small-label"
-                            id="demo-select-small"
-                            value={accType}
-                            label="Type"
-                            onChange={handleChange}
+                        <div>Name: {data.name}</div>
+                        <div>User ID: {data.userId}</div>
+                        <div>Aadhar: {data.aadhar}</div>
+                        <div>DOB: {data.dob}</div>
+                        <div>City: {data.city}</div>
+                        <div>Mobile: {data.mobile}</div>
+                        <div>State: {data.state}</div>
+                        <div>
+                          <FormControl
+                            sx={{ m: 1, minWidth: 120 }}
+                            size="small"
                           >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Savings</MenuItem>
-                            <MenuItem value={20}>Currents</MenuItem>
-                            <MenuItem value={30}>FD</MenuItem>
-                          </Select>
-                        </FormControl>
+                            <InputLabel id="demo-select-small-label">
+                              Acc Type
+                            </InputLabel>
+                            <Select
+                              labelId="demo-select-small-label"
+                              id="demo-select-small"
+                              value={accType}
+                              label="Type"
+                              onChange={handleChange}
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value={10}>Savings</MenuItem>
+                              <MenuItem value={20}>Currents</MenuItem>
+                              <MenuItem value={30}>FD</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
                       </div>
-                    </div>
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button onClick={handleClose}>Submit</Button>
-                </DialogActions>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>Submit</Button>
+                  </DialogActions>
+                </div>
               </Dialog>
             </Grid>
             <Grid container item md={5}>
               <Card
                 className="home-button"
-                style={{ backgroundColor: "rgb(212,28,44)" }}
+                style={{
+                  backgroundColor: "rgb(212,28,44)",
+                  borderRadius: "25px",
+                  border: "5px solid #FCCC44",
+                }}
               >
                 <CardActionArea>
                   <CardContent>
