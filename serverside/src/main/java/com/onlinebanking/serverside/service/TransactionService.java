@@ -1,6 +1,9 @@
 package com.onlinebanking.serverside.service;
 
 import com.onlinebanking.serverside.model.Account;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +13,7 @@ import com.onlinebanking.serverside.model.Transaction;
 @Service
 public class TransactionService {
     @Autowired
-    private TransactionRepository transactionRepository;
+     TransactionRepository transactionRepository;
 
     public Transaction save(Transaction transaction) {
         Transaction response = transactionRepository.findByTxnId(transaction.getTxnId());
@@ -18,4 +21,9 @@ public class TransactionService {
             return transactionRepository.save(transaction);
         } else return null;
     }
+    public List<Transaction> getTransactions(long debitAccnt) {
+		// TODO Auto-generated method stub
+		List<Transaction> transactions = transactionRepository.findAllByDebitAccnt(debitAccnt);
+		return transactions;
+	}
 }
