@@ -26,39 +26,38 @@ import "./Button.css";
 // import LoadingScreen from "./LoadingScreen";
 // import axios from "axios";
 const NavBar = () => {
-    return (
-        <>
-            <AppBar style={{ background: "#D41C2C" }} position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Wells Fargo
-                    </Typography>
-                    <Button color="inherit">Payments</Button>
-                    <Button color="inherit">Deposits</Button>
-                    <Button color="inherit">Account</Button>
-                    <Button
-                        onClick={() => {
-                            sessionStorage.removeItem("userId");
-                            window.location.reload();
-                        }}
-                        color="inherit"
-                    >
-                        Logout
-                    </Button>
-                </Toolbar>
-            </AppBar>
+  return (
+    <>
+      <AppBar style={{ background: "#D41C2C" }} position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+            Wells Fargo
+          </Typography>
+          <Button color="inherit">Payments</Button>
+          <Button color="inherit">Deposits</Button>
+          <Button color="inherit">Account</Button>
+          <Button
+            onClick={() => {
+              sessionStorage.removeItem("userId");
+              window.location.reload();
+            }}
+            color="inherit"
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </>
+  );
+};
 
-        </>
-    )
-}
-
-export default NavBar
+export default NavBar;

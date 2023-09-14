@@ -82,7 +82,6 @@ export default function Homepage() {
         <LoadingScreen loadingText="Fetching your data..." />
       ) : (
         <Box color={red} sx={{ flexGrow: 1 }}>
-
           {/* NAVBAR */}
           <NavBar />
 
