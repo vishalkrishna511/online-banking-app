@@ -32,9 +32,6 @@ class TransactionControllerTest {
 	@Mock
 	TransactionRepository transactionRepository;
 
-//	@MockBean
-//	TransactionRepository transactionRepository;
-
 	ObjectMapper mapper = new ObjectMapper();
 
 	@Test
