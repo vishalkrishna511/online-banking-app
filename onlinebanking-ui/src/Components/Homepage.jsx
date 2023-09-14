@@ -24,11 +24,13 @@ import Menu from "@mui/material/Menu";
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 
+import WalletIcon from "@mui/icons-material/Wallet";
 import "./Button.css";
 import LoadingScreen from "./LoadingScreen";
-import NavBar from "./NavBar";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
+import NavBar from "./NavBar";
+import CardComponent from "../CommonComps/CardComponent";
 
 export default function Homepage() {
   // change the color of the AppBar to match the theme
@@ -149,6 +151,15 @@ export default function Homepage() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
   const [balance, setBalance] = React.useState("");
+  const [visible, setVisible] = React.useState(false);
+
+  const onCloseWD = () => {
+    setVisible(false);
+  };
+
+  const onConfirmWD = () => {
+    onCloseWD();
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -176,60 +187,7 @@ export default function Homepage() {
         <LoadingScreen loadingText="Fetching your data..." />
       ) : (
         <Box color={red} sx={{ flexGrow: 1 }}>
-          <AppBar style={{ background: "#D41C2C" }} position="static">
-            <Toolbar>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Wells Fargo
-              </Typography>
-              <Button color="inherit">Payments</Button>
-              <Button color="inherit">Deposits</Button>
-
-              <Button
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-                color="inherit"
-              >
-                Account
-              </Button>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={openMenu}
-                onClose={handleCloseMenu}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-              >
-                <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
-                <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
-                <MenuItem>
-                  Dark Mode
-                  <MaterialUISwitch sx={{ m: 1 }} defaultChecked />
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    sessionStorage.removeItem("userId");
-                    window.location.reload();
-                  }}
-                >
-                  Logout
-                </MenuItem>
-              </Menu>
-            </Toolbar>
-          </AppBar>
+          <NavBar />
 
           <div style={{ height: 100 }} />
 
@@ -358,6 +316,58 @@ export default function Homepage() {
                   </CardContent>
                 </CardActionArea>
               </Card>
+            </Grid>
+            <Grid item xs={1} />
+          </Grid>
+
+          <div style={{ height: 80 }} />
+
+          <CardComponent
+            onClose={onCloseWD}
+            onConfirm={onConfirmWD}
+            userId={userId}
+            visible={visible}
+          />
+
+          <Grid container>
+            <Grid item xs={1} />
+            <Grid item container xs={10}>
+              <Grid item container xs={12} spacing={3}>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 8,
+                      border: "solid black 4px",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    className="action-button"
+                    onClick={() => setVisible(true)}
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <WalletIcon />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Withdraw
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={1} />
           </Grid>

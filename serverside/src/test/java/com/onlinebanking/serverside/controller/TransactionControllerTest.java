@@ -59,7 +59,7 @@ class TransactionControllerTest {
 		transaction.setDebitAccount(100000000003L);
 		transaction.setStatus("success");
 		transaction.setTimeStamp("21-09-2029 12:21:12");
-		transaction.setTxnId(9827635L);
+		transaction.setTxnId(9822635L);
 		transaction.setTxnType("NEFT");
 
 		Mockito.when(transactionService.save(ArgumentMatchers.any())).thenReturn(transaction);

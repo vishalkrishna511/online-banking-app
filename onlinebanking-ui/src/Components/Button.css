@@ -21,3 +21,16 @@
   font-size: 24px;
   cursor: inherit;
 }
+
+.action-button {
+  transition: 0.5s;
+}
+
+.action-button:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.text-pointer:hover {
+  cursor: pointer;
+}
