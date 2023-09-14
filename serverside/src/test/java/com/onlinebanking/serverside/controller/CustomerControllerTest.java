@@ -109,9 +109,7 @@ public class CustomerControllerTest {
 		Mockito.when(customerService.getCustomerDetails(ArgumentMatchers.any())).thenReturn(customer);
 
 //		System.out.println("test method");
-		mvc.perform(get("/getCustomer/{id}", 1)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
+		mvc.perform(get("/getCustomer/{id}", 1).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.name", Matchers.equalTo(customer.getName())));
 	}
 }

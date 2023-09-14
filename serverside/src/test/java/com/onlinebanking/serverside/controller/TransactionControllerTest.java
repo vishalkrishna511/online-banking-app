@@ -3,7 +3,8 @@ package com.onlinebanking.serverside.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//import org.junit.Test;/
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
@@ -16,8 +17,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onlinebanking.serverside.dao.CustomerRepository;
 import com.onlinebanking.serverside.dao.TransactionRepository;
 import com.onlinebanking.serverside.model.Transaction;
+import com.onlinebanking.serverside.service.AccountService;
+import com.onlinebanking.serverside.service.CustomerService;
+import com.onlinebanking.serverside.service.LoginService;
 import com.onlinebanking.serverside.service.TransactionService;
 
 @RunWith(SpringRunner.class)
@@ -26,19 +31,28 @@ class TransactionControllerTest {
 	@Autowired
 	MockMvc mvc;
 
-	@Mock
+	@MockBean
 	TransactionService transactionService;
 
-	@Mock
+	@MockBean
 	TransactionRepository transactionRepository;
 
-//	@MockBean
-//	TransactionRepository transactionRepository;
+	@MockBean
+	CustomerService customerService;
+
+	@MockBean
+	LoginService loginService;
+
+	@MockBean
+	AccountService accountService;
+
+	@MockBean
+	CustomerRepository customerRepository;
 
 	ObjectMapper mapper = new ObjectMapper();
 
 	@Test
-	public void AddTransaction() throws Exception {
+	public void testAddTransaction() throws Exception {
 		Transaction transaction = new Transaction();
 		transaction.setAmt(99.99);
 		transaction.setCreditAccnt(100000000001L);
@@ -51,8 +65,7 @@ class TransactionControllerTest {
 		Mockito.when(transactionService.save(ArgumentMatchers.any())).thenReturn(transaction);
 
 		String json = mapper.writeValueAsString(transaction);
-		mvc.perform(post("/addTransaction")
-				.contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+		mvc.perform(post("/addTransaction").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 				.content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
 	}
