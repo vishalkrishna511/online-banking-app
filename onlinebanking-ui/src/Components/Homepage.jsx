@@ -1,11 +1,11 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
+// import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
+// import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+// import IconButton from "@mui/material/IconButton";
+// import MenuIcon from "@mui/icons-material/Menu";
 import { red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -23,6 +23,7 @@ import { CardActionArea } from "@mui/material";
 
 import "./Button.css";
 import LoadingScreen from "./LoadingScreen";
+import NavBar from "./NavBar";
 import axios from "axios";
 
 export default function Homepage() {
@@ -81,34 +82,9 @@ export default function Homepage() {
         <LoadingScreen loadingText="Fetching your data..." />
       ) : (
         <Box color={red} sx={{ flexGrow: 1 }}>
-          <AppBar style={{ background: "#D41C2C" }} position="static">
-            <Toolbar>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Wells Fargo
-              </Typography>
-              <Button color="inherit">Payments</Button>
-              <Button color="inherit">Deposits</Button>
-              <Button color="inherit">Account</Button>
-              <Button
-                onClick={() => {
-                  sessionStorage.removeItem("userId");
-                  window.location.reload();
-                }}
-                color="inherit"
-              >
-                Logout
-              </Button>
-            </Toolbar>
-          </AppBar>
+
+          {/* NAVBAR */}
+          <NavBar />
 
           <div style={{ height: 100 }} />
 
