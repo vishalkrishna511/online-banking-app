@@ -15,7 +15,6 @@ import lombok.Data;
 @Entity
 @Data
 public class Transaction {
-	
 
 	@Id
 	@GeneratedValue
@@ -42,6 +41,68 @@ public class Transaction {
 	@JoinColumn(name = "accNo")
 	private Account accNo;
 
+	public long getTxnId() {
+		return txnId;
+	}
 
-	
+	public void setTxnId(long txnId) {
+		this.txnId = txnId;
+	}
+
+	public String getTxnType() {
+		return txnType;
+	}
+
+	public void setTxnType(String txnType) {
+		this.txnType = txnType;
+	}
+
+	public double getAmt() {
+		return amt;
+	}
+
+	public void setAmt(double amt) {
+		this.amt = amt;
+	}
+
+	public long getDebitAccount() {
+		return debitAccount;
+	}
+
+	public void setDebitAccount(long debitAccount) {
+		this.debitAccount = debitAccount;
+	}
+
+	public long getCreditAccount() {
+		return creditAccount;
+	}
+
+	public void setCreditAccount(long creditAccount) {
+		this.creditAccount = creditAccount;
+	}
+
+	public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Account getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(Account accNo) {
+		this.accNo = accNo;
+	}
+
 }

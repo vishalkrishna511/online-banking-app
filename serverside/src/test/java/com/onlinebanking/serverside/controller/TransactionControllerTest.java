@@ -37,14 +37,26 @@ class TransactionControllerTest {
 	@MockBean
 	TransactionRepository transactionRepository;
 
+	@MockBean
+	CustomerService customerService;
+
+	@MockBean
+	LoginService loginService;
+
+	@MockBean
+	AccountService accountService;
+
+	@MockBean
+	CustomerRepository customerRepository;
+
 	ObjectMapper mapper = new ObjectMapper();
 
 	@Test
 	public void testAddTransaction() throws Exception {
 		Transaction transaction = new Transaction();
 		transaction.setAmt(99.99);
-		transaction.setCreditAccnt(100000000001L);
-		transaction.setDebitAccnt(100000000003L);
+		transaction.setCreditAccount(100000000001L);
+		transaction.setDebitAccount(100000000003L);
 		transaction.setStatus("success");
 		transaction.setTimeStamp("21-09-2029 12:21:12");
 		transaction.setTxnId(9827635L);
