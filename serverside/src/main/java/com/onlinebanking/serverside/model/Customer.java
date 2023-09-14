@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Data
+
 public class Customer {
 	@Id
 	@Column(nullable = false)
