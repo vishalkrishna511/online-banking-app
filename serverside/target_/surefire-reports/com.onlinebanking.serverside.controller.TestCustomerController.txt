@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.onlinebanking.serverside.controller.TestCustomerController
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.011 s <<< FAILURE! - in com.onlinebanking.serverside.controller.TestCustomerController
+testAddCustomer  Time elapsed: 0 s  <<< ERROR!
+java.lang.Error: 
+Unresolved compilation problems: 
+	The import org.junit.runner cannot be resolved
+	RunWith cannot be resolved to a type
+
+	at com.onlinebanking.serverside.controller.TestCustomerController.<init>(TestCustomerController.java:9)
+

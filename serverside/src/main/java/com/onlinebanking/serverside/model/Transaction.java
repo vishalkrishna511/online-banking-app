@@ -9,12 +9,12 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 @Entity
 @Data
 public class Transaction {
+	
 
 	@Id
 	@GeneratedValue
@@ -27,17 +27,16 @@ public class Transaction {
 	private double amt;
 	@Column(nullable = false)
 //	@Pattern(regexp = "\\d{12}", message = "Debit Account number must be 12 digits")
-	private long debitAccount;
-
+	private long debitAccnt;
+	@Column(nullable = false)
 //	@Pattern(regexp = "\\d{12}", message = "Credit Account number must be 12 digits")
-	private long creditAccount;
+	private long creditAccnt;
 	@Column(nullable = false)
 	private String timeStamp;
 	@Column(nullable = false)
 	private String status;
 
 	@ManyToOne
-	@JsonBackReference
 	@JoinColumn(name = "accNo")
 	private Account accNo;
 
@@ -65,20 +64,20 @@ public class Transaction {
 		this.amt = amt;
 	}
 
-	public long getDebitAccount() {
-		return debitAccount;
+	public long getDebitAccnt() {
+		return debitAccnt;
 	}
 
-	public void setDebitAccount(long debitAccount) {
-		this.debitAccount = debitAccount;
+	public void setDebitAccnt(long debitAccnt) {
+		this.debitAccnt = debitAccnt;
 	}
 
-	public long getCreditAccount() {
-		return creditAccount;
+	public long getCreditAccnt() {
+		return creditAccnt;
 	}
 
-	public void setCreditAccount(long creditAccount) {
-		this.creditAccount = creditAccount;
+	public void setCreditAccnt(long creditAccnt) {
+		this.creditAccnt = creditAccnt;
 	}
 
 	public String getTimeStamp() {
@@ -104,5 +103,6 @@ public class Transaction {
 	public void setAccNo(Account accNo) {
 		this.accNo = accNo;
 	}
-
+	
+	
 }
