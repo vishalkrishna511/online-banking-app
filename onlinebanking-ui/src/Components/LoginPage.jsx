@@ -36,6 +36,7 @@ const defaultTheme = createTheme();
 
 export default function LoginPage() {
   const navigate = useNavigate();
+
   const [success, setSuccess] = useState(true);
   const handleSubmit = (event) => {
     event.preventDefault();
