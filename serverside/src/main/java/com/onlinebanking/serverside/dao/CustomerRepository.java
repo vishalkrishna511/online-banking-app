@@ -7,5 +7,5 @@ import com.onlinebanking.serverside.model.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, String> {
-
+    public Customer findByUserId(long userId);
 }

@@ -3,7 +3,7 @@
 
 .mtj.tmp/
 
-application.properties
+serverside/src/main/resources/application.properties
 *.properties
 *.jar
 *.war
@@ -15,7 +15,7 @@ hs_err_pid*
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
 

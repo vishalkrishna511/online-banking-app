@@ -1,5 +1,6 @@
 package com.onlinebanking.serverside.service;
 
+import com.onlinebanking.serverside.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +12,10 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public String save(Transaction transaction) {
-        try {
-            Transaction response = transactionRepository.save(transaction);
-            if (response != null) {
-                return "Transaction data saved successfully!";
-            } else {
-                return "An error occured while saving transaction data";
-            }
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+    public Transaction save(Transaction transaction) {
+        Transaction response = transactionRepository.findByTxnId(transaction.getTxnId());
+        if (response == null) {
+            return transactionRepository.save(transaction);
+        } else return null;
     }
 }
