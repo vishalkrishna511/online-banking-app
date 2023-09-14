@@ -51,6 +51,10 @@ const NavBar = () => {
               window.location.reload();
             }}
             color="inherit"
+            sx={{
+              border: "3px solid #FCCC44",
+              borderRadius: "10px",
+            }}
           >
             Logout
           </Button>
