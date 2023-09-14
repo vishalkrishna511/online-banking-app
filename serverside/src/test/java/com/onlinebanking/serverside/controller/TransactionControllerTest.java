@@ -37,18 +37,6 @@ class TransactionControllerTest {
 	@MockBean
 	TransactionRepository transactionRepository;
 
-	@MockBean
-	CustomerService customerService;
-
-	@MockBean
-	LoginService loginService;
-
-	@MockBean
-	AccountService accountService;
-
-	@MockBean
-	CustomerRepository customerRepository;
-
 	ObjectMapper mapper = new ObjectMapper();
 
 	@Test
