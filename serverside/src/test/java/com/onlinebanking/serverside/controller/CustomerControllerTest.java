@@ -1,36 +1,33 @@
 package com.onlinebanking.serverside.controller;
 
-import org.hamcrest.Matchers;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.runner.RunWith;
+
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlinebanking.serverside.dao.CustomerRepository;
 import com.onlinebanking.serverside.model.Customer;
 import com.onlinebanking.serverside.model.Login;
+import com.onlinebanking.serverside.service.AccountService;
 import com.onlinebanking.serverside.service.CustomerService;
 import com.onlinebanking.serverside.service.LoginService;
-
-import org.springframework.test.context.junit4.SpringRunner;
-
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import com.onlinebanking.serverside.service.TransactionService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -44,6 +41,12 @@ public class CustomerControllerTest {
 
 	@MockBean
 	LoginService loginService;
+	
+	@MockBean
+	AccountService accountService;
+	
+	@MockBean
+	TransactionService transService;
 	
 	@MockBean
 	CustomerRepository customerRepository;
@@ -104,16 +107,17 @@ public class CustomerControllerTest {
     	customer.setName("Arnav");
     	customer.setPswd("password");
     	customer.setState("Karnataka");
-
+    	
 		List<Customer> allCustomers = new ArrayList<>();
 		allCustomers.add(customer);
 
-		Mockito.when(customerService.getCustomerDetails(ArgumentMatchers.anyLong())).thenReturn(customer);
+		Mockito.when(customerService.getCustomerDetails(ArgumentMatchers.any())).thenReturn(customer);
 
 //		System.out.println("test method");
 		mvc.perform(get("/getCustomer/{id}",1)
 			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isOk()).
-			      andExpect(jsonPath("$.name", Matchers.equalTo(customer.getName())));
+			      .andExpect(status().isOk())
+			      .andExpect(jsonPath("$", Matchers.hasSize(1)))
+			      .andExpect(jsonPath("$[0].name", Matchers.equalTo(customer.getName())));
     }
 }
