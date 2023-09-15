@@ -19,6 +19,9 @@ public class TransactionService {
 	TransactionRepository transactionRepository;
 
 	@Autowired
+	AccountService accountService;
+
+	@Autowired
 	AccRepository accRepository;
 
 	public Transaction save(Transaction transaction) {
@@ -215,5 +218,24 @@ public class TransactionService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS");
 		String timeStamp = now.format(formatter);
 		return timeStamp;
+	}
+
+	public Transaction withdrawMoney(Transaction trsn) {
+		// TODO Auto-generated method stub
+		Account account = accRepository.findByAccNo(trsn.getDebitAccnt());
+		if (account == null || account.isDisabled() || account.getBalance() < trsn.getAmt()) {
+			return trsn;
+
+		}
+		account.setBalance(account.getBalance() - trsn.getAmt());
+		accRepository.save(account);
+		trsn.setAccNo(account);
+		trsn.setTimeStamp(getCurrentDateTimeStamp());
+		trsn.setStatus("Success");
+		trsn.setCreditAccnt(0L);
+		trsn.setTxnType("withdraw");
+		transactionRepository.save(trsn);
+
+		return trsn;
 	}
 }

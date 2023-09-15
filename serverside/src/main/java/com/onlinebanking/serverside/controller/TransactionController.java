@@ -41,6 +41,15 @@ public class TransactionController {
 		return transactionService.getTransactions(debitAccnt);
 	}
 	
+	@PostMapping("/withdraw")
+	public ResponseEntity<?> withdrawMoney(@RequestBody @Valid Transaction transaction) {
+		Transaction response = transactionService.withdrawMoney(transaction);
+		if (response == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transaction Declined");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Withdraw success");
+	}
+	
 //	@PostMapping("/withdraw/{accNo}")
 //	public String cashWithdraw(@PathVariable("accNo") long accNo) {
 //		return transactionService.cashWithdraw(accNo);
