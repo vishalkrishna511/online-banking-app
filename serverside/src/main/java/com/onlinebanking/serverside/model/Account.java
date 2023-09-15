@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Account {
 	@Id
 	private long accNo;

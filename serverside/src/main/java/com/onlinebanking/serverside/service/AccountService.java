@@ -46,18 +46,13 @@ public class AccountService {
 		return null;
 
 	}
-//	public Account saveModified(Account account) {
-//		return accRepository.
-//	}
 
 	private Long generateAccountNumber() {
-//		return counter.incrementAndGet();
 		UUID uuid = UUID.randomUUID();
 		String uuidString = uuid.toString();
 		int hashCode = Math.abs(uuidString.hashCode());
 		long uniqueNum = (long)hashCode;
 		uniqueNum=uniqueNum+counter;
-//		System.out.println("@@@@"+uniqueNum);
 		return uniqueNum;
 	}
 	

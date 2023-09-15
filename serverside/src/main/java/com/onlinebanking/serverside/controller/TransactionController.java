@@ -26,16 +26,13 @@ public class TransactionController {
 	@Autowired
 	private TransactionService transactionService;
 
-	@PostMapping("/addTransaction")
-	public ResponseEntity<?> addTransaction(@RequestBody @Valid Transaction c) {
-
-		Transaction response = transactionService.save(c);
-		if (response == null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflicting Transaction details");
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+	@PostMapping("/transact")
+	public ResponseEntity<?> addTransaction(@RequestBody @Valid Transaction transaction) {
+		Transaction transacted = transactionService.transact(transaction);
+		if (transacted == null || transacted.getStatus().equals("FAIL")) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid Transaction");
+		} else return ResponseEntity.status(HttpStatus.OK).body(transacted);
 	}
-	
 	@GetMapping("/getTransactions/{debitAccnt}")
 	public List<Transaction> getTransactions(@PathVariable("debitAccnt") long debitAccnt){
 		return transactionService.getTransactions(debitAccnt);

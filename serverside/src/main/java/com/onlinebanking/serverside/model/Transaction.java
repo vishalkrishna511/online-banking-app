@@ -10,10 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 @Entity
-@Data
 public class Transaction {
 	
 
@@ -39,6 +39,7 @@ public class Transaction {
 
 	@ManyToOne
 	@JoinColumn(name = "accNo")
+	@JsonBackReference
 	private Account accNo;
 
 	public long getTxnId() {
