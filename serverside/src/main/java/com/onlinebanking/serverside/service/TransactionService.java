@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -224,7 +226,7 @@ public class TransactionService {
 		// TODO Auto-generated method stub
 		Account account = accRepository.findByAccNo(trsn.getDebitAccnt());
 		if (account == null || account.isDisabled() || account.getBalance() < trsn.getAmt()) {
-			return trsn;
+			return null;
 
 		}
 		account.setBalance(account.getBalance() - trsn.getAmt());
@@ -234,6 +236,25 @@ public class TransactionService {
 		trsn.setStatus("Success");
 		trsn.setCreditAccnt(0L);
 		trsn.setTxnType("withdraw");
+		transactionRepository.save(trsn);
+
+		return trsn;
+	}
+
+	public Transaction depositMoney(Transaction trsn) {
+		// TODO Auto-generated method stub
+		Account account = accRepository.findByAccNo(trsn.getCreditAccnt());
+		if (account == null || account.isDisabled()) {
+			return null;
+
+		}
+		account.setBalance(account.getBalance() + trsn.getAmt());
+		accRepository.save(account);
+		trsn.setAccNo(account);
+		trsn.setTimeStamp(getCurrentDateTimeStamp());
+		trsn.setStatus("Success");
+		trsn.setDebitAccnt(0L);
+		trsn.setTxnType("Deposit");
 		transactionRepository.save(trsn);
 
 		return trsn;

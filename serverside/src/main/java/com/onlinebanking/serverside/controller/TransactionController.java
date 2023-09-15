@@ -45,9 +45,18 @@ public class TransactionController {
 	public ResponseEntity<?> withdrawMoney(@RequestBody @Valid Transaction transaction) {
 		Transaction response = transactionService.withdrawMoney(transaction);
 		if (response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transaction Declined");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Transaction Declined");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Withdraw success");
+	}
+	
+	@PostMapping("/deposit")
+	public ResponseEntity<?> depositMoney(@RequestBody @Valid Transaction transaction) {
+		Transaction response = transactionService.depositMoney(transaction);
+		if (response == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transaction Declined");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Deposit success");
 	}
 	
 //	@PostMapping("/withdraw/{accNo}")
