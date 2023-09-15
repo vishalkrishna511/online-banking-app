@@ -88,7 +88,6 @@ public class TransactionService {
 	}
 
 	public Transaction depositMoney(Transaction trsn) {
-		// TODO Auto-generated method stub
 		Account account = accRepository.findByAccNo(trsn.getCreditAccnt());
 		if (account == null || account.isDisabled()) {
 			return null;

@@ -1,12 +1,23 @@
 package com.onlinebanking.serverside.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
 
+import com.onlinebanking.serverside.dao.TransactionRepository;
+import com.onlinebanking.serverside.model.AccountStatement;
+import com.onlinebanking.serverside.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,6 +33,9 @@ public class AccountService {
 
 	@Autowired
 	CustomerService customerService;
+
+	@Autowired
+	TransactionRepository transactionRepository;
 
 	private static final Long counter = 100000000000L;
 
@@ -101,5 +115,21 @@ public class AccountService {
 
 		return getAccountDetails(accNo).getBalance();
 	}
-
+	public List<Transaction> getAccountStatement(long accNo, AccountStatement accountStatement){
+		List<Transaction> transactions = new ArrayList<>();
+		String fromDate = accountStatement.getFromDate();
+		String toDate = accountStatement.getToDate();
+		List<Transaction> successTransactions = transactionRepository.findAllByAccNoWhereStatusIsSuccess(accNo, "SUCCESS");
+		DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS");
+		LocalDateTime startDate, endDate;
+		startDate = LocalDateTime.parse(fromDate, dateFormat);
+		endDate = LocalDateTime.parse(toDate, dateFormat);
+		IntStream.range(0, successTransactions.size()).forEach((idx) -> {
+			LocalDateTime timeOfTransaction = LocalDateTime.parse(successTransactions.get(idx).getTimeStamp(), dateFormat);
+			if(startDate.isBefore(timeOfTransaction) && endDate.isAfter(timeOfTransaction)){
+				transactions.add(successTransactions.get(idx));
+			}
+		});
+		return transactions;
+	}
 }

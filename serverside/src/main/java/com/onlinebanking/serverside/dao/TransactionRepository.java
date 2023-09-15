@@ -16,4 +16,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
 	@Query(value = "SELECT t FROM Transaction t where t.debitAccnt = ?1")
 	public List<Transaction> findAllByDebitAccnt(long debitAccnt);
+
+
+	@Query(value = "SELECT txn FROM Transaction txn where txn.debitAccnt = ?1 AND txn.status = ?2")
+	public List<Transaction> findAllByAccNoWhereStatusIsSuccess(long Accno, String status);
 }

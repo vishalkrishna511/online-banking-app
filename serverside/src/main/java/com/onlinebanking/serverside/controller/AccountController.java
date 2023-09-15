@@ -2,6 +2,8 @@ package com.onlinebanking.serverside.controller;
 
 import java.util.List;
 
+import com.onlinebanking.serverside.model.AccountStatement;
+import com.onlinebanking.serverside.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +54,11 @@ public class AccountController {
 	@GetMapping("/getAccountBalance/{accNo}")
 	public double getAccountBalance(@PathVariable("accNo") long accNo) throws ResponseStatusException {
 		return accountService.getAccountBalance(accNo);
+	}
+
+	@GetMapping("getAccountStatement/{accNo}")
+	public List<Transaction> getAccountStatement(@RequestBody AccountStatement accountStatement, @PathVariable long accNo){
+		return accountService.getAccountStatement(accNo, accountStatement);
+
 	}
 }
