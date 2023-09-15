@@ -89,16 +89,10 @@ public class AccountService {
 		}
 		return account;
 	}
-	
+
 	public double getAccountBalance(long accNo) throws ResponseStatusException {
 
-		Account account = null;
-		account = accRepository.findByAccNo(accNo);
-
-		if (account == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account Found With Account No :  " + accNo);
-		}
-		return account.getBalance();
+		return getAccountDetails(accNo).getBalance();
 	}
 
 }
