@@ -48,4 +48,9 @@ public class AccountController {
 	public Account getAccountDetails(@PathVariable("accNo") long accNo) throws ResponseStatusException {
 		return accountService.getAccountDetails(accNo);
 	}
+	
+	@GetMapping("/getAccountBalance/{accNo}")
+	public double getAccountBalance(@PathVariable("accNo") long accNo) throws ResponseStatusException {
+		return accountService.getAccountBalance(accNo);
+	}
 }
