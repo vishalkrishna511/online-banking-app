@@ -26,6 +26,7 @@ const CardComponent = ({ userId, visible, onConfirm, onClose }) => {
   const SubmitFunctionHandler = async () => {
     // API CALL HERE
     onConfirm();
+    enqueueSnackbar("Amount withdrawn from the account succesfully", "success");
   };
 
   const onAccountSelect = async (acc) => {

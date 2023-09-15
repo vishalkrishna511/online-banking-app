@@ -1,11 +1,10 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import CameraFrontIcon from "@mui/icons-material/CameraFront";
+import MoveDownIcon from "@mui/icons-material/MoveDown";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import { red } from "@mui/material/colors";
 import { Grid, TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -320,7 +319,7 @@ export default function Homepage() {
             <Grid item xs={1} />
           </Grid>
 
-          <div style={{ height: 80 }} />
+          <div style={{ height: 20 }} />
 
           <CardComponent
             onClose={onCloseWD}
@@ -363,6 +362,105 @@ export default function Homepage() {
                         className="text-pointer"
                       >
                         Withdraw
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 8,
+                      border: "solid black 4px",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    className="action-button"
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <ArchiveIcon />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Deposit
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 8,
+                      border: "solid black 4px",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    className="action-button"
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <MoveDownIcon />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Transfer to an account
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 8,
+                      border: "solid black 4px",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    className="action-button"
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <CameraFrontIcon />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Self transfer
                       </label>
                     </div>
                   </div>

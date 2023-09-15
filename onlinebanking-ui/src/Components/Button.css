@@ -29,6 +29,7 @@
 .action-button:hover {
   opacity: 0.5;
   cursor: pointer;
+  box-shadow: 2px 2px 12px 6px gray;
 }
 
 .text-pointer:hover {
