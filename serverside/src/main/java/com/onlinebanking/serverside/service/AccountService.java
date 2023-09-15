@@ -3,6 +3,7 @@ package com.onlinebanking.serverside.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AccountService {
 	@Autowired
 	CustomerService customerService;
 
-	private static final AtomicLong counter = new AtomicLong(100000000000L);
+	private static final Long counter = 100000000000L;
 
 	public Account save(Account account, Long userId) {
 
@@ -47,8 +48,16 @@ public class AccountService {
 	}
 
 	private Long generateAccountNumber() {
-		return counter.incrementAndGet();
+//		return counter.incrementAndGet();
+		UUID uuid = UUID.randomUUID();
+		String uuidString = uuid.toString();
+		int hashCode = Math.abs(uuidString.hashCode());
+		long uniqueNum = (long)hashCode;
+		uniqueNum=uniqueNum+counter;
+		System.out.println("@@@@"+uniqueNum);
+		return uniqueNum;
 	}
+	
 
 	private String getCurrentDate() {
 		LocalDate currentDate = LocalDate.now();
