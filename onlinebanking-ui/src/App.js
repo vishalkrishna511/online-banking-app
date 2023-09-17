@@ -5,6 +5,7 @@ import LoginPage from "./Components/LoginPage";
 import RegistrationPage from "./Components/RegistrationPage";
 import ErrorPage from "./Components/ErrorPage";
 import { useEffect } from "react";
+import AdminPage from "./Components/AdminPage"
 
 function App() {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ function App() {
         <Route exact path="/register" element={<RegistrationPage />}></Route>
         <Route exact path="/login" element={<LoginPage />}></Route>
         <Route exact path="/error" element={<ErrorPage />}></Route>
+        <Route exact path="/admin" element={<AdminPage />}></Route>
       </Routes>
     </div>
   );
