@@ -13,6 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Typography } from "@mui/material";
 import Account from "./Account";
+import ShowTransactions from "./ShowTransactions";
 
 export default function DialogForm(props) {
   const userData = props.formData;
@@ -189,7 +190,7 @@ export default function DialogForm(props) {
                     <strong>History</strong>
                   </i>
                 </p>
-                <table>
+                {/* <table>
                   <thead>
                     <tr>
                       <th> TimeStamp </th>
@@ -210,7 +211,8 @@ export default function DialogForm(props) {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </table> */}
+                <ShowTransactions userName={userData} />
               </div>
             </div>
           </div>

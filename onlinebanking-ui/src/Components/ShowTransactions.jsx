@@ -15,6 +15,7 @@ import axios from "axios";
 function ShowTransactions(props) {
   const { userName } = props;
   const userId = userName.userId;
+  // console.log(userId);
   const [accounts, setAccounts] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState([]);
