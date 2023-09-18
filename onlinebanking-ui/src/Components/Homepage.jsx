@@ -30,7 +30,7 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import NavBar from "./NavBar";
 import CardComponent from "../CommonComps/CardComponent";
-// import ShowTransactions from "./ShowTransactions";
+import ShowTransactions from "./ShowTransactions";
 
 export default function Homepage() {
   // change the color of the AppBar to match the theme
@@ -186,9 +186,7 @@ export default function Homepage() {
       ) : (
         <Box color={red} sx={{ flexGrow: 1 }}>
           <NavBar />
-
           <div style={{ height: 100 }} />
-
           <Grid container>
             <Grid item xs={1} />
             <Grid container item md={10}>
@@ -196,9 +194,7 @@ export default function Homepage() {
             </Grid>
             <Grid item xs={1} />
           </Grid>
-
           <div style={{ height: 20 }} />
-
           <Grid container spacing={3}>
             <Grid item xs={1} />
             <Grid container item md={5}>
@@ -317,9 +313,7 @@ export default function Homepage() {
             </Grid>
             <Grid item xs={1} />
           </Grid>
-
           <div style={{ height: 20 }} />
-
           <CardComponent
             onClose={onCloseWD}
             onConfirm={onConfirmWD}
@@ -327,7 +321,6 @@ export default function Homepage() {
             visible={visible}
             gridNo={gridNo}
           />
-
           <Grid container>
             <Grid item xs={1} />
             <Grid item container xs={10}>
@@ -488,9 +481,7 @@ export default function Homepage() {
             </Grid>
             <Grid item xs={1} />
           </Grid>
-
           <div style={{ height: 80 }} />
-
           <Grid container>
             <Grid item xs={1} />
             <Grid container item md={10}>
@@ -498,7 +489,7 @@ export default function Homepage() {
             </Grid>
             <Grid item xs={1} />
           </Grid>
-          {/* <ShowTransactions userName={{ userId }} /> */}
+          <ShowTransactions userName={{ userId }} />
         </Box>
       )}
     </div>

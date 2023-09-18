@@ -13,102 +13,131 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 
 function ShowTransactions(props) {
-  const { userName } = props; // get the userName prop
-  const [accounts, setAccounts] = useState([]); // initialize the accounts state as an empty array
-  const [transactions, setTransactions] = useState([]); // initialize the transactions state as an empty array
-  const [selectedAccount, setSelectedAccount] = useState(null); // initialize the selectedAccount state as null
+  const { userName } = props;
+  const userId = userName.userId;
+  const [accounts, setAccounts] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [selectedAccount, setSelectedAccount] = useState([]);
 
   useEffect(() => {
-    // fetch the accounts of the user from the API
     axios
-      .get(`localhost:8080/fetchAccounts/${userName}`)
+      .get(`http://localhost:8080/fetchAccounts/${userId}`)
       .then((response) => {
-        // update the accounts state with the response data
-        setAccounts(response.data);
-        console.log(response.data);
+        let numbers = response.data.map((accountNo) => accountNo.accNo);
+        setAccounts(numbers);
       })
       .catch((error) => {
-        // handle the error
         console.error(error);
       });
-  }, [userName]); // run this effect only when the userName prop changes
-
+  }, [userName]);
   useEffect(() => {
-    // check if there is a selected account
-    if (selectedAccount) {
-      // fetch the transactions of the selected account from the API
-      axios
-        .get(`localhost:8080/getTransactions/${selectedAccount}`)
-        .then((response) => {
-          // update the transactions state with the response data
-          setTransactions(response.data);
+    if (accounts.length > 0) {
+      let promises = accounts.map((number) =>
+        axios.get(`http://localhost:8080/getTransactions/${number}`)
+      );
+      Promise.all(promises)
+        .then((responses) => {
+          let txns = responses.map((response) => response.data);
+          setTransactions(txns);
+          // console.log(transactions);
         })
         .catch((error) => {
-          // handle the error
           console.error(error);
         });
     }
-  }, [selectedAccount]); // run this effect only when the selectedAccount state changes
-
-  // define a function to handle the account selection
-  const handleSelectAccount = (accountNumber) => {
-    // update the selectedAccount state with the account number
-    setSelectedAccount(accountNumber);
-  };
+  }, [accounts]);
 
   return (
     <div>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Account Number</TableCell>
-              <TableCell>Balance</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Select</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {accounts.map((account) => (
-              <TableRow key={account.number}>
-                <TableCell>{account.number}</TableCell>
-                <TableCell>{account.balance}</TableCell>
-                <TableCell>{account.type}</TableCell>
-                <TableCell>
-                  <button onClick={() => handleSelectAccount(account.number)}>
-                    View Transactions
-                  </button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {transactions.length > 0 ? (
+        <div style={{ margin: "70px" }}>
+          {transactions.map((txn, index) => (
+            <div key={index}>
+              <h2 style={{ display: "flex", flex: "start" }}>
+                🚩Transactions for Account Number : {accounts[index]}
+              </h2>
+              {txn.length > 0 ? (
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell
+                          sx={{
+                            backgroundColor: "#d41c2c",
+                            color: "white",
+                            fontSize: 20,
+                          }}
+                        >
+                          Time Stamp
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            backgroundColor: "#d41c2c",
+                            color: "white",
+                            fontSize: 20,
+                          }}
+                        >
+                          Amount
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            backgroundColor: "#d41c2c",
+                            color: "white",
+                            fontSize: 20,
+                          }}
+                        >
+                          Type
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            backgroundColor: "#d41c2c",
+                            color: "white",
+                            fontSize: 20,
+                          }}
+                        >
+                          Status
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
 
-      {selectedAccount && (
-        <div>
-          <h2>Transactions for Account {selectedAccount}</h2>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Description</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {transactions.map((transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell>{transaction.date}</TableCell>
-                    <TableCell>{transaction.amount}</TableCell>
-                    <TableCell>{transaction.description}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                    <TableBody>
+                      {txn.map((item) => (
+                        <TableRow key={item.txnId}>
+                          <TableCell sx={{ fontSize: 18, padding: 2 }}>
+                            {item.timeStamp}
+                          </TableCell>
+                          <TableCell sx={{ fontSize: 18, padding: 2 }}>
+                            {item.amt}
+                          </TableCell>
+                          <TableCell sx={{ fontSize: 18, padding: 2 }}>
+                            {item.txnType}
+                          </TableCell>
+                          <TableCell sx={{ fontSize: 18, padding: 2 }}>
+                            {item.status}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              ) : (
+                <h3
+                  style={{
+                    display: "flex",
+                    flex: "start",
+
+                    color: "#073717",
+                    fontWeight: 600,
+                  }}
+                >
+                  No Transactions🥳
+                </h3>
+              )}
+            </div>
+          ))}
         </div>
+      ) : (
+        <p>Loading...</p>
       )}
     </div>
   );
