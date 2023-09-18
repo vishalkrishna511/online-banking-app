@@ -56,19 +56,4 @@ public class TransactionController {
 		return ResponseEntity.status(HttpStatus.OK).body("Deposit success");
 	}
 	
-//	@PostMapping("/withdraw/{accNo}")
-//	public String cashWithdraw(@PathVariable("accNo") long accNo) {
-//		return transactionService.cashWithdraw(accNo);
-//	}
-	
-//	@PostMapping("/transact")
-//	public ResponseEntity<?> transact(@RequestBody @Valid Transaction transaction) {
-//		Transaction transacted = transactionService.transact(transaction);
-//		System.out.println(transacted + "transacted");
-////		if (transacted == null || transacted.getStatus().equals("FAIL")) {
-////			return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid Transaction");
-////		} else 
-//			return ResponseEntity.status(HttpStatus.OK).body("Success");
-//	}
-
 }
