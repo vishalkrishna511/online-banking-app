@@ -30,7 +30,7 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import NavBar from "./NavBar";
 import CardComponent from "../CommonComps/CardComponent";
-import ShowTransactions from "./ShowTransactions";
+// import ShowTransactions from "./ShowTransactions";
 
 export default function Homepage() {
   // change the color of the AppBar to match the theme
