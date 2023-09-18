@@ -14,7 +14,7 @@ import {
 import { enqueueSnackbar } from "notistack";
 import "./CardComponent.css";
 
-const CardComponent = ({ userId, visible, onConfirm, onClose }) => {
+const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,9 +24,40 @@ const CardComponent = ({ userId, visible, onConfirm, onClose }) => {
   const [account, setAccount] = useState({});
 
   const SubmitFunctionHandler = async () => {
-    // API CALL HERE
-    onConfirm();
-    enqueueSnackbar("Amount withdrawn from the account succesfully", "success");
+    try {
+      const baseURL = `http://localhost:8080`;
+      let body = {};
+      if (gridNo === 1) {
+        body = {
+          txnType: "withdraw",
+          amt: amount,
+          debitAccnt: account.accNo,
+        };
+        console.log(body);
+      }
+      if (gridNo === 2) {
+        body = {
+          txnType: "deposit",
+          amt: amount,
+          creditAccnt: account.accNo,
+        };
+        console.log(body);
+      }
+      const response = await axios.post(`${baseURL}/${body.txnType}`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+      onConfirm();
+      enqueueSnackbar(
+        "Amount withdrawn from the account succesfully",
+        "success"
+      );
+    } catch (err) {
+      enqueueSnackbar(`Failed Transaction: ${err.message}`, "error");
+      console.log(err);
+    }
   };
 
   const onAccountSelect = async (acc) => {
@@ -174,7 +205,16 @@ const CardComponent = ({ userId, visible, onConfirm, onClose }) => {
             </div>
           ) : (
             <>
-              <DialogTitle>Withdraw from {account.accNo}</DialogTitle>
+              <DialogTitle>
+                {gridNo === 1
+                  ? `Withdraw`
+                  : gridNo === 2
+                  ? "Deposit"
+                  : gridNo === 3
+                  ? "Transfer"
+                  : "Self"}{" "}
+                from {account.accNo}
+              </DialogTitle>
               <DialogContentText>
                 <div>
                   <TextField
@@ -199,7 +239,7 @@ const CardComponent = ({ userId, visible, onConfirm, onClose }) => {
               }}
               disabled={isFirst}
             >
-              {"Withdraw"}
+              Proceed
             </Button>
           </DialogActions>
         </div>

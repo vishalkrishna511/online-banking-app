@@ -128,10 +128,7 @@ export default function Homepage() {
 
       console.log(response.data);
       if (response.status >= 200 && response.status < 300) {
-        enqueueSnackbar(
-          `Account creation successful, Account number `,
-          "success"
-        );
+        enqueueSnackbar(`Account creation successful`, "success");
       } else throw new Error("An error occured");
       setError("");
       setBalance("");
@@ -151,6 +148,7 @@ export default function Homepage() {
   const openMenu = Boolean(anchorEl);
   const [balance, setBalance] = React.useState("");
   const [visible, setVisible] = React.useState(false);
+  const [gridNo, setGridNo] = React.useState(0);
 
   const onCloseWD = () => {
     setVisible(false);
@@ -326,6 +324,7 @@ export default function Homepage() {
             onConfirm={onConfirmWD}
             userId={userId}
             visible={visible}
+            gridNo={gridNo}
           />
 
           <Grid container>
@@ -345,7 +344,10 @@ export default function Homepage() {
                       alignItems: "center",
                     }}
                     className="action-button"
-                    onClick={() => setVisible(true)}
+                    onClick={() => {
+                      setVisible(true);
+                      setGridNo(1);
+                    }}
                   >
                     <div
                       style={{
@@ -379,6 +381,10 @@ export default function Homepage() {
                       alignItems: "center",
                     }}
                     className="action-button"
+                    onClick={() => {
+                      setVisible(true);
+                      setGridNo(2);
+                    }}
                   >
                     <div
                       style={{
@@ -412,6 +418,10 @@ export default function Homepage() {
                       alignItems: "center",
                     }}
                     className="action-button"
+                    onClick={() => {
+                      setGridNo(3);
+                      setVisible(true);
+                    }}
                   >
                     <div
                       style={{
@@ -445,6 +455,10 @@ export default function Homepage() {
                       alignItems: "center",
                     }}
                     className="action-button"
+                    onClick={() => {
+                      setVisible(true);
+                      setGridNo(4);
+                    }}
                   >
                     <div
                       style={{
