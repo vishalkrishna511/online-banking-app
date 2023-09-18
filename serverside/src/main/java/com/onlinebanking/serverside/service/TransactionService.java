@@ -26,9 +26,17 @@ public class TransactionService {
 	@Autowired
 	AccRepository accRepository;
 
+	public Transaction save(Transaction transaction) {
+		Transaction response = transactionRepository.findByTxnId(transaction.getTxnId());
+		if (response == null) {
+			return transactionRepository.save(transaction);
+		} else
+			return null;
+	}
+
 	public Transaction transact(Transaction transaction) {
 		Account account = accRepository.findByAccNo(transaction.getDebitAccnt());
-		if (account == null || accRepository.findByAccNo(transaction.getCreditAccnt()) == null){
+		if (account == null || accRepository.findByAccNo(transaction.getCreditAccnt()) == null) {
 			return null;
 		}
 		double transactionAmt = transaction.getAmt();
@@ -36,14 +44,14 @@ public class TransactionService {
 		boolean isDebitAccntFD = accRepository.findByAccNo(transaction.getDebitAccnt()).getAccType().equals("FD");
 		boolean isCreditAccntFD = accRepository.findByAccNo(transaction.getCreditAccnt()).getAccType().equals("FD");
 		double balance = account.getBalance();
-		if(transactionAmt > balance || account.isDisabled() || isCreditAccntDisabled  || isDebitAccntFD|| isCreditAccntFD){
+		if (transactionAmt > balance || account.isDisabled() || isCreditAccntDisabled || isDebitAccntFD
+				|| isCreditAccntFD) {
 			transaction.setStatus("FAIL");
-		}
-		else{
+		} else {
 			Account accCredited = accRepository.findByAccNo(transaction.getCreditAccnt());
 			transaction.setStatus("SUCCESS");
 			balance -= transactionAmt;
-			if(transaction.getDebitAccnt() != transaction.getCreditAccnt()){
+			if (transaction.getDebitAccnt() != transaction.getCreditAccnt()) {
 				double accCreditedBalance = accCredited.getBalance();
 				accCreditedBalance += transactionAmt;
 				accCredited.setBalance(accCreditedBalance);
@@ -59,13 +67,13 @@ public class TransactionService {
 	}
 
 	public List<Transaction> getTransactions(long debitAccnt) {
-        return transactionRepository.findAllByDebitAccnt(debitAccnt);
+		return transactionRepository.findAllByDebitAccnt(debitAccnt);
 	}
 
 	private static String getCurrentDateTimeStamp() {
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS");
-        return now.format(formatter);
+		return now.format(formatter);
 	}
 
 	public Transaction withdrawMoney(Transaction trsn) {
