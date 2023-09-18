@@ -9,15 +9,21 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.onlinebanking.serverside.dao.AccRepository;
 import com.onlinebanking.serverside.dao.CustomerRepository;
+import com.onlinebanking.serverside.dao.LoginRepository;
 import com.onlinebanking.serverside.exceptions.CustomerNotFoundException;
 import com.onlinebanking.serverside.exceptions.NoDataFoundExcepction;
 import com.onlinebanking.serverside.model.Account;
 import com.onlinebanking.serverside.model.Customer;
+import com.onlinebanking.serverside.model.Login;
 
 @Service
 public class CustomerService {
 	@Autowired
 	CustomerRepository customerRepository;
+	
+	@Autowired
+	LoginRepository loginRepository;
+	
 
 	@Autowired
 	LoginService loginService;
@@ -35,6 +41,17 @@ public class CustomerService {
 			return resp;
 		} else
 			return null;
+	}
+	public Boolean resetPassword(Login login) {
+		
+		Customer changePassword = customerRepository.findByUserId(login.getUserId());
+		Login loginPassword = loginRepository.findByUserId(login.getUserId());
+		if(loginPassword==null||changePassword==null) return false;
+		changePassword.setPswd(login.getPswd());
+		loginPassword.setPswd(login.getPswd());
+		customerRepository.save(changePassword);
+		loginRepository.save(loginPassword);
+		return true;
 	}
 
 	public Customer getCustomer(long userId) {
