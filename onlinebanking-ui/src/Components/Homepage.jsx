@@ -30,6 +30,7 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import NavBar from "./NavBar";
 import CardComponent from "../CommonComps/CardComponent";
+import ShowTransactions from "./ShowTransactions";
 
 export default function Homepage() {
   // change the color of the AppBar to match the theme
@@ -336,12 +337,13 @@ export default function Homepage() {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      borderRadius: 8,
-                      border: "solid black 4px",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
                       minHeight: 150,
                       width: "100%",
                       justifyContent: "center",
                       alignItems: "center",
+                      color: "#d41c2d",
                     }}
                     className="action-button"
                     onClick={() => {
@@ -356,7 +358,7 @@ export default function Homepage() {
                         padding: 8,
                       }}
                     >
-                      <WalletIcon />
+                      <WalletIcon fontSize="large" />
                     </div>
                     <div>
                       <label
@@ -373,12 +375,13 @@ export default function Homepage() {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      borderRadius: 8,
-                      border: "solid black 4px",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
                       minHeight: 150,
                       width: "100%",
                       justifyContent: "center",
                       alignItems: "center",
+                      color: "#d41c2d",
                     }}
                     className="action-button"
                     onClick={() => {
@@ -393,7 +396,7 @@ export default function Homepage() {
                         padding: 8,
                       }}
                     >
-                      <ArchiveIcon />
+                      <ArchiveIcon fontSize="large" />
                     </div>
                     <div>
                       <label
@@ -410,12 +413,13 @@ export default function Homepage() {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      borderRadius: 8,
-                      border: "solid black 4px",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
                       minHeight: 150,
                       width: "100%",
                       justifyContent: "center",
                       alignItems: "center",
+                      color: "#d41c2d",
                     }}
                     className="action-button"
                     onClick={() => {
@@ -430,7 +434,7 @@ export default function Homepage() {
                         padding: 8,
                       }}
                     >
-                      <MoveDownIcon />
+                      <MoveDownIcon fontSize="large" />
                     </div>
                     <div>
                       <label
@@ -447,12 +451,13 @@ export default function Homepage() {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      borderRadius: 8,
-                      border: "solid black 4px",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
                       minHeight: 150,
                       width: "100%",
                       justifyContent: "center",
                       alignItems: "center",
+                      color: "#d41c2d",
                     }}
                     className="action-button"
                     onClick={() => {
@@ -467,7 +472,7 @@ export default function Homepage() {
                         padding: 8,
                       }}
                     >
-                      <CameraFrontIcon />
+                      <CameraFrontIcon fontSize="large" />
                     </div>
                     <div>
                       <label
@@ -493,6 +498,7 @@ export default function Homepage() {
             </Grid>
             <Grid item xs={1} />
           </Grid>
+          {/* <ShowTransactions userName={{ userId }} /> */}
         </Box>
       )}
     </div>
