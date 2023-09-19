@@ -41,10 +41,10 @@ public class CustomerController {
 
 	}
 
-	@PostMapping("/resetPassword")
-	public ResponseEntity<?> resetPassword(@RequestBody Login login){
+	@PostMapping("/resetPassword/{currentPassword}")
+	public ResponseEntity<?> resetPassword(@PathVariable("currentPassword") String currentPassword ,@RequestBody Login login){
 		
-		Boolean setOrNot = customerService.resetPassword(login);
+		Boolean setOrNot = customerService.resetPassword(login,currentPassword);
 		if(setOrNot == false) {return ResponseEntity.status(HttpStatus.CONFLICT).body("Not Able to change password");}
 		return ResponseEntity.status(HttpStatus.OK).body("Password changed successfully");
 	}

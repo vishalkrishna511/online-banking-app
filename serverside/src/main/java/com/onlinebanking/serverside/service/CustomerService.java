@@ -42,16 +42,21 @@ public class CustomerService {
 		} else
 			return null;
 	}
-	public Boolean resetPassword(Login login) {
+	public Boolean resetPassword(Login login,String currentPassword) {
 		
 		Customer changePassword = customerRepository.findByUserId(login.getUserId());
 		Login loginPassword = loginRepository.findByUserId(login.getUserId());
+		
+		
 		if(loginPassword==null||changePassword==null) return false;
-		changePassword.setPswd(login.getPswd());
-		loginPassword.setPswd(login.getPswd());
-		customerRepository.save(changePassword);
-		loginRepository.save(loginPassword);
-		return true;
+		
+		if(currentPassword.equals(loginPassword.getPswd())) {
+			changePassword.setPswd(login.getPswd());
+			loginPassword.setPswd(login.getPswd());
+			customerRepository.save(changePassword);
+			loginRepository.save(loginPassword);
+			return true;}
+		return false;
 	}
 
 	public Customer getCustomer(long userId) {
