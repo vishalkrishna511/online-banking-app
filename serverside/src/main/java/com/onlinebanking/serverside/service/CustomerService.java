@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
+import java.util.Random;
 import com.onlinebanking.serverside.dao.AccRepository;
 import com.onlinebanking.serverside.dao.CustomerRepository;
 import com.onlinebanking.serverside.dao.LoginRepository;
@@ -59,6 +59,16 @@ public class CustomerService {
 		return false;
 	}
 
+	public String forgetPassword(Login login) {
+		Customer customer = customerRepository.findByUserId(login.getUserId());
+		if(customer==null) return "User not found";
+
+		Random random = new Random();
+		int randomNumber = random.nextInt(900000) + 100000;
+
+		return Integer.toString(randomNumber);
+	}
+
 	public Customer getCustomer(long userId) {
 		return customerRepository.findByUserId(userId);
 	}
@@ -74,5 +84,6 @@ public class CustomerService {
 
 		return customer;
 	}
+
 
 }

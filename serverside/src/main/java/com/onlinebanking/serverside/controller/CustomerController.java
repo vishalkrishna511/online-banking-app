@@ -48,7 +48,13 @@ public class CustomerController {
 		if(setOrNot == false) {return ResponseEntity.status(HttpStatus.CONFLICT).body("Not Able to change password");}
 		return ResponseEntity.status(HttpStatus.OK).body("Password changed successfully");
 	}
-	
+	@PostMapping("/forgetPassword")
+	public ResponseEntity<?> forgetPassword(@RequestBody Login login){
+
+		String otp = customerService.forgetPassword(login);
+		if(otp.equals("User not found")) {return ResponseEntity.status(HttpStatus.CONFLICT).body("INVALID OTP");}
+		return ResponseEntity.status(HttpStatus.OK).body(otp);
+	}
 	
 	@PostMapping("/login")
 	public Boolean validateCustomer(@RequestBody Login login) {
