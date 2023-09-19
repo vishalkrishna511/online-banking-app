@@ -7,6 +7,7 @@ import ErrorPage from "./Components/ErrorPage";
 import { useEffect } from "react";
 import AdminPage from "./Components/AdminPage"
 import ForgotPassword from "./Components/ForgotPassword";
+import ChangePassword from "./Components/ChangePassword";
 
 function App() {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ function App() {
         <Route exact path="/error" element={<ErrorPage />}></Route>
         <Route exact path="/admin" element={<AdminPage />}></Route>
         <Route exact path="/forgotPassword" element={<ForgotPassword />}></Route>
-
+        <Route exact path="/changePassword" element={<ChangePassword />}></Route>
       </Routes>
     </div>
   );

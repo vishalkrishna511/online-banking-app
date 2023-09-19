@@ -7,8 +7,7 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
+import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -27,63 +26,45 @@ function Copyright(props) {
       {"Copyright © "}
       <Link color="inherit" href="/login">
         Team 6 Batch 3
-      </Link>{" "}
-      {/* {new Date().getFullYear()}
-            {"."} */}
+      </Link>
     </Typography>
   );
 }
 
 const defaultTheme = createTheme();
 
-const ForgotPassword = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
   const [success, setSuccess] = useState(true);
-  const [newOtp, setNewOtp] = useState(0);
-  const [gotOtp, setGotOtp] = useState(false);
+  const [passChanged, setPassChanged] = useState(false);
   const [matchPass, setMatchPass] = useState(true);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const loginBackendUrl = `http://localhost:8080/forgetPassword`;
     const data = new FormData(event.currentTarget);
+
+    const currPass = data.get("currentPassword");
+    const confPass = data.get("confirmPassword");
+    console.log(currPass);
+
+    const loginBackendUrl = `http://localhost:8080/resetPassword/${currPass}`;
 
     const loginData = {
       userId: data.get("userid"),
-      pswd: data.get("password"),
+      pswd: data.get("newPassword"),
     };
-    console.log(loginData);
-    const currPass = data.get("currentPassword");
-    const confPass = data.get("password");
-    // const newPassword = data.get("")
 
-    // axios.post(loginBackendUrl, loginData).then((response) => {
-    //   console.log(response);
-    //   if (response != null) {
-    //     console.log("GOT OTP");
-    //     setSuccess(true);
-    //   } else {
-    //     setSuccess(false);
-    //   }
-    // });
     if (currPass == confPass) {
       setMatchPass(true);
       axios
         .post(loginBackendUrl, loginData)
         .then((response) => {
-          if (response != null) {
-            console.log(response);
-            const otpN = response.data;
-
-            console.log("GOT OTP");
+          if (response.status === 200) {
             setSuccess(true);
-            setNewOtp(otpN);
-            setGotOtp(true);
-            console.log(newOtp);
-            console.log(gotOtp);
+            setPassChanged(true);
           } else {
             setSuccess(false);
-            setGotOtp(false);
+            setPassChanged(false);
           }
         })
         .catch((error) => {
@@ -91,12 +72,11 @@ const ForgotPassword = () => {
           if (error.response && error.response.status === 409) {
             console.log(error.response.data);
             setSuccess(false);
-            setGotOtp(false);
-            //   alert("There is a conflict with the current state of the resource");
+            setPassChanged(false);
           } else {
             console.error(error);
+            setPassChanged(true);
             setSuccess(false);
-            setGotOtp(false);
           }
         });
     } else {
@@ -117,22 +97,21 @@ const ForgotPassword = () => {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "dark grey" }}>
-              <HandymanOutlinedIcon />
+            <Avatar sx={{ m: 1, bgcolor: "green" }}>
+              <ChangeCircleOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Reset Password
+              Change Password
             </Typography>
-            {!success && <ErrorPage />}
             {!matchPass && (
               <p style={{ color: "magenta" }}>
                 New Password and Confirm Password Should Match
               </p>
             )}
-            {gotOtp && (
+            {!success && <ErrorPage />}
+            {passChanged && (
               <p style={{ color: "green" }}>
-                Here is your new OTP <br />
-                <strong style={{ fontSize: "30px" }}>{newOtp}</strong>
+                Your Password Changed Successfully
               </p>
             )}
             <Box
@@ -155,11 +134,22 @@ const ForgotPassword = () => {
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="New Password"
-                type="password"
-                id="password"
+                name="currentPassword"
+                label="Current Password"
+                type="currentPassword"
+                id="currentPassword"
                 autoComplete="current-password"
+              />
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="newPassword"
+                label="New Password"
+                type="newPassword"
+                id="newPassword"
+                autoComplete="new-password"
               />
               <TextField
                 margin="normal"
@@ -169,17 +159,7 @@ const ForgotPassword = () => {
                 label="Confirm New Password"
                 type="confirmPassword"
                 id="confirmPassword"
-                autoComplete="current-password"
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="otp"
-                label="OTP"
-                type="otp"
-                id="otp"
-                autoComplete="current-password"
+                autoComplete="confirm-password"
               />
 
               <Button
@@ -191,18 +171,11 @@ const ForgotPassword = () => {
               >
                 Reset Password
               </Button>
-              <Grid container justifyContent="end">
-                <Grid item>
-                  <Link onClick={() => navigate("/login")} variant="body2">
-                    {"Remember Password ? Login here"}
-                  </Link>
-                </Grid>
-              </Grid>
 
-              <Grid container justifyContent="start" sx={{ mt: 2 }}>
+              <Grid container justifyContent="center" sx={{ mt: 2 }}>
                 <Grid item>
-                  <Link onClick={() => navigate("/register")} variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link onClick={() => navigate("/")} variant="body2">
+                    {"Changed your mind? Go to Homepage"}
                   </Link>
                 </Grid>
               </Grid>
@@ -216,4 +189,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ChangePassword;
