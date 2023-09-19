@@ -486,7 +486,7 @@ export default function Homepage() {
                     }}
                     className="action-button"
                     onClick={() => {
-                      setVisible(true);
+                      setStVisible(true);
                       setGridNo(4);
                     }}
                   >
