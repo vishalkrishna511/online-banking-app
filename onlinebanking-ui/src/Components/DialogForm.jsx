@@ -190,7 +190,7 @@ export default function DialogForm(props) {
                     <strong>History</strong>
                   </i>
                 </p>
-                {/* <table>
+                <table>
                   <thead>
                     <tr>
                       <th> TimeStamp </th>
@@ -211,8 +211,8 @@ export default function DialogForm(props) {
                       </tr>
                     ))}
                   </tbody>
-                </table> */}
-                <ShowTransactions userName={userData} />
+                </table>
+                {/* <ShowTransactions userName={userData} /> */}
               </div>
             </div>
           </div>
