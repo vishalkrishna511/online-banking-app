@@ -49,10 +49,10 @@ function ShowTransactions(props) {
   return (
     <div>
       <Box
-        // container
-        display="flex"
-        alignItems="center"
-        justifyContent="flex-start"
+        container
+        // display="flex"
+        // alignItems="center"
+        // justifyContent="flex-start"
         // minHeight="100vh"
       >
         {transactions.length > 0 ? (

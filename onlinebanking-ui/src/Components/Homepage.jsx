@@ -486,10 +486,10 @@ export default function Homepage() {
             <Grid item xs={1} />
             <Grid container item md={10}>
               <label style={{ fontSize: 40 }}>Your Transactions</label>
+              <ShowTransactions userName={{ userId }} />
             </Grid>
             <Grid item xs={1} />
           </Grid>
-          <ShowTransactions userName={{ userId }} />
         </Box>
       )}
     </div>
