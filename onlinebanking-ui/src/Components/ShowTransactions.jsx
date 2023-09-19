@@ -10,7 +10,6 @@ import Paper from "@mui/material/Paper";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import axios from "axios";
@@ -113,6 +112,24 @@ function ShowTransactions(props) {
                               >
                                 Status
                               </TableCell>
+                              <TableCell
+                                sx={{
+                                  backgroundColor: "#d41c2c",
+                                  color: "white",
+                                  fontSize: 20,
+                                }}
+                              >
+                                Debit A/C
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  backgroundColor: "#d41c2c",
+                                  color: "white",
+                                  fontSize: 20,
+                                }}
+                              >
+                                Credit A/C
+                              </TableCell>
                             </TableRow>
                           </TableHead>
 
@@ -130,6 +147,21 @@ function ShowTransactions(props) {
                                 </TableCell>
                                 <TableCell sx={{ fontSize: 18, padding: 2 }}>
                                   {item.status}
+                                </TableCell>
+
+                                <TableCell sx={{ fontSize: 18, padding: 2 }}>
+                                  {item.debitAccnt === 0 ? (
+                                    <p> - </p>
+                                  ) : (
+                                    item.debitAccnt
+                                  )}
+                                </TableCell>
+                                <TableCell sx={{ fontSize: 18, padding: 2 }}>
+                                  {item.creditAccnt === 0 ? (
+                                    <p> - </p>
+                                  ) : (
+                                    item.creditAccnt
+                                  )}
                                 </TableCell>
                               </TableRow>
                             ))}

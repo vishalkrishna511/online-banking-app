@@ -107,6 +107,16 @@ export default function LoginPage() {
               id="password"
               autoComplete="current-password"
             />
+            <Grid container justifyContent="end">
+              <Grid item>
+                <Link
+                  onClick={() => navigate("/forgotPassword")}
+                  variant="body2"
+                >
+                  {"Forgot Password ?"}
+                </Link>
+              </Grid>
+            </Grid>
 
             <Button
               type="submit"
@@ -117,9 +127,10 @@ export default function LoginPage() {
             >
               Sign In
             </Button>
+
             <Grid container justifyContent="center">
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link onClick={() => navigate("/register")} variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
