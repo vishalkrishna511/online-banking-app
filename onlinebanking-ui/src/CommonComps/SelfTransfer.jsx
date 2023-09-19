@@ -20,10 +20,10 @@ const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
   const [error, setError] = useState("");
   const [isFirst, setFirst] = useState(true);
   const [amount, setAmount] = useState("");
-  const [creditAccnt, setCreditAccnt] = useState("");
-  const [ifsc, setIfsc] = useState("");
 
   const [account, setAccount] = useState({});
+  const [fromSelected, setFromSelected] = useState(false);
+  const [cAccount, setCAccount] = useState({});
 
   const SubmitFunctionHandler = async () => {
     try {
@@ -33,9 +33,8 @@ const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
         {
           amt: amount,
           debitAccnt: account.accNo,
-          txnType: "transfer",
-          creditAccnt: creditAccnt,
-          ifsc: ifsc,
+          txnType: "self transfer",
+          creditAccnt: cAccount.accNo,
         },
         {
           headers: {
@@ -56,8 +55,13 @@ const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
   };
 
   const onAccountSelect = async (acc) => {
-    setAccount(acc);
-    setFirst(false);
+    if (fromSelected === false) {
+      setAccount(acc);
+      setFromSelected(true);
+    } else {
+      setCAccount(acc);
+      setFirst(false);
+    }
   };
 
   const GetAccounts = async () => {
@@ -85,6 +89,8 @@ const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
     if (visible) {
       GetAccounts();
       setAccount({});
+      setCAccount({});
+      setFromSelected(false);
       setAccounts([]);
       setLoading(false);
       setError("");
@@ -121,8 +127,13 @@ const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
                   {accounts.map((val) => (
                     <div
                       className="main-button"
-                      onClick={() => onAccountSelect(val)}
-                      style={{ width: "100%" }}
+                      onClick={() => {
+                        if (val.accNo !== account.accNo) onAccountSelect(val);
+                      }}
+                      style={{
+                        width: "100%",
+                        opacity: val.accNo === account.accNo ? 0.3 : 1,
+                      }}
                     >
                       <div
                         style={{
@@ -200,32 +211,10 @@ const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
             </div>
           ) : (
             <>
-              <DialogTitle>Transfer from {account.accNo}</DialogTitle>
+              <DialogTitle>
+                Transfer from {account.accNo} to {cAccount.accNo}
+              </DialogTitle>
               <DialogContentText>
-                <div>
-                  <TextField
-                    style={{ marginTop: 16, marginBottom: 16 }}
-                    label="Receiver Account"
-                    id="standard-basic"
-                    variant="standard"
-                    placeholder="Receiver Account"
-                    value={creditAccnt}
-                    onChange={(e) => setCreditAccnt(e.target.value)}
-                    fullWidth
-                  />
-                </div>
-                <div>
-                  <TextField
-                    style={{ marginTop: 16, marginBottom: 16 }}
-                    label="IFSC Code"
-                    id="standard-basic"
-                    variant="standard"
-                    placeholder="IFSC Code"
-                    value={ifsc}
-                    onChange={(e) => setIfsc(e.target.value)}
-                    fullWidth
-                  />
-                </div>
                 <div>
                   <TextField
                     style={{ marginTop: 16, marginBottom: 16 }}
