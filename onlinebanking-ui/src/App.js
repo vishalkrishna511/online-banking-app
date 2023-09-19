@@ -37,11 +37,17 @@ function App() {
         <Route exact path="/register" element={<RegistrationPage />}></Route>
         <Route exact path="/login" element={<LoginPage />}></Route>
         <Route exact path="/error" element={<ErrorPage />}></Route>
-
         <Route exact path="/admin" element={<AdminPage />}></Route>
-        <Route exact path="/forgotPassword" element={<ForgotPassword />}></Route>
-        <Route exact path="/changePassword" element={<ChangePassword />}></Route>
-
+        <Route
+          exact
+          path="/forgotPassword"
+          element={<ForgotPassword />}
+        ></Route>
+        <Route
+          exact
+          path="/changePassword"
+          element={<ChangePassword />}
+        ></Route>
       </Routes>
     </div>
   );
