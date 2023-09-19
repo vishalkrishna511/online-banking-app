@@ -31,6 +31,8 @@ import { enqueueSnackbar } from "notistack";
 import NavBar from "./NavBar";
 import CardComponent from "../CommonComps/CardComponent";
 import ShowTransactions from "./ShowTransactions";
+import FundTransfer from "../CommonComps/FundTransfer";
+import SelfTransfer from "../CommonComps/SelfTransfer";
 
 export default function Homepage() {
   // change the color of the AppBar to match the theme
@@ -150,6 +152,24 @@ export default function Homepage() {
   const [balance, setBalance] = React.useState("");
   const [visible, setVisible] = React.useState(false);
   const [gridNo, setGridNo] = React.useState(0);
+  const [ftVisible, setFtVisible] = React.useState(false);
+  const [stVisible, setStVisible] = React.useState(false);
+
+  const onCloseFt = () => {
+    setFtVisible(false);
+  };
+
+  const onConfirmFt = () => {
+    onCloseFt();
+  };
+
+  const onCloseSt = () => {
+    setStVisible(false);
+  };
+
+  const onConfirmSt = () => {
+    onCloseSt();
+  };
 
   const onCloseWD = () => {
     setVisible(false);
@@ -321,6 +341,18 @@ export default function Homepage() {
             visible={visible}
             gridNo={gridNo}
           />
+          <FundTransfer
+            onClose={onCloseFt}
+            onConfirm={onConfirmFt}
+            userId={userId}
+            visible={ftVisible}
+          />
+          <SelfTransfer
+            onClose={onCloseSt}
+            onConfirm={onConfirmSt}
+            userId={userId}
+            visible={stVisible}
+          />
           <Grid container>
             <Grid item xs={1} />
             <Grid item container xs={10}>
@@ -417,7 +449,7 @@ export default function Homepage() {
                     className="action-button"
                     onClick={() => {
                       setGridNo(3);
-                      setVisible(true);
+                      setFtVisible(true);
                     }}
                   >
                     <div
