@@ -2,6 +2,8 @@ package com.onlinebanking.serverside.service;
 
 import java.util.List;
 
+import com.onlinebanking.serverside.dao.CustomerRepository;
+import com.onlinebanking.serverside.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ public class AdminService {
 
     @Autowired
     AccRepository accRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     public Admin save(Admin a) {
         Admin response = adminRepository.findByUsername(a.getUsername());
@@ -44,5 +49,16 @@ public class AdminService {
         Account account = accRepository.findByAccNo(accNo);
         int count = adminRepository.updateIsDisabled(accNo, !account.isDisabled());
         return count == 1 ? true : false;
+    }
+
+    public boolean deleteAccount(long accNo) {
+        Account account = accRepository.findByAccNo(accNo);
+        accRepository.deleteByAccNo(accNo);
+        return (accRepository.findByAccNo(accNo) == null);
+    }
+
+    public boolean editCustomer(Customer customer) {
+        Customer editedCustomer = customerRepository.save(customer);
+        return true;
     }
 }

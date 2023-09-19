@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Typography } from "@mui/material";
 import Account from "./Account";
-import ShowTransactions from "./ShowTransactions";
+import TransactionTable from "./TransactionTable"
 
 export default function DialogForm(props) {
   const userData = props.formData;
@@ -59,7 +59,8 @@ export default function DialogForm(props) {
   const handleDelete = async (accNo) => {
     console.log(accNo);
     try {
-      // const response = await axios.delete(`http://localhost:8080/deleteAccount/${accNo}`)
+      const response = await axios.delete(`http://localhost:8080/admin/deleteAccount/${accNo}`)
+      console.log(response)
       enqueueSnackbar(`Account ${accNo} deleted...`, "success");
     } catch (error) {
       enqueueSnackbar(`An error occured: ${error.message}`, "error");
@@ -68,8 +69,8 @@ export default function DialogForm(props) {
 
   const handleDisable = async (accNo) => {
     try {
-      // const response = await axios.put(`http://localhost:8080/disableAccount/${accNo}`)
-      enqueueSnackbar(`Account ${accNo} disabled...`, "success");
+      const response = await axios.put(`http://localhost:8080/admin/toggleAccount/${accNo}`)
+      enqueueSnackbar(`Account ${accNo} status changed...`, "success");
     } catch (error) {
       enqueueSnackbar(`An error occured: ${error.message}`, "error");
     }
@@ -78,9 +79,9 @@ export default function DialogForm(props) {
   const handleEdit = async (event) => {
     event.preventDefault();
     try {
-      console.log(formData);
+      console.log(props.formData);
       let response;
-      // response = await axios.put(`http://localhost:8080/updateCustomer/${formData.userId}`, formData)
+      response = await axios.put(`http://localhost:8080/admin/editCustomer/${props.formData.userId}`, props.formData)
       enqueueSnackbar(`Customer Updated...`, "success");
       handleClose();
     } catch (error) {
@@ -90,6 +91,7 @@ export default function DialogForm(props) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(props.formData)
     props.setFormData({
       ...props.formData,
       [name]: value,
@@ -184,35 +186,8 @@ export default function DialogForm(props) {
               ))}
             </div>
             <div style={{ border: "1px solid black", margin: "20px" }}>
-              <div>
-                <p style={{ textDecoration: "underline" }}>
-                  <i>
-                    <strong>History</strong>
-                  </i>
-                </p>
-                <table>
-                  <thead>
-                    <tr>
-                      <th> TimeStamp </th>
-                      <th> DebitAccnt </th>
-                      <th> CreditAccnt </th>
-                      <th> Amount </th>
-                      <th> Id </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {transactions.map((transaction) => (
-                      <tr key={transaction.txnId}>
-                        <td>{transaction.timeStamp}</td>
-                        <td>{transaction.debitAccnt}</td>
-                        <td>{transaction.creditAccnt}</td>
-                        <td>{transaction.amt}</td>
-                        <td>{transaction.txnId}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {/* <ShowTransactions userName={userData} /> */}
+              <div> 
+                <TransactionTable transactions={transactions}/>
               </div>
             </div>
           </div>
@@ -224,7 +199,7 @@ export default function DialogForm(props) {
           <form onSubmit={handleEdit}>
             <DialogTitle>{props.formTitle}</DialogTitle>
             <DialogContent>
-              {Object.keys(props.formData).map((key) => (
+              {Object.keys(props.formData).map((key) => (key !== "accnts" &&
                 <TextField
                   key={key}
                   label={key}

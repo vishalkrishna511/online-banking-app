@@ -45,6 +45,7 @@ const NavBar = () => {
           <Button color="inherit">Payments</Button>
           <Button color="inherit">Deposits</Button>
           <Button color="inherit">Account</Button>
+          <Button color="inherit" href="/admin">Admin</Button>
           <Button
             onClick={() => {
               sessionStorage.removeItem("userId");

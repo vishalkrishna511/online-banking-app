@@ -17,6 +17,7 @@ import TextField from "@mui/material/TextField";
 import { enqueueSnackbar } from "notistack";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import "./Button.css";
 
 export default function AdminPage() {
   const [displayForm, setDisplayForm] = useState(false);
@@ -124,7 +125,39 @@ export default function AdminPage() {
           <Typography variant="h4" sx={{ flexGrow: 1 }}>
             Admin Dashboard
           </Typography>
-          <form style={{ width: "300px" }} onSubmit={getUser}>
+          <Button
+            onClick={() => {
+              sessionStorage.removeItem("userId");
+              window.location.reload();
+            }}
+            color="inherit"
+            sx={{
+              border: "3px solid #FCCC44",
+              borderRadius: "10px",
+            }}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <br />
+      <br />
+      {!render && (
+        <div style={{
+          display: "flex",
+          justifyContent:"center", 
+          alignItems: "center",
+          flexDirection:"column"}}>
+          <p>
+            <AdminPanelSettingsIcon fontSize="large" />
+          </p>
+          <Typography variant="h4" component="div">
+            Welcome to Admin's dashboard!
+          </Typography>
+          <Typography variant="h6" fontStyle="italic" component="div">
+            Enter the customer Id to fetch their account management system
+          </Typography>
+          <form style={{ width: "300px"}} onSubmit={getUser}>
             <TextField
               style={{
                 width: "150px",
@@ -153,32 +186,50 @@ export default function AdminPage() {
               Submit
             </Button>
           </form>
-        </Toolbar>
-      </AppBar>
-      <br />
-      <br />
-      {!render && (
-        <>
-          <p>
-            <AdminPanelSettingsIcon fontSize="large" />
-          </p>
-          <Typography variant="h4" component="div">
-            Welcome to Admin's dashboard!
-          </Typography>
-          <Typography variant="h6" fontStyle="italic" component="div">
-            Enter the customer Id to fetch their account management system
-          </Typography>
-        </>
+        </div>
       )}
 
       {render && (
-        <Typography variant="h4" component="div">
-          {formData.name}'s Account Management System
+        <div style={{display:"flex", justifyContent:"space-between", margin: "0 8%"}}>
+        <form style={{ width: "300px"}} onSubmit={getUser}>
+            <TextField
+              style={{
+                width: "150px",
+                backgroundColor: "white",
+                margin: "10px",
+                borderRadius: "10px",
+                border: "3px solid #FCCC44",
+              }}
+              onChange={handleInputChange}
+              name="userId"
+              value={userId}
+              label="Customer's Id"
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              style={{
+                color: "white",
+                backgroundColor: "#D41C2C",
+                marginTop: "20px",
+                width: "70px",
+                borderRadius: "15px",
+                border: "3px solid #FCCC44",
+              }}
+            >
+              Submit
+            </Button>
+        </form>
+        <Typography variant="h4" component="div" style={{textAlign:"right"}}>
+        {formData.name}'s 
+        <p style={{fontSize: "20px", fontStyle:"italic", marginTop:"0px"}}>Account Management System</p>
         </Typography>
-      )}
+      </div>)}
       <br />
       {render && (
+        
         <Grid container>
+          
           <Grid item xs={1} />
           <Grid item container xs={10}>
             <Grid item container xs={12} spacing={3}>
@@ -289,7 +340,7 @@ export default function AdminPage() {
                       style={{ fontSize: 18, fontWeight: "500" }}
                       className="text-pointer"
                     >
-                      Edit Account
+                      Edit Customer Details
                     </label>
                   </div>
                 </div>

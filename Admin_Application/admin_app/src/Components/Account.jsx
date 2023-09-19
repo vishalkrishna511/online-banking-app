@@ -6,7 +6,7 @@ import { useState } from "react";
 import { enqueueSnackbar } from "notistack";
 export default function (props) {
     const account = props.account
-    const [isStrikethrough, setIsStrikethrough] = useState(false)
+    const [isStrikethrough, setIsStrikethrough] = useState(account.disabled)
     const [transactions, setTransactions] = useState([])
     const [showTxns, setShowTxns] = useState(false)
 
@@ -34,7 +34,9 @@ export default function (props) {
          style={{ textDecoration: (isStrikethrough && props.action === 'Delete') ? 'line-through' : 'none' }}
          >
          {account.accType} - {account.accNo} - {account.balance} 
-         <Button name={account.accNo} onClick={handleClick}>{props.action}</Button></Typography>
+         <Button name={account.accNo} onClick={handleClick}>{props.action == "Disable" ? 
+                                                            (isStrikethrough ? "Enable" : "Disable")
+                                                            : props.action}</Button></Typography>
         </>
         )
 }
