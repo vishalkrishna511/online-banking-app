@@ -66,8 +66,13 @@ public class TransactionService {
 		return transactionRepository.save(transaction);
 	}
 
-	public List<Transaction> getTransactions(long debitAccnt) {
-		return transactionRepository.findAllByDebitAccnt(debitAccnt);
+	public List<Transaction> getTransactions(long Accnt) {
+		
+		List<Transaction> debtList = transactionRepository.findAllByDebitAccnt(Accnt);
+		List<Transaction> credList = transactionRepository.findAllByCreditAccnt(Accnt);
+		debtList.addAll(credList);
+		return debtList;
+		
 	}
 
 	private static String getCurrentDateTimeStamp() {

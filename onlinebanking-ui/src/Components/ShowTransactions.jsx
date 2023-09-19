@@ -53,13 +53,7 @@ function ShowTransactions(props) {
 
   return (
     <div>
-      <Box
-        container
-        // display="flex"
-        // alignItems="center"
-        // justifyContent="flex-start"
-        // minHeight="100vh"
-      >
+      <Box>
         {transactions.length > 0 ? (
           <div style={{ margin: "70px" }}>
             {transactions.map((txn, index) => (

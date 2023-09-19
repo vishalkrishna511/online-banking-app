@@ -33,9 +33,9 @@ public class TransactionController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid Transaction");
 		} else return ResponseEntity.status(HttpStatus.OK).body(transacted);
 	}
-	@GetMapping("/getTransactions/{debitAccnt}")
-	public List<Transaction> getTransactions(@PathVariable("debitAccnt") long debitAccnt){
-		return transactionService.getTransactions(debitAccnt);
+	@GetMapping("/getTransactions/{Accnt}")
+	public List<Transaction> getTransactions(@PathVariable("Accnt") long Accnt){
+		return transactionService.getTransactions(Accnt);
 	}
 	
 	@PostMapping("/withdraw")
