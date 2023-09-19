@@ -7,6 +7,7 @@ import ErrorPage from "./Components/ErrorPage";
 import { useEffect } from "react";
 import ForgotPassword from "./Components/ForgotPassword";
 import ChangePassword from "./Components/ChangePassword";
+import AdminPage from "./Components/AdminPage";
 
 function App() {
 	const navigate = useNavigate();
