@@ -74,7 +74,9 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
       );
       if (response.data === "No Account created") setAccounts([]);
       else {
-        const list = response.data.filter((val) => val.accType !== "FD");
+        const list = response.data.filter(
+          (val) => val.accType !== "FD" && val.isDisabled === false
+        );
         setAccounts(list);
       }
     } catch (e) {

@@ -21,7 +21,6 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
   const [isFirst, setFirst] = useState(true);
   const [amount, setAmount] = useState("");
   const [creditAccnt, setCreditAccnt] = useState("");
-  const [ifsc, setIfsc] = useState("");
 
   const [account, setAccount] = useState({});
 
@@ -35,7 +34,6 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
           debitAccnt: account.accNo,
           txnType: "transfer",
           creditAccnt: creditAccnt,
-          ifsc: ifsc,
         },
         {
           headers: {
@@ -69,7 +67,9 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
       );
       if (response.data === "No Account created") setAccounts([]);
       else {
-        const list = response.data.filter((val) => val.accType !== "FD");
+        const list = response.data.filter(
+          (val) => val.accType !== "FD" && val.isDisabled === false
+        );
         setAccounts(list);
       }
     } catch (e) {
@@ -211,18 +211,6 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
                     placeholder="Receiver Account"
                     value={creditAccnt}
                     onChange={(e) => setCreditAccnt(e.target.value)}
-                    fullWidth
-                  />
-                </div>
-                <div>
-                  <TextField
-                    style={{ marginTop: 16, marginBottom: 16 }}
-                    label="IFSC Code"
-                    id="standard-basic"
-                    variant="standard"
-                    placeholder="IFSC Code"
-                    value={ifsc}
-                    onChange={(e) => setIfsc(e.target.value)}
                     fullWidth
                   />
                 </div>
