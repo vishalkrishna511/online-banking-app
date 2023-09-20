@@ -21,14 +21,16 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
   const [isFirst, setFirst] = useState(true);
   const [amount, setAmount] = useState("");
   const [creditAccnt, setCreditAccnt] = useState("");
+  const [transactLoading, setTransactLoading] = useState(false);
 
   const [account, setAccount] = useState({});
 
   const SubmitFunctionHandler = async () => {
     try {
+      setTransactLoading(true);
       const baseURL = `http://localhost:8080`;
       const response = await axios.post(
-        `${baseURL}/transact}`,
+        `${baseURL}/transact`,
         {
           amt: amount,
           debitAccnt: account.accNo,
@@ -50,6 +52,8 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
     } catch (err) {
       enqueueSnackbar(`Failed Transaction: ${err.message}`, "error");
       console.log(err);
+    } finally {
+      setTransactLoading(false);
     }
   };
 
@@ -68,7 +72,7 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
       if (response.data === "No Account created") setAccounts([]);
       else {
         const list = response.data.filter(
-          (val) => val.accType !== "FD" && val.isDisabled === false
+          (val) => val.accType !== "FD" && val.disabled === false
         );
         setAccounts(list);
       }
@@ -235,9 +239,9 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
               onClick={() => {
                 SubmitFunctionHandler();
               }}
-              disabled={isFirst}
+              disabled={isFirst || transactLoading || loading}
             >
-              Proceed
+              {transactLoading ? "Processing..." : "Proceed"}
             </Button>
           </DialogActions>
         </div>
