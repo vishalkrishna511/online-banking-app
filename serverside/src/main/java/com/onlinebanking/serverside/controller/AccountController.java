@@ -56,7 +56,7 @@ public class AccountController {
 		return accountService.getAccountBalance(accNo);
 	}
 
-	@GetMapping("getAccountStatement/{accNo}")
+	@PostMapping("getAccountStatement/{accNo}")
 	public List<Transaction> getAccountStatement(@RequestBody AccountStatement accountStatement, @PathVariable long accNo){
 		return accountService.getAccountStatement(accNo, accountStatement);
 

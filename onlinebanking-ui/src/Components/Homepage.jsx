@@ -297,7 +297,12 @@ export default function Homepage() {
                 }}
               >
                 <CardActionArea>
-                  <CardContent>
+                  <CardContent
+                    onClick={() => {
+                      setVisible(true);
+                      setGridNo(0);
+                    }}
+                  >
                     <Typography
                       className="home-button-text"
                       variant="body2"
