@@ -77,7 +77,6 @@ public class CustomerService {
 
 		Customer customer = null;
 		customer = customerRepository.findByUserId(id);
-
 		if (customer == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found! or Invalid user Id " + id);
 		}

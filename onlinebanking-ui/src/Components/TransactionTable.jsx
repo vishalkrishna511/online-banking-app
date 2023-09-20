@@ -42,16 +42,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function CustomizedTables(props) {
     const rows = props.transactions
   return (
+    <div>
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <Table sx={{ minWidth: 800 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>TimeStamp</StyledTableCell>
-            <StyledTableCell align="right">DebitAccnt</StyledTableCell>
-            <StyledTableCell align="right">CreditAccnt</StyledTableCell>
+            <StyledTableCell align="right">TxnId</StyledTableCell>
+            <StyledTableCell align="right">Status</StyledTableCell>
+            <StyledTableCell align="right">Type</StyledTableCell>
+            <StyledTableCell align="right">Debit A/c</StyledTableCell>
+            <StyledTableCell align="right">Credit A/c</StyledTableCell>
             <StyledTableCell align="right">Amount</StyledTableCell>
-            <StyledTableCell align="right">Id</StyledTableCell>
           </TableRow>
+        {props.clicked && rows.length === 0 && <p>No Transactions Yet!</p>}
         </TableHead>
         <TableBody>
           {rows.map((row) => (
@@ -59,14 +63,17 @@ export default function CustomizedTables(props) {
               <StyledTableCell component="th" scope="row">
                 {row.timeStamp}
               </StyledTableCell>
+              <StyledTableCell align="right">{row.txnId}</StyledTableCell>
+              <StyledTableCell align="right">{row.status}</StyledTableCell>
+              <StyledTableCell align="right">{row.txnType}</StyledTableCell>
               <StyledTableCell align="right">{row.debitAccnt}</StyledTableCell>
               <StyledTableCell align="right">{row.creditAccnt}</StyledTableCell>
               <StyledTableCell align="right">{row.amt}</StyledTableCell>
-              <StyledTableCell align="right">{row.txnId}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+    </div>
   );
 }

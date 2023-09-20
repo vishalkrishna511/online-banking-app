@@ -32,7 +32,7 @@ import "./Button.css";
 
 // import LoadingScreen from "./LoadingScreen";
 // import axios from "axios";
-const NavBar = () => {
+const NavBar = (props) => {
 	const navigate = useNavigate();
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -70,6 +70,15 @@ const NavBar = () => {
 					>
 						Account
 					</Button>
+					{props.isAdmin && <Button
+						color="inherit"
+						aria-controls={open ? "fade-menu" : undefined}
+						aria-haspopup="true"
+						aria-expanded={open ? "true" : undefined}
+						onClick={() => navigate("/admin")}
+					>
+						Admin
+					</Button>}
 					<Menu
 						sx={{ mt: 2, ml: -3 }}
 						id="fade-menu"
