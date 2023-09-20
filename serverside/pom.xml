@@ -76,6 +76,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>no.skatteetaten.aurora.mockmvc.extensions</groupId>
+			<artifactId>mockmvc-extensions-kotlin</artifactId>
+			<version>0.2.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
