@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LoadingScreen from "../Components/LoadingScreen";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import {
   Button,
   Dialog,
@@ -14,46 +13,37 @@ import {
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import "./CardComponent.css";
-import AccountStatementPage from "../Components/AccountStatementPage";
 
-const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
+const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isFirst, setFirst] = useState(true);
   const [amount, setAmount] = useState("");
-  const navigate = useNavigate();
 
   const [account, setAccount] = useState({});
-
+  const [fromSelected, setFromSelected] = useState(false);
+  const [cAccount, setCAccount] = useState({});
   const [transactLoading, setTransactLoading] = useState(false);
 
   const SubmitFunctionHandler = async () => {
     try {
       setTransactLoading(true);
       const baseURL = `http://localhost:8080`;
-      let body = {};
-      if (gridNo === 1) {
-        body = {
-          txnType: "withdraw",
+      const response = await axios.post(
+        `${baseURL}/transact`,
+        {
           amt: amount,
           debitAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      if (gridNo === 2) {
-        body = {
-          txnType: "deposit",
-          amt: amount,
-          creditAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      const response = await axios.post(`${baseURL}/${body.txnType}`, body, {
-        headers: {
-          "Content-Type": "application/json",
+          txnType: "self transfer",
+          creditAccnt: cAccount.accNo,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response);
       onConfirm();
       enqueueSnackbar(
@@ -69,8 +59,13 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   };
 
   const onAccountSelect = async (acc) => {
-    setAccount(acc);
-    setFirst(false);
+    if (fromSelected === false) {
+      setAccount(acc);
+      setFromSelected(true);
+    } else {
+      setCAccount(acc);
+      setFirst(false);
+    }
   };
 
   const GetAccounts = async () => {
@@ -100,6 +95,8 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
     if (visible) {
       GetAccounts();
       setAccount({});
+      setCAccount({});
+      setFromSelected(false);
       setAccounts([]);
       setLoading(false);
       setError("");
@@ -137,14 +134,12 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                     <div
                       className="main-button"
                       onClick={() => {
-                        onAccountSelect(val);
-                        console.log(val);
-
-                        navigate("/accountStatement", {
-                          state: { val },
-                        });
+                        if (val.accNo !== account.accNo) onAccountSelect(val);
                       }}
-                      style={{ width: "100%" }}
+                      style={{
+                        width: "100%",
+                        opacity: val.accNo === account.accNo ? 0.3 : 1,
+                      }}
                     >
                       <div
                         style={{
@@ -172,14 +167,12 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                         >
                           Account: {val.accNo}
                         </label>
-                        {gridNo !== 0 && (
-                          <label
-                            style={{ fontSize: 18 }}
-                            className="text-pointer"
-                          >
-                            Balance: {val.balance}
-                          </label>
-                        )}
+                        <label
+                          style={{ fontSize: 18 }}
+                          className="text-pointer"
+                        >
+                          Balance: {val.balance}
+                        </label>
                       </div>
                       <div style={{ display: "flex", flexDirection: "row" }}>
                         <Grid container spacing={1}>
@@ -222,21 +215,10 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                 </DialogContentText>
               </DialogContent>
             </div>
-          ) : gridNo === 0 ? (
-            <></>
           ) : (
             <>
               <DialogTitle>
-                {gridNo === 1
-                  ? `Withdraw`
-                  : gridNo === 2
-                  ? "Deposit"
-                  : gridNo === 3
-                  ? "Transfer"
-                  : gridNo === 4
-                  ? "Self"
-                  : null}{" "}
-                from {account.accNo}
+                Transfer from {account.accNo} to {cAccount.accNo}
               </DialogTitle>
               <DialogContentText>
                 <div>
@@ -254,21 +236,21 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
               </DialogContentText>
             </>
           )}
-          {gridNo !== 0 && (<DialogActions>
+          <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
             <Button
               onClick={() => {
                 SubmitFunctionHandler();
               }}
-              disabled={isFirst || loading || transactLoading}
+              disabled={isFirst || transactLoading || loading}
             >
               {transactLoading ? "Processing..." : "Proceed"}
             </Button>
-          </DialogActions>)}
+          </DialogActions>
         </div>
       )}
     </Dialog>
   );
 };
 
-export default CardComponent;
+export default SelfTransfer;

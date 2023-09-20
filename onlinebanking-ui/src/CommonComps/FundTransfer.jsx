@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LoadingScreen from "../Components/LoadingScreen";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import {
   Button,
   Dialog,
@@ -14,46 +13,36 @@ import {
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import "./CardComponent.css";
-import AccountStatementPage from "../Components/AccountStatementPage";
 
-const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
+const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isFirst, setFirst] = useState(true);
   const [amount, setAmount] = useState("");
-  const navigate = useNavigate();
+  const [creditAccnt, setCreditAccnt] = useState("");
+  const [transactLoading, setTransactLoading] = useState(false);
 
   const [account, setAccount] = useState({});
-
-  const [transactLoading, setTransactLoading] = useState(false);
 
   const SubmitFunctionHandler = async () => {
     try {
       setTransactLoading(true);
       const baseURL = `http://localhost:8080`;
-      let body = {};
-      if (gridNo === 1) {
-        body = {
-          txnType: "withdraw",
+      const response = await axios.post(
+        `${baseURL}/transact`,
+        {
           amt: amount,
           debitAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      if (gridNo === 2) {
-        body = {
-          txnType: "deposit",
-          amt: amount,
-          creditAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      const response = await axios.post(`${baseURL}/${body.txnType}`, body, {
-        headers: {
-          "Content-Type": "application/json",
+          txnType: "transfer",
+          creditAccnt: creditAccnt,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response);
       onConfirm();
       enqueueSnackbar(
@@ -136,14 +125,7 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                   {accounts.map((val) => (
                     <div
                       className="main-button"
-                      onClick={() => {
-                        onAccountSelect(val);
-                        console.log(val);
-
-                        navigate("/accountStatement", {
-                          state: { val },
-                        });
-                      }}
+                      onClick={() => onAccountSelect(val)}
                       style={{ width: "100%" }}
                     >
                       <div
@@ -172,14 +154,12 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                         >
                           Account: {val.accNo}
                         </label>
-                        {gridNo !== 0 && (
-                          <label
-                            style={{ fontSize: 18 }}
-                            className="text-pointer"
-                          >
-                            Balance: {val.balance}
-                          </label>
-                        )}
+                        <label
+                          style={{ fontSize: 18 }}
+                          className="text-pointer"
+                        >
+                          Balance: {val.balance}
+                        </label>
                       </div>
                       <div style={{ display: "flex", flexDirection: "row" }}>
                         <Grid container spacing={1}>
@@ -222,23 +202,22 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                 </DialogContentText>
               </DialogContent>
             </div>
-          ) : gridNo === 0 ? (
-            <></>
           ) : (
             <>
-              <DialogTitle>
-                {gridNo === 1
-                  ? `Withdraw`
-                  : gridNo === 2
-                  ? "Deposit"
-                  : gridNo === 3
-                  ? "Transfer"
-                  : gridNo === 4
-                  ? "Self"
-                  : null}{" "}
-                from {account.accNo}
-              </DialogTitle>
+              <DialogTitle>Transfer from {account.accNo}</DialogTitle>
               <DialogContentText>
+                <div>
+                  <TextField
+                    style={{ marginTop: 16, marginBottom: 16 }}
+                    label="Receiver Account"
+                    id="standard-basic"
+                    variant="standard"
+                    placeholder="Receiver Account"
+                    value={creditAccnt}
+                    onChange={(e) => setCreditAccnt(e.target.value)}
+                    fullWidth
+                  />
+                </div>
                 <div>
                   <TextField
                     style={{ marginTop: 16, marginBottom: 16 }}
@@ -254,21 +233,21 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
               </DialogContentText>
             </>
           )}
-          {gridNo !== 0 && (<DialogActions>
+          <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
             <Button
               onClick={() => {
                 SubmitFunctionHandler();
               }}
-              disabled={isFirst || loading || transactLoading}
+              disabled={isFirst || transactLoading || loading}
             >
               {transactLoading ? "Processing..." : "Proceed"}
             </Button>
-          </DialogActions>)}
+          </DialogActions>
         </div>
       )}
     </Dialog>
   );
 };
 
-export default CardComponent;
+export default FundTransfer;

@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -13,6 +12,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ErrorPage from "./ErrorPage";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 
 function Copyright(props) {
   return (
@@ -41,12 +44,13 @@ export default function LoginPage() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const loginBackendUrl = "http://localhost:8080/login";
+    const loginBackendUrl = "http://localhost:8080/admin/login";
     const data = new FormData(event.currentTarget);
 
     const loginData = {
-      userId: data.get("userid"),
-      pswd: data.get("password"),
+      adminId: data.get("adminId"),
+      pswd: data.get("pswd"),
+      username: data.get("username")
     };
     console.log(loginData);
 
@@ -54,7 +58,7 @@ export default function LoginPage() {
       console.log(response);
       if (response.data === true) {
         navigate("/");
-        sessionStorage.setItem("userId", data.get("userid"));
+        sessionStorage.setItem("userId", data.get("adminId"));
       } else {
         // navigate("/error");
         setSuccess(false);
@@ -63,6 +67,26 @@ export default function LoginPage() {
   };
 
   return (
+    <>
+    <>
+      <AppBar style={{ background: "#D41C2C" }} position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h4" sx={{ flexGrow: 1 }}>
+            Wells Fargo
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </>
+
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -78,7 +102,7 @@ export default function LoginPage() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign In
           </Typography>
           {!success && <ErrorPage />}
           <Box
@@ -92,8 +116,8 @@ export default function LoginPage() {
               required
               fullWidth
               id="userid"
-              label="User Id"
-              name="userid"
+              label="Admin Id"
+              name="adminId"
               autoComplete="userid"
               autoFocus
             />
@@ -101,22 +125,22 @@ export default function LoginPage() {
               margin="normal"
               required
               fullWidth
-              name="password"
+              id="username"
+              label="Admin Name"
+              name="username"
+              autoComplete="userid"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="pswd"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
             />
-            <Grid container justifyContent="end">
-              <Grid item>
-                <Link
-                  onClick={() => navigate("/forgotPassword")}
-                  variant="body2"
-                >
-                  {"Forgot Password ?"}
-                </Link>
-              </Grid>
-            </Grid>
 
             <Button
               type="submit"
@@ -127,19 +151,12 @@ export default function LoginPage() {
             >
               Sign In
             </Button>
-
-            <Grid container justifyContent="center">
-              <Grid item>
-                <Link onClick={() => navigate("/register")} variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
+            
           </Box>
         </Box>
 
         <Copyright sx={{ mt: 4, mb: 4 }} />
       </Container>
-    </ThemeProvider>
+    </ThemeProvider></>
   );
 }

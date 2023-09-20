@@ -45,7 +45,7 @@ public class TransactionService {
 		boolean isCreditAccntFD = accRepository.findByAccNo(transaction.getCreditAccnt()).getAccType().equals("FD");
 		double balance = account.getBalance();
 		if (transactionAmt > balance || account.isDisabled() || isCreditAccntDisabled || isDebitAccntFD
-				|| isCreditAccntFD) {
+				|| isCreditAccntFD || transaction.getAmt() < 0) {
 			transaction.setStatus("FAIL");
 		} else {
 			Account accCredited = accRepository.findByAccNo(transaction.getCreditAccnt());
@@ -66,8 +66,13 @@ public class TransactionService {
 		return transactionRepository.save(transaction);
 	}
 
-	public List<Transaction> getTransactions(long debitAccnt) {
-		return transactionRepository.findAllByDebitAccnt(debitAccnt);
+	public List<Transaction> getTransactions(long Accnt) {
+		
+		List<Transaction> debtList = transactionRepository.findAllByDebitAccnt(Accnt);
+		List<Transaction> credList = transactionRepository.findAllByCreditAccnt(Accnt);
+		debtList.addAll(credList);
+		return debtList;
+		
 	}
 
 	private static String getCurrentDateTimeStamp() {
@@ -79,7 +84,7 @@ public class TransactionService {
 	public Transaction withdrawMoney(Transaction trsn) {
 		// TODO Auto-generated method stub
 		Account account = accRepository.findByAccNo(trsn.getDebitAccnt());
-		if (account == null || account.isDisabled() || account.getBalance() < trsn.getAmt()) {
+		if (account == null || account.isDisabled() || account.getBalance() < trsn.getAmt() || trsn.getAmt() < 0) {
 			return null;
 
 		}
@@ -97,7 +102,7 @@ public class TransactionService {
 
 	public Transaction depositMoney(Transaction trsn) {
 		Account account = accRepository.findByAccNo(trsn.getCreditAccnt());
-		if (account == null || account.isDisabled()) {
+		if (account == null || account.isDisabled() || trsn.getAmt() < 0) {
 			return null;
 
 		}
