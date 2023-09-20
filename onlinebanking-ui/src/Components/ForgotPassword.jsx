@@ -42,10 +42,13 @@ const ForgotPassword = () => {
 	const [newOtp, setNewOtp] = useState(0);
 	const [gotOtp, setGotOtp] = useState(false);
 	const [matchPass, setMatchPass] = useState(true);
+	const [newPass, setNewPass] = useState(null);
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		const loginBackendUrl = `http://localhost:8080/forgetPassword`;
+		const loginBackendUrl = `http://localhost:8080/genOtp`;
+		const forgetPassUrl = `http://localhost:8080/forgetPasswordNew`;
 		const data = new FormData(event.currentTarget);
 
 		const loginData = {
@@ -53,19 +56,11 @@ const ForgotPassword = () => {
 			pswd: data.get("password"),
 		};
 		console.log(loginData);
+
 		const currPass = data.get("confirmPassword");
 		const confPass = data.get("password");
 		// const newPassword = data.get("")
 
-		// axios.post(loginBackendUrl, loginData).then((response) => {
-		//   console.log(response);
-		//   if (response != null) {
-		//     console.log("GOT OTP");
-		//     setSuccess(true);
-		//   } else {
-		//     setSuccess(false);
-		//   }
-		// });
 		if (currPass == confPass) {
 			setMatchPass(true);
 			axios
@@ -102,6 +97,30 @@ const ForgotPassword = () => {
 		} else {
 			setMatchPass(false);
 		}
+
+		axios
+			.post(forgetPassUrl, loginData)
+			.then((response) => {
+				if (response != null) {
+					console.log(response);
+					const np = response.data;
+					setNewPass(np);
+					setSuccess(true);
+				} else {
+					setSuccess(false);
+				}
+			})
+			.catch((error) => {
+				// handle error
+				if (error.response && error.response.status === 409) {
+					console.log(error.response.data);
+					setSuccess(false);
+					//   alert("There is a conflict with the current state of the resource");
+				} else {
+					console.error(error);
+					setSuccess(false);
+				}
+			});
 	};
 
 	return (
@@ -124,6 +143,7 @@ const ForgotPassword = () => {
 							Reset Password
 						</Typography>
 						{!success && <ErrorPage />}
+						{newPass == null ? " " : newPass}
 						{!matchPass && (
 							<p style={{ color: "magenta" }}>
 								New Password and Confirm Password Should Match
