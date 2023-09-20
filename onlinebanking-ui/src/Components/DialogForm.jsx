@@ -180,7 +180,7 @@ export default function DialogForm(props) {
                 <Account
                   key={account.accNo}
                   account={account}
-                  handle={handleDisable}
+                  // handle={handleDisable}
                   action="View"
                   setTransactions={setTransactions}
                   clicked={setClicked}

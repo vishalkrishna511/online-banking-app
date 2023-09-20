@@ -24,11 +24,12 @@ export default function (props) {
         }
         else if (props.action === "Delete"){
             setDeleted(true)
+            props.handle(accNo)
         }
         else if (props.action === "Disable") {
             setDisabled(!disabled)
+            props.handle(accNo)
         }
-        props.handle(accNo)
     }
         
     return (<>
