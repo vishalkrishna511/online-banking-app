@@ -23,8 +23,11 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
 
   const [account, setAccount] = useState({});
 
+  const [transactLoading, setTransactLoading] = useState(false);
+
   const SubmitFunctionHandler = async () => {
     try {
+      setTransactLoading(true);
       const baseURL = `http://localhost:8080`;
       let body = {};
       if (gridNo === 1) {
@@ -57,6 +60,8 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
     } catch (err) {
       enqueueSnackbar(`Failed Transaction: ${err.message}`, "error");
       console.log(err);
+    } finally {
+      setTransactLoading(false);
     }
   };
 
@@ -74,7 +79,9 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
       );
       if (response.data === "No Account created") setAccounts([]);
       else {
-        const list = response.data.filter((val) => val.accType !== "FD");
+        const list = response.data.filter(
+          (val) => val.accType !== "FD" && val.disabled === false
+        );
         setAccounts(list);
       }
     } catch (e) {
@@ -237,9 +244,9 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
               onClick={() => {
                 SubmitFunctionHandler();
               }}
-              disabled={isFirst}
+              disabled={isFirst || loading || transactLoading}
             >
-              Proceed
+              {transactLoading ? "Processing..." : "Proceed"}
             </Button>
           </DialogActions>
         </div>
