@@ -14,7 +14,7 @@ import {
 import { enqueueSnackbar } from "notistack";
 import "./CardComponent.css";
 
-const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
+const SelfTransfer = ({ userId, visible, onConfirm, onClose }) => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,35 +22,28 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   const [amount, setAmount] = useState("");
 
   const [account, setAccount] = useState({});
-
+  const [fromSelected, setFromSelected] = useState(false);
+  const [cAccount, setCAccount] = useState({});
   const [transactLoading, setTransactLoading] = useState(false);
 
   const SubmitFunctionHandler = async () => {
     try {
       setTransactLoading(true);
       const baseURL = `http://localhost:8080`;
-      let body = {};
-      if (gridNo === 1) {
-        body = {
-          txnType: "withdraw",
+      const response = await axios.post(
+        `${baseURL}/transact`,
+        {
           amt: amount,
           debitAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      if (gridNo === 2) {
-        body = {
-          txnType: "deposit",
-          amt: amount,
-          creditAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      const response = await axios.post(`${baseURL}/${body.txnType}`, body, {
-        headers: {
-          "Content-Type": "application/json",
+          txnType: "self transfer",
+          creditAccnt: cAccount.accNo,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response);
       onConfirm();
       enqueueSnackbar(
@@ -66,8 +59,13 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   };
 
   const onAccountSelect = async (acc) => {
-    setAccount(acc);
-    setFirst(false);
+    if (fromSelected === false) {
+      setAccount(acc);
+      setFromSelected(true);
+    } else {
+      setCAccount(acc);
+      setFirst(false);
+    }
   };
 
   const GetAccounts = async () => {
@@ -97,6 +95,8 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
     if (visible) {
       GetAccounts();
       setAccount({});
+      setCAccount({});
+      setFromSelected(false);
       setAccounts([]);
       setLoading(false);
       setError("");
@@ -133,8 +133,13 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                   {accounts.map((val) => (
                     <div
                       className="main-button"
-                      onClick={() => onAccountSelect(val)}
-                      style={{ width: "100%" }}
+                      onClick={() => {
+                        if (val.accNo !== account.accNo) onAccountSelect(val);
+                      }}
+                      style={{
+                        width: "100%",
+                        opacity: val.accNo === account.accNo ? 0.3 : 1,
+                      }}
                     >
                       <div
                         style={{
@@ -213,14 +218,7 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
           ) : (
             <>
               <DialogTitle>
-                {gridNo === 1
-                  ? `Withdraw`
-                  : gridNo === 2
-                  ? "Deposit"
-                  : gridNo === 3
-                  ? "Transfer"
-                  : "Self"}{" "}
-                from {account.accNo}
+                Transfer from {account.accNo} to {cAccount.accNo}
               </DialogTitle>
               <DialogContentText>
                 <div>
@@ -244,7 +242,7 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
               onClick={() => {
                 SubmitFunctionHandler();
               }}
-              disabled={isFirst || loading || transactLoading}
+              disabled={isFirst || transactLoading || loading}
             >
               {transactLoading ? "Processing..." : "Proceed"}
             </Button>
@@ -255,4 +253,4 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   );
 };
 
-export default CardComponent;
+export default SelfTransfer;

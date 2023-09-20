@@ -14,43 +14,35 @@ import {
 import { enqueueSnackbar } from "notistack";
 import "./CardComponent.css";
 
-const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
+const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isFirst, setFirst] = useState(true);
   const [amount, setAmount] = useState("");
+  const [creditAccnt, setCreditAccnt] = useState("");
+  const [transactLoading, setTransactLoading] = useState(false);
 
   const [account, setAccount] = useState({});
-
-  const [transactLoading, setTransactLoading] = useState(false);
 
   const SubmitFunctionHandler = async () => {
     try {
       setTransactLoading(true);
       const baseURL = `http://localhost:8080`;
-      let body = {};
-      if (gridNo === 1) {
-        body = {
-          txnType: "withdraw",
+      const response = await axios.post(
+        `${baseURL}/transact`,
+        {
           amt: amount,
           debitAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      if (gridNo === 2) {
-        body = {
-          txnType: "deposit",
-          amt: amount,
-          creditAccnt: account.accNo,
-        };
-        console.log(body);
-      }
-      const response = await axios.post(`${baseURL}/${body.txnType}`, body, {
-        headers: {
-          "Content-Type": "application/json",
+          txnType: "transfer",
+          creditAccnt: creditAccnt,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response);
       onConfirm();
       enqueueSnackbar(
@@ -212,17 +204,20 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
             </div>
           ) : (
             <>
-              <DialogTitle>
-                {gridNo === 1
-                  ? `Withdraw`
-                  : gridNo === 2
-                  ? "Deposit"
-                  : gridNo === 3
-                  ? "Transfer"
-                  : "Self"}{" "}
-                from {account.accNo}
-              </DialogTitle>
+              <DialogTitle>Transfer from {account.accNo}</DialogTitle>
               <DialogContentText>
+                <div>
+                  <TextField
+                    style={{ marginTop: 16, marginBottom: 16 }}
+                    label="Receiver Account"
+                    id="standard-basic"
+                    variant="standard"
+                    placeholder="Receiver Account"
+                    value={creditAccnt}
+                    onChange={(e) => setCreditAccnt(e.target.value)}
+                    fullWidth
+                  />
+                </div>
                 <div>
                   <TextField
                     style={{ marginTop: 16, marginBottom: 16 }}
@@ -244,7 +239,7 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
               onClick={() => {
                 SubmitFunctionHandler();
               }}
-              disabled={isFirst || loading || transactLoading}
+              disabled={isFirst || transactLoading || loading}
             >
               {transactLoading ? "Processing..." : "Proceed"}
             </Button>
@@ -255,4 +250,4 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   );
 };
 
-export default CardComponent;
+export default FundTransfer;

@@ -2,14 +2,7 @@ package com.onlinebanking.serverside.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -41,11 +34,10 @@ public class Account {
 
 	private boolean isDisabled;
 
-	@OneToMany
-	@JoinColumn(name = "accNo")
+	@OneToMany(mappedBy = "accNo", cascade = CascadeType.REMOVE)
 	private List<Transaction> txns;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JsonBackReference
 	@JoinColumn(name = "userId")
 	private Customer user;

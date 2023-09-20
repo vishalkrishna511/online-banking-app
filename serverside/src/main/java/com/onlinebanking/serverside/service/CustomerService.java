@@ -84,6 +84,15 @@ public class CustomerService {
 
 		return customer;
 	}
+	public String forgetPasswordNew(Login login) {
+		// TODO Auto-generated method stub
+		Customer customer = customerRepository.findByUserId(login.getUserId());
+		if(customer==null) return null; 
+		customerRepository.save(customer);
+		loginRepository.save(login);
+
+		return login.getPswd();
+	}
 
 
 }
