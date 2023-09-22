@@ -9,6 +9,8 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import MenuIcon from "@mui/icons-material/Menu";
+import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
+
 import axios from "axios";
 import DialogForm from "./DialogForm";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -17,6 +19,7 @@ import TextField from "@mui/material/TextField";
 import { enqueueSnackbar } from "notistack";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import "./Button.css";
 
 export default function AdminPage() {
 	const [displayForm, setDisplayForm] = useState(false);
@@ -32,8 +35,10 @@ export default function AdminPage() {
 	const gridStyle = {
 		display: "flex",
 		flexDirection: "column",
-		borderRadius: 8,
-		border: "solid black 4px",
+		// borderRadius: 8,
+		// border: "solid black 4px",
+		borderRadius: 15,
+		border: "4px solid #d41c2d",
 		minHeight: 200,
 		width: "100%",
 		justifyContent: "center",
@@ -118,11 +123,58 @@ export default function AdminPage() {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
+						onClick={() => navigate("/")}
 					>
-						<MenuIcon />
+						{/* <MenuIcon /> */}
+						<CottageTwoToneIcon fontSize="large" />
 					</IconButton>
 					<Typography variant="h4" sx={{ flexGrow: 1 }}>
 						Admin Dashboard
+					</Typography>
+					<Button
+						color="inherit"
+						// sx={{
+						// 	border: "3px solid #FCCC44",
+						// 	borderRadius: "10px",
+						// }}
+						onClick={() => navigate("/")}
+					>
+						Home
+					</Button>
+					<Button
+						onClick={() => {
+							sessionStorage.removeItem("userId");
+							window.location.reload();
+						}}
+						color="inherit"
+						sx={{
+							border: "3px solid #FCCC44",
+							borderRadius: "10px",
+						}}
+					>
+						Logout
+					</Button>
+				</Toolbar>
+			</AppBar>
+			<br />
+			<br />
+			{!render && (
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						flexDirection: "column",
+					}}
+				>
+					<p>
+						<AdminPanelSettingsIcon fontSize="large" />
+					</p>
+					<Typography variant="h4" component="div">
+						Welcome to Admin's dashboard!
+					</Typography>
+					<Typography variant="h6" fontStyle="italic" component="div">
+						Enter the customer Id to fetch their account management system
 					</Typography>
 					<form style={{ width: "300px" }} onSubmit={getUser}>
 						<TextField
@@ -153,32 +205,67 @@ export default function AdminPage() {
 							Submit
 						</Button>
 					</form>
-				</Toolbar>
-			</AppBar>
-			<br />
-			<br />
-			{!render && (
-				<>
-					<p>
-						<AdminPanelSettingsIcon fontSize="large" />
-					</p>
-					<Typography variant="h4" component="div">
-						Welcome to Admin's dashboard!
-					</Typography>
-					<Typography variant="h6" fontStyle="italic" component="div">
-						Enter the customer Id to fetch their account management system
-					</Typography>
-				</>
+				</div>
 			)}
 
 			{render && (
-				<Typography variant="h4" component="div">
-					{formData.name}'s Account Management System
-				</Typography>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "space-between",
+						margin: "0 8%",
+					}}
+				>
+					<form style={{ width: "300px" }} onSubmit={getUser}>
+						<TextField
+							style={{
+								width: "150px",
+								backgroundColor: "white",
+								margin: "10px",
+								borderRadius: "10px",
+								border: "3px solid #FCCC44",
+							}}
+							onChange={handleInputChange}
+							name="userId"
+							value={userId}
+							label="Customer's Id"
+						/>
+						<Button
+							type="submit"
+							variant="contained"
+							style={{
+								color: "white",
+								backgroundColor: "#D41C2C",
+								marginTop: "20px",
+								width: "70px",
+								borderRadius: "15px",
+								border: "3px solid #FCCC44",
+							}}
+						>
+							Submit
+						</Button>
+					</form>
+					<Typography
+						variant="h4"
+						component="div"
+						style={{ textAlign: "right" }}
+					>
+						{formData.name}'s
+						<p
+							style={{
+								fontSize: "20px",
+								fontStyle: "italic",
+								marginTop: "0px",
+							}}
+						>
+							Account Management System
+						</p>
+					</Typography>
+				</div>
 			)}
 			<br />
 			{render && (
-				<Grid container>
+				<Grid container sx={{ color: "#ff5959" }}>
 					<Grid item xs={1} />
 					<Grid item container xs={10}>
 						<Grid item container xs={12} spacing={3}>
@@ -189,7 +276,7 @@ export default function AdminPage() {
 									onClick={createAccount}
 								>
 									<div style={iconStyle}>
-										<PersonAddIcon />
+										<PersonAddIcon fontSize="large" />
 									</div>
 									<div>
 										<label
@@ -209,7 +296,7 @@ export default function AdminPage() {
 									onClick={deleteAccount}
 								>
 									<div style={iconStyle}>
-										<PersonRemoveIcon />
+										<PersonRemoveIcon fontSize="large" />
 									</div>
 									<div>
 										<label
@@ -229,7 +316,7 @@ export default function AdminPage() {
 									onClick={disableAccount}
 								>
 									<div style={iconStyle}>
-										<PersonOffIcon />
+										<PersonOffIcon fontSize="large" />
 									</div>
 									<div>
 										<label
@@ -263,7 +350,7 @@ export default function AdminPage() {
 									onClick={viewTransactions}
 								>
 									<div style={iconStyle}>
-										<ReceiptLongIcon />
+										<ReceiptLongIcon fontSize="large" />
 									</div>
 									<div>
 										<label
@@ -282,14 +369,14 @@ export default function AdminPage() {
 									onClick={editAccount}
 								>
 									<div style={iconStyle}>
-										<ManageAccountsIcon />
+										<ManageAccountsIcon fontSize="large" />
 									</div>
 									<div>
 										<label
 											style={{ fontSize: 18, fontWeight: "500" }}
 											className="text-pointer"
 										>
-											Edit Account
+											Edit Customer Details
 										</label>
 									</div>
 								</div>
@@ -297,7 +384,7 @@ export default function AdminPage() {
 							<Grid item container xs={4}>
 								<div style={gridStyle} className="action-button">
 									<div style={iconStyle}>
-										<ReadMoreIcon />
+										<ReadMoreIcon fontSize="large" />
 										{/* <MoreVertIcon /> */}
 									</div>
 									<div>

@@ -41,49 +41,103 @@ const ForgotPassword = () => {
 	const [success, setSuccess] = useState(true);
 	const [newOtp, setNewOtp] = useState(0);
 	const [gotOtp, setGotOtp] = useState(false);
+	const [otpMatch, setOtpMatch] = useState(true);
+
 	const [matchPass, setMatchPass] = useState(true);
-	const handleSubmit = (event) => {
+	const [newPass, setNewPass] = useState(null);
+	const [uid, setUid] = useState(null);
+	const [psd, setPsd] = useState(null);
+
+	const loginBackendUrl = `http://localhost:8080/genOtp`;
+	const forgetPassUrl = `http://localhost:8080/forgetPasswordNew`;
+
+	const handleSubmit = async (event) => {
 		event.preventDefault();
+		let data = new FormData(event.currentTarget);
 
-		const loginBackendUrl = `http://localhost:8080/forgetPassword`;
-		const data = new FormData(event.currentTarget);
+		let tuid = data.get("userid");
+		setUid(tuid);
+		let tpsd = data.get("password");
+		setPsd(tpsd);
 
-		const loginData = {
-			userId: data.get("userid"),
-			pswd: data.get("password"),
+		console.log(uid);
+		console.log(psd);
+
+		let loginData = {
+			userId: uid,
+			pswd: psd,
 		};
+
 		console.log(loginData);
-		const currPass = data.get("confirmPassword");
-		const confPass = data.get("password");
+
+		let currPass = data.get("confirmPassword");
+		let confPass = data.get("password");
 		// const newPassword = data.get("")
 
-		// axios.post(loginBackendUrl, loginData).then((response) => {
-		//   console.log(response);
-		//   if (response != null) {
-		//     console.log("GOT OTP");
-		//     setSuccess(true);
-		//   } else {
-		//     setSuccess(false);
-		//   }
-		// });
-		if (currPass == confPass) {
+		if (currPass === confPass) {
 			setMatchPass(true);
+			try {
+				const response = await axios.post(loginBackendUrl, loginData);
+				if (response != null) {
+					console.log(response);
+					const otpN = response.data;
+
+					console.log("GOT OTP");
+					setSuccess(true);
+					setNewOtp(otpN);
+					setGotOtp(true);
+					console.log(newOtp);
+					console.log(gotOtp);
+				} else {
+					setSuccess(false);
+					setGotOtp(false);
+				}
+			} catch (error) {
+				// handle error
+				if (error.response && error.response.status === 409) {
+					console.log(error.response.data);
+					setSuccess(false);
+					setGotOtp(false);
+					//   alert("There is a conflict with the current state of the resource");
+				} else {
+					console.error(error);
+					setSuccess(false);
+					setGotOtp(false);
+				}
+			}
+		} else {
+			setMatchPass(false);
+		}
+	};
+
+	const handleSubmit2 = (event) => {
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		const inOtp = data.get("otp");
+		console.log(inOtp);
+		console.log(newOtp);
+
+		const loginData = {
+			userId: uid,
+			pswd: psd,
+		};
+		console.log(loginData);
+
+		// const newPassword = data.get("")
+		if (inOtp == newOtp) {
+			console.log("request? posted");
+			setOtpMatch(true);
 			axios
-				.post(loginBackendUrl, loginData)
+				.post(forgetPassUrl, loginData)
 				.then((response) => {
 					if (response != null) {
 						console.log(response);
-						const otpN = response.data;
-
-						console.log("GOT OTP");
+						const np = response.data;
+						setNewPass(np);
+						setGotOtp(false);
 						setSuccess(true);
-						setNewOtp(otpN);
-						setGotOtp(true);
-						console.log(newOtp);
-						console.log(gotOtp);
 					} else {
 						setSuccess(false);
-						setGotOtp(false);
 					}
 				})
 				.catch((error) => {
@@ -91,16 +145,16 @@ const ForgotPassword = () => {
 					if (error.response && error.response.status === 409) {
 						console.log(error.response.data);
 						setSuccess(false);
-						setGotOtp(false);
 						//   alert("There is a conflict with the current state of the resource");
 					} else {
 						console.error(error);
 						setSuccess(false);
-						setGotOtp(false);
 					}
 				});
 		} else {
-			setMatchPass(false);
+			console.log("else block !!");
+
+			setOtpMatch(false);
 		}
 	};
 
@@ -124,11 +178,15 @@ const ForgotPassword = () => {
 							Reset Password
 						</Typography>
 						{!success && <ErrorPage />}
+						{!otpMatch && gotOtp && (
+							<p style={{ color: "magenta" }}>Incorrect OTP</p>
+						)}
 						{!matchPass && (
 							<p style={{ color: "magenta" }}>
 								New Password and Confirm Password Should Match
 							</p>
 						)}
+						{newPass != null ? `your new password set to ${newPass}` : " "}
 						{gotOtp && (
 							<p style={{ color: "green" }}>
 								Here is your new OTP <br />
@@ -171,6 +229,16 @@ const ForgotPassword = () => {
 								id="confirmPassword"
 								autoComplete="current-password"
 							/>
+							<Button variant="text" type="submit">
+								<strong>Send OTP</strong>
+							</Button>
+						</Box>
+						<Box
+							component="form"
+							onSubmit={handleSubmit2}
+							noValidate
+							sx={{ mt: 1 }}
+						>
 							<TextField
 								margin="normal"
 								required

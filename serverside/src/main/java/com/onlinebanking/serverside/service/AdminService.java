@@ -22,6 +22,9 @@ public class AdminService {
     AccRepository accRepository;
 
     @Autowired
+    TransactionService transactionService;
+
+    @Autowired
     CustomerRepository customerRepository;
 
     public Admin save(Admin a) {
@@ -53,6 +56,7 @@ public class AdminService {
 
     public boolean deleteAccount(long accNo) {
         Account account = accRepository.findByAccNo(accNo);
+        boolean res = transactionService.deleteTransactionByAccNo(account);
         accRepository.deleteByAccNo(accNo);
         return (accRepository.findByAccNo(accNo) == null);
     }

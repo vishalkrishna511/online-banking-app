@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
+import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
 
 // import { red } from "@mui/material/colors";
 // import { Grid } from "@mui/material";
@@ -32,7 +33,7 @@ import "./Button.css";
 
 // import LoadingScreen from "./LoadingScreen";
 // import axios from "axios";
-const NavBar = () => {
+const NavBar = (props) => {
 	const navigate = useNavigate();
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -53,13 +54,17 @@ const NavBar = () => {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
+						onClick={() => navigate("/")}
 					>
-						<MenuIcon />
+						{/* <MenuIcon /> */}
+						<CottageTwoToneIcon fontSize="large" />
 					</IconButton>
 					<Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
 						Wells Fargo
 					</Typography>
-					<Button color="inherit">Payments</Button>
+					<Button onClick={() => navigate("/payments")} color="inherit">
+						Payments
+					</Button>
 					<Button color="inherit">Deposits</Button>
 					<Button
 						color="inherit"
@@ -70,6 +75,17 @@ const NavBar = () => {
 					>
 						Account
 					</Button>
+					{props.isAdmin && (
+						<Button
+							color="inherit"
+							aria-controls={open ? "fade-menu" : undefined}
+							aria-haspopup="true"
+							aria-expanded={open ? "true" : undefined}
+							onClick={() => navigate("/admin")}
+						>
+							Admin
+						</Button>
+					)}
 					<Menu
 						sx={{ mt: 2, ml: -3 }}
 						id="fade-menu"

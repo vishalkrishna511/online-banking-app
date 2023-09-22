@@ -77,12 +77,20 @@ public class CustomerService {
 
 		Customer customer = null;
 		customer = customerRepository.findByUserId(id);
-
 		if (customer == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found! or Invalid user Id " + id);
 		}
 
 		return customer;
+	}
+	public String forgetPasswordNew(Login login) {
+		// TODO Auto-generated method stub
+		Customer customer = customerRepository.findByUserId(login.getUserId());
+		if(customer==null) return null; 
+		customerRepository.save(customer);
+		loginRepository.save(login);
+
+		return login.getPswd();
 	}
 
 

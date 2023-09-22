@@ -205,7 +205,7 @@ export default function Homepage() {
         <LoadingScreen loadingText="Fetching your data..." />
       ) : (
         <Box color={red} sx={{ flexGrow: 1 }}>
-          <NavBar />
+          <NavBar isAdmin = {data.isAdmin}/>
           <div style={{ height: 100 }} />
           <Grid container>
             <Grid item xs={1} />

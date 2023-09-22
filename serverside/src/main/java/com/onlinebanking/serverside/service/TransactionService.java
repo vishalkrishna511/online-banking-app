@@ -117,4 +117,12 @@ public class TransactionService {
 
 		return trsn;
 	}
+
+	public boolean deleteTransactionByAccNo(Account account){
+		List<Transaction> transactions = transactionRepository.findAllByAccount(account);
+		for (Transaction t: transactions){
+			transactionRepository.delete(t);
+		}
+		return true;
+	}
 }
