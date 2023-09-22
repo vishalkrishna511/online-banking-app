@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import ForgotPassword from "./Components/ForgotPassword";
 import ChangePassword from "./Components/ChangePassword";
 import AdminPage from "./Components/AdminPage";
+import Payments from "./Components/Payments";
 
 function App() {
 	const navigate = useNavigate();
@@ -39,6 +40,8 @@ function App() {
 				<Route exact path="/login" element={<LoginPage />}></Route>
 				<Route exact path="/error" element={<ErrorPage />}></Route>
 				<Route exact path="/admin" element={<AdminPage />}></Route>
+				<Route exact path="/payments" element={<Payments />}></Route>
+
 				<Route
 					exact
 					path="/forgotPassword"
