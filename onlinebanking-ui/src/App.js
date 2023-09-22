@@ -9,6 +9,7 @@ import ForgotPassword from "./Components/ForgotPassword";
 import ChangePassword from "./Components/ChangePassword";
 import AdminPage from "./Components/AdminPage";
 import Payments from "./Components/Payments";
+import TheDevelopers from "./Components/TheDevelopers";
 
 function App() {
 	const navigate = useNavigate();
@@ -41,6 +42,7 @@ function App() {
 				<Route exact path="/error" element={<ErrorPage />}></Route>
 				<Route exact path="/admin" element={<AdminPage />}></Route>
 				<Route exact path="/payments" element={<Payments />}></Route>
+				<Route exact path="/devs" element={<TheDevelopers />}></Route>
 
 				<Route
 					exact

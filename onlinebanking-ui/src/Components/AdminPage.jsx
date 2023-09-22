@@ -20,6 +20,7 @@ import { enqueueSnackbar } from "notistack";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import "./Button.css";
+import StickyFooter from "./StickyFooter";
 
 export default function AdminPage() {
 	const [displayForm, setDisplayForm] = useState(false);
@@ -401,6 +402,9 @@ export default function AdminPage() {
 					</Grid>
 				</Grid>
 			)}
+			<div style={{ position: "fixed", bottom: "0", width: "100%" }}>
+				<StickyFooter />
+			</div>
 		</>
 	);
 }

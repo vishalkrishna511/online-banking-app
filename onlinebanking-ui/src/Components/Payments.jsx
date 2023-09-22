@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "./NavBar";
 import ShowTransactions from "./ShowTransactions";
 import { Box, Grid } from "@mui/material";
+import StickyFooter from "./StickyFooter";
 
 const Payments = () => {
 	const userId = sessionStorage.getItem("userId");
@@ -24,6 +25,7 @@ const Payments = () => {
 					<ShowTransactions userName={{ userId }} /> */}
 				</Grid>
 			</Box>
+			<StickyFooter />
 		</>
 	);
 };

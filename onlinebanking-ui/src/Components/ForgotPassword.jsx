@@ -15,24 +15,25 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ErrorPage from "./ErrorPage";
+import StickyFooter from "./StickyFooter";
 
-function Copyright(props) {
-	return (
-		<Typography
-			variant="body2"
-			color="text.secondary"
-			align="center"
-			{...props}
-		>
-			{"Copyright © "}
-			<Link color="inherit" href="/login">
-				Team 6 Batch 3
-			</Link>{" "}
-			{/* {new Date().getFullYear()}
-            {"."} */}
-		</Typography>
-	);
-}
+// function Copyright(props) {
+// 	return (
+// 		<Typography
+// 			variant="body2"
+// 			color="text.secondary"
+// 			align="center"
+// 			{...props}
+// 		>
+// 			{"Copyright © "}
+// 			<Link color="inherit" href="/login">
+// 				Team 6 Batch 3
+// 			</Link>{" "}
+// 			{/* {new Date().getFullYear()}
+//             {"."} */}
+// 		</Typography>
+// 	);
+// }
 
 const defaultTheme = createTheme();
 
@@ -277,9 +278,12 @@ const ForgotPassword = () => {
 						</Box>
 					</Box>
 
-					<Copyright sx={{ mt: 4, mb: 4 }} />
+					{/* <Copyright sx={{ mt: 4, mb: 4 }} /> */}
 				</Container>
 			</ThemeProvider>
+			<div style={{ position: "fixed", bottom: "0", width: "100%" }}>
+				<StickyFooter />
+			</div>
 		</>
 	);
 };
