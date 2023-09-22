@@ -128,6 +128,16 @@ export default function AdminPage() {
 						Admin Dashboard
 					</Typography>
 					<Button
+						color="inherit"
+						// sx={{
+						// 	border: "3px solid #FCCC44",
+						// 	borderRadius: "10px",
+						// }}
+						onClick={() => navigate("/")}
+					>
+						Home
+					</Button>
+					<Button
 						onClick={() => {
 							sessionStorage.removeItem("userId");
 							window.location.reload();
