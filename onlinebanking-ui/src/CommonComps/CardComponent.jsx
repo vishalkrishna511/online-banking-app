@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LoadingScreen from "../Components/LoadingScreen";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Dialog,
@@ -13,6 +14,7 @@ import {
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import "./CardComponent.css";
+import AccountStatementPage from "../Components/AccountStatementPage";
 
 const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   const [accounts, setAccounts] = useState([]);
@@ -20,6 +22,7 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
   const [error, setError] = useState("");
   const [isFirst, setFirst] = useState(true);
   const [amount, setAmount] = useState("");
+  const navigate = useNavigate();
 
   const [account, setAccount] = useState({});
 
@@ -133,7 +136,15 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                   {accounts.map((val) => (
                     <div
                       className="main-button"
-                      onClick={() => onAccountSelect(val)}
+                      onClick={() => {
+                        onAccountSelect(val);
+                        console.log(val);
+                        if (gridNo === 0) {
+                          navigate("/accountStatement", {
+                            state: { val },
+                          });
+                        }
+                      }}
                       style={{ width: "100%" }}
                     >
                       <div
@@ -162,12 +173,14 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                         >
                           Account: {val.accNo}
                         </label>
-                        <label
-                          style={{ fontSize: 18 }}
-                          className="text-pointer"
-                        >
-                          Balance: {val.balance}
-                        </label>
+                        {gridNo !== 0 && (
+                          <label
+                            style={{ fontSize: 18 }}
+                            className="text-pointer"
+                          >
+                            Balance: {val.balance}
+                          </label>
+                        )}
                       </div>
                       <div style={{ display: "flex", flexDirection: "row" }}>
                         <Grid container spacing={1}>
@@ -210,6 +223,8 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                 </DialogContentText>
               </DialogContent>
             </div>
+          ) : gridNo === 0 ? (
+            <></>
           ) : (
             <>
               <DialogTitle>
@@ -219,7 +234,9 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                   ? "Deposit"
                   : gridNo === 3
                   ? "Transfer"
-                  : "Self"}{" "}
+                  : gridNo === 4
+                  ? "Self"
+                  : null}{" "}
                 from {account.accNo}
               </DialogTitle>
               <DialogContentText>
@@ -238,17 +255,19 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
               </DialogContentText>
             </>
           )}
-          <DialogActions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button
-              onClick={() => {
-                SubmitFunctionHandler();
-              }}
-              disabled={isFirst || loading || transactLoading}
-            >
-              {transactLoading ? "Processing..." : "Proceed"}
-            </Button>
-          </DialogActions>
+          {gridNo !== 0 && (
+            <DialogActions>
+              <Button onClick={onClose}>Cancel</Button>
+              <Button
+                onClick={() => {
+                  SubmitFunctionHandler();
+                }}
+                disabled={isFirst || loading || transactLoading}
+              >
+                {transactLoading ? "Processing..." : "Proceed"}
+              </Button>
+            </DialogActions>
+          )}
         </div>
       )}
     </Dialog>

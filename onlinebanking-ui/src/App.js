@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import ForgotPassword from "./Components/ForgotPassword";
 import ChangePassword from "./Components/ChangePassword";
 import AdminPage from "./Components/AdminPage";
+import AccountStatementPage from "./Components/AccountStatementPage";
 import Payments from "./Components/Payments";
 import TheDevelopers from "./Components/TheDevelopers";
 
@@ -54,6 +55,11 @@ function App() {
 					path="/changePassword"
 					element={<ChangePassword />}
 				></Route>
+				<Route
+                          exact
+                          path="/accountStatement"
+                          element={<AccountStatementPage />}
+                        ></Route>
 			</Routes>
 		</div>
 	);
