@@ -9,6 +9,8 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import MenuIcon from "@mui/icons-material/Menu";
+import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
+
 import axios from "axios";
 import DialogForm from "./DialogForm";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -121,8 +123,10 @@ export default function AdminPage() {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
+						onClick={() => navigate("/")}
 					>
-						<MenuIcon />
+						{/* <MenuIcon /> */}
+						<CottageTwoToneIcon fontSize="large" />
 					</IconButton>
 					<Typography variant="h4" sx={{ flexGrow: 1 }}>
 						Admin Dashboard
