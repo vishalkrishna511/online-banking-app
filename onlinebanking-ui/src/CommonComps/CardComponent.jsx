@@ -139,10 +139,11 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
                       onClick={() => {
                         onAccountSelect(val);
                         console.log(val);
-
-                        navigate("/accountStatement", {
-                          state: { val },
-                        });
+                        if (gridNo === 0) {
+                          navigate("/accountStatement", {
+                            state: { val },
+                          });
+                        }
                       }}
                       style={{ width: "100%" }}
                     >
@@ -254,17 +255,19 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
               </DialogContentText>
             </>
           )}
-          {gridNo !== 0 && (<DialogActions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button
-              onClick={() => {
-                SubmitFunctionHandler();
-              }}
-              disabled={isFirst || loading || transactLoading}
-            >
-              {transactLoading ? "Processing..." : "Proceed"}
-            </Button>
-          </DialogActions>)}
+          {gridNo !== 0 && (
+            <DialogActions>
+              <Button onClick={onClose}>Cancel</Button>
+              <Button
+                onClick={() => {
+                  SubmitFunctionHandler();
+                }}
+                disabled={isFirst || loading || transactLoading}
+              >
+                {transactLoading ? "Processing..." : "Proceed"}
+              </Button>
+            </DialogActions>
+          )}
         </div>
       )}
     </Dialog>
