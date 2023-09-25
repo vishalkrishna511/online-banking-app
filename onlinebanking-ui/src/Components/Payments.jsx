@@ -25,7 +25,9 @@ const Payments = () => {
 					<ShowTransactions userName={{ userId }} /> */}
 				</Grid>
 			</Box>
-			<StickyFooter />
+			<div style={{ position: "fixed", bottom: "0", width: "100%" }}>
+				<StickyFooter />
+			</div>
 		</>
 	);
 };

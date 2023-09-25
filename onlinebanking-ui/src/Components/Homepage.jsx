@@ -526,6 +526,7 @@ export default function Homepage() {
 							<label style={{ fontSize: 40 }}>Your Transactions</label>
 							<ShowTransactions userName={{ userId }} />
 						</Grid>
+						<StickyFooter />
 						<Grid item xs={1} />
 					</Grid>
 				</Box>
