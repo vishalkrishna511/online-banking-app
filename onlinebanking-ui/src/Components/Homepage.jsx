@@ -34,6 +34,7 @@ import ShowTransactions from "./ShowTransactions";
 import FundTransfer from "../CommonComps/FundTransfer";
 import SelfTransfer from "../CommonComps/SelfTransfer";
 import StickyFooter from "./StickyFooter";
+import Marque from "../CommonComps/Marque";
 
 export default function Homepage() {
 	// change the color of the AppBar to match the theme
@@ -212,6 +213,11 @@ export default function Homepage() {
 						<Grid item xs={1} />
 						<Grid container item md={10}>
 							<label style={{ fontSize: 40 }}>Hello, {data.name}</label>
+						</Grid>
+						<Grid item xs={1} />
+						<Grid item xs={1} />
+						<Grid container item md={10}>
+							<Marque />
 						</Grid>
 						<Grid item xs={1} />
 					</Grid>
