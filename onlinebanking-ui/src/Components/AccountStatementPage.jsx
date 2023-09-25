@@ -290,9 +290,9 @@ export default function AccountStatementPage() {
 					</Box>
 				)}
 			</Box>
-			<div style={{ position: "fixed", bottom: "0", width: "100%" }}>
+			{/* <div style={{ position: "fixed", bottom: "0", width: "100%" }}>
 				<StickyFooter />
-			</div>
+			</div> */}
 		</>
 	);
 }
