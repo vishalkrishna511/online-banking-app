@@ -2,6 +2,10 @@ package com.onlinebanking.serverside.controller;
 
 import java.util.List;
 
+import com.onlinebanking.serverside.exceptions.AccountAlreadyExistsException;
+import com.onlinebanking.serverside.exceptions.AccountNotFoundException;
+import com.onlinebanking.serverside.exceptions.CustomerNotFoundException;
+import com.onlinebanking.serverside.exceptions.TransactionsNotFoundException;
 import com.onlinebanking.serverside.model.AccountStatement;
 import com.onlinebanking.serverside.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +32,19 @@ public class AccountController {
 	AccountService accountService;
 
 	@PostMapping("/addAccount/{userId}")
-	public ResponseEntity<?> addAccount(@RequestBody Account account, @PathVariable("userId") Long userId) {
+	public ResponseEntity<?> addAccount(@RequestBody Account account, @PathVariable("userId") Long userId)
+			throws AccountAlreadyExistsException, CustomerNotFoundException {
 		Account response = accountService.save(account, userId);
-		if (response == null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Account Already Exists");
-		}
 		return ResponseEntity.status(HttpStatus.OK).body("Account Created");
 	}
 
 	@GetMapping("/fetchAccounts/{userId}")
-	public ResponseEntity<?> viewAccount(@PathVariable("userId") long userId) {
+	public ResponseEntity<?> viewAccount(@PathVariable("userId") long userId)
+			throws AccountNotFoundException, CustomerNotFoundException {
 
 		List<Account> response = accountService.viewAccount(userId);
 		if (response.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Account created");
+			throw new AccountNotFoundException("No Accounts created!");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
@@ -57,7 +60,8 @@ public class AccountController {
 	}
 
 	@PostMapping("getAccountStatement/{accNo}")
-	public List<Transaction> getAccountStatement(@RequestBody AccountStatement accountStatement, @PathVariable long accNo){
+	public List<Transaction> getAccountStatement(@RequestBody AccountStatement accountStatement, @PathVariable long accNo)
+			throws TransactionsNotFoundException {
 		return accountService.getAccountStatement(accNo, accountStatement);
 
 	}

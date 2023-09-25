@@ -2,6 +2,8 @@ package com.onlinebanking.serverside.controller;
 
 import java.util.List;
 
+import com.onlinebanking.serverside.exceptions.AccountNotFoundException;
+import com.onlinebanking.serverside.exceptions.CustomerNotFoundException;
 import com.onlinebanking.serverside.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +37,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/admin/deleteAccount/{accNo}")
-    public boolean deleteAccount(@PathVariable("accNo") long accNo){
+    public boolean deleteAccount(@PathVariable("accNo") long accNo)
+        throws AccountNotFoundException {
         boolean response = adminService.deleteAccount(accNo);
         return response;
     }
@@ -61,8 +64,8 @@ public class AdminController {
     }
 
     @PutMapping("/admin/editCustomer/{userId}")
-    public boolean editCustomer(@PathVariable("userId") Long userId, @RequestBody Customer customer){
-        System.out.println(customer.getAadhar());
+    public boolean editCustomer(@PathVariable("userId") Long userId, @RequestBody Customer customer)
+            throws CustomerNotFoundException {
         boolean response = adminService.editCustomer(customer);
         return response;
     }

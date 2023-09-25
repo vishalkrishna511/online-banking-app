@@ -2,6 +2,7 @@ package com.onlinebanking.serverside.controller;
 
 import javax.validation.Valid;
 
+import com.onlinebanking.serverside.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,35 +32,39 @@ public class CustomerController {
 	LoginService loginService;
 
 	@PostMapping("/addCustomer")
-	public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer c) {
+	public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer c)
+				throws InvalidInputException {
 
 		Customer response = customerService.save(c);
 		if (response == null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Customer details Invalid");
+			throw new InvalidInputException("Customer details invalid. Please check!");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 
 	}
 
 	@PostMapping("/resetPassword/{currentPassword}")
-	public ResponseEntity<?> resetPassword(@PathVariable("currentPassword") String currentPassword ,@RequestBody Login login){
+	public ResponseEntity<?> resetPassword(@PathVariable("currentPassword") String currentPassword ,@RequestBody Login login)
+			throws InvalidInputException {
 		
 		Boolean setOrNot = customerService.resetPassword(login,currentPassword);
-		if(setOrNot == false) {return ResponseEntity.status(HttpStatus.CONFLICT).body("Not Able to change password");}
+		if(setOrNot == false) {throw new InvalidInputException("Not Able to change password");}
 		return ResponseEntity.status(HttpStatus.OK).body("Password changed successfully");
 	}
 	@PostMapping("/genOtp")
-	public ResponseEntity<?> genOtp(@RequestBody Login login){
+	public ResponseEntity<?> genOtp(@RequestBody Login login)
+			throws InvalidInputException {
 
 		String otp = customerService.forgetPassword(login);
-		if(otp.equals("User not found")) {return ResponseEntity.status(HttpStatus.CONFLICT).body("INVALID OTP");}
+		if(otp.equals("User not found")) {throw new InvalidInputException("INVALID OTP");}
 		return ResponseEntity.status(HttpStatus.OK).body(otp);
 	}
 	@PostMapping("/forgetPasswordNew")
-	public ResponseEntity<?> forgetPasswordNew(@RequestBody Login login){
+	public ResponseEntity<?> forgetPasswordNew(@RequestBody Login login)
+			throws InvalidInputException {
 
 		String newPass = customerService.forgetPasswordNew(login);
-		if(newPass == null) {return ResponseEntity.status(HttpStatus.CONFLICT).body("INVALID OTP");}
+		if(newPass == null) {throw new InvalidInputException("INVALID OTP");}
 		return ResponseEntity.status(HttpStatus.OK).body(newPass);
 	}
 	
@@ -72,5 +77,4 @@ public class CustomerController {
 	public Customer getCustomerDetails(@PathVariable("id") Long id) throws ResponseStatusException {
 		return customerService.getCustomerDetails(id);
 	}
-
 }

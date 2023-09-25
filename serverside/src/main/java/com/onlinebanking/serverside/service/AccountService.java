@@ -14,6 +14,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
 import com.onlinebanking.serverside.dao.TransactionRepository;
+import com.onlinebanking.serverside.exceptions.AccountAlreadyExistsException;
+import com.onlinebanking.serverside.exceptions.CustomerNotFoundException;
+import com.onlinebanking.serverside.exceptions.TransactionsNotFoundException;
 import com.onlinebanking.serverside.model.AccountStatement;
 import com.onlinebanking.serverside.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +42,14 @@ public class AccountService {
 
 	private static final Long counter = 100000000000L;
 
-	public Account save(Account account, Long userId) {
+	public Account save(Account account, Long userId)
+			throws CustomerNotFoundException, AccountAlreadyExistsException {
 
 		Account response = accRepository.findByAccNo(account.getAccNo());
 		Customer customer = customerService.getCustomerDetails(userId);
 
 		if (customer == null)
-			return null;
+			throw new CustomerNotFoundException("Customer not found for the given userId");
 
 		if (response == null) {
 			String ifsc = generateIFSC(customer.getCity(), customer.getState());
@@ -57,7 +61,8 @@ public class AccountService {
 			account.setOpeningDate(getCurrentDate());
 			return accRepository.save(account);
 		}
-		return null;
+
+		throw new AccountAlreadyExistsException("Account already exists with the given account number");
 
 	}
 
@@ -95,8 +100,11 @@ public class AccountService {
 		return ifscCode;
 	}
 
-	public List<Account> viewAccount(long userId) {
+	public List<Account> viewAccount(long userId) throws CustomerNotFoundException{
 		Customer customer = customerService.getCustomer(userId);
+		if (customer == null) {
+            throw new CustomerNotFoundException("No customer exists with the given userId");
+        }
 		return accRepository.findByUser(customer);
 	}
 
@@ -115,7 +123,8 @@ public class AccountService {
 
 		return getAccountDetails(accNo).getBalance();
 	}
-	public List<Transaction> getAccountStatement(long accNo, AccountStatement accountStatement){
+	public List<Transaction> getAccountStatement(long accNo, AccountStatement accountStatement)
+				throws TransactionsNotFoundException{
 		List<Transaction> transactions = new ArrayList<>();
 		String fromDate = accountStatement.getFromDate();
 		String toDate = accountStatement.getToDate();
@@ -130,6 +139,10 @@ public class AccountService {
 				transactions.add(successTransactions.get(idx));
 			}
 		});
+
+		if (transactions.isEmpty()){
+			throw new TransactionsNotFoundException("No transactions made for the given time period!");
+		}
 		return transactions;
 	}
 }

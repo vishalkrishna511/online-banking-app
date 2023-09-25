@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.onlinebanking.serverside.exceptions.TransactionDeclinedException;
+import com.onlinebanking.serverside.exceptions.InvalidTransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +29,10 @@ public class TransactionController {
 	private TransactionService transactionService;
 
 	@PostMapping("/transact")
-	public ResponseEntity<?> addTransaction(@RequestBody @Valid Transaction transaction) {
+	public ResponseEntity<?> addTransaction(@RequestBody @Valid Transaction transaction) throws InvalidTransactionException {
 		Transaction transacted = transactionService.transact(transaction);
 		if (transacted == null || transacted.getStatus().equals("FAIL")) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid Transaction");
+			throw new InvalidTransactionException("Invalid Transaction");
 		} else return ResponseEntity.status(HttpStatus.OK).body(transacted);
 	}
 	@GetMapping("/getTransactions/{Accnt}")
@@ -39,19 +41,21 @@ public class TransactionController {
 	}
 	
 	@PostMapping("/withdraw")
-	public ResponseEntity<?> withdrawMoney(@RequestBody @Valid Transaction transaction) {
+	public ResponseEntity<?> withdrawMoney(@RequestBody @Valid Transaction transaction)
+			throws TransactionDeclinedException{
 		Transaction response = transactionService.withdrawMoney(transaction);
 		if (response == null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Transaction Declined");
+			throw new TransactionDeclinedException("Withdrawal Declined");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Withdraw success");
 	}
 	
 	@PostMapping("/deposit")
-	public ResponseEntity<?> depositMoney(@RequestBody @Valid Transaction transaction) {
+	public ResponseEntity<?> depositMoney(@RequestBody @Valid Transaction transaction)
+			throws TransactionDeclinedException{
 		Transaction response = transactionService.depositMoney(transaction);
 		if (response == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transaction Declined");
+			throw new TransactionDeclinedException("Transaction Declined");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Deposit success");
 	}
