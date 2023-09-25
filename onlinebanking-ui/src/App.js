@@ -40,10 +40,10 @@ function App() {
 				<Route exact path="/" element={<Homepage />}></Route>
 				<Route exact path="/register" element={<RegistrationPage />}></Route>
 				<Route exact path="/login" element={<LoginPage />}></Route>
-				<Route exact path="/error" element={<ErrorPage />}></Route>
 				<Route exact path="/admin" element={<AdminPage />}></Route>
 				<Route exact path="/payments" element={<Payments />}></Route>
 				<Route exact path="/devs" element={<TheDevelopers />}></Route>
+				<Route exact path="*" element={<ErrorPage />}> </Route>
 
 				<Route
 					exact
