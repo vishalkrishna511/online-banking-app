@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
 
 import com.onlinebanking.serverside.dao.TransactionRepository;
 import com.onlinebanking.serverside.exceptions.AccountAlreadyExistsException;
+import com.onlinebanking.serverside.exceptions.AccountNotFoundException;
 import com.onlinebanking.serverside.exceptions.CustomerNotFoundException;
 import com.onlinebanking.serverside.exceptions.TransactionsNotFoundException;
 import com.onlinebanking.serverside.model.AccountStatement;
@@ -47,9 +48,6 @@ public class AccountService {
 
 		Account response = accRepository.findByAccNo(account.getAccNo());
 		Customer customer = customerService.getCustomerDetails(userId);
-
-		if (customer == null)
-			throw new CustomerNotFoundException("Customer not found for the given userId");
 
 		if (response == null) {
 			String ifsc = generateIFSC(customer.getCity(), customer.getState());
@@ -105,21 +103,25 @@ public class AccountService {
 		if (customer == null) {
             throw new CustomerNotFoundException("No customer exists with the given userId");
         }
-		return accRepository.findByUser(customer);
+		List<Account> accounts = accRepository.findByUser(customer);
+		if (accounts.isEmpty()) {
+			throw new AccountNotFoundException("No Accounts created!");
+		}
+		return accounts;
 	}
 
-	public Account getAccountDetails(long accNo) throws ResponseStatusException {
+	public Account getAccountDetails(long accNo) throws AccountNotFoundException {
 
 		Account account = null;
 		account = accRepository.findByAccNo(accNo);
 
 		if (account == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account Found With Account No :  " + accNo);
+			throw new AccountNotFoundException("No Account Found With Account No :  " + accNo);
 		}
 		return account;
 	}
 
-	public double getAccountBalance(long accNo) throws ResponseStatusException {
+	public double getAccountBalance(long accNo) throws AccountNotFoundException {
 
 		return getAccountDetails(accNo).getBalance();
 	}

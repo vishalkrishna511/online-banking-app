@@ -2,6 +2,8 @@ package com.onlinebanking.serverside.service;
 
 import java.util.List;
 
+import com.onlinebanking.serverside.exceptions.CustomerAlreadyExistsException;
+import com.onlinebanking.serverside.exceptions.InvalidInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,37 +33,44 @@ public class CustomerService {
 	@Autowired
 	AccRepository accRepository;
 
-	public Customer save(Customer customer) {
+	public Customer save(Customer customer)
+			throws InvalidInputException, CustomerAlreadyExistsException {
 		Customer response = customerRepository.findByUserId(customer.getUserId());
 		if (response == null) {
 			Customer resp = customerRepository.save(customer);
 			if (resp == null)
-				return null;
+				throw new InvalidInputException("Check the details entered!");
 			loginService.getLoginObject(resp.getUserId(), resp.getPswd());
 			return resp;
 		} else
-			return null;
+			throw new CustomerAlreadyExistsException("Customer Exists with the given user Id");
 	}
-	public Boolean resetPassword(Login login,String currentPassword) {
+	public Boolean resetPassword(Login login,String currentPassword)
+		throws InvalidInputException{
 		
 		Customer changePassword = customerRepository.findByUserId(login.getUserId());
 		Login loginPassword = loginRepository.findByUserId(login.getUserId());
 		
 		
-		if(loginPassword==null||changePassword==null) return false;
+		if(loginPassword==null||changePassword==null)
+			throw new InvalidInputException("Not Able to change password");
 		
 		if(currentPassword.equals(loginPassword.getPswd())) {
 			changePassword.setPswd(login.getPswd());
 			loginPassword.setPswd(login.getPswd());
 			customerRepository.save(changePassword);
 			loginRepository.save(loginPassword);
-			return true;}
-		return false;
-	}
+			return true;
+		}
+		else {
+			throw new InvalidInputException("Not Able to change password");
+		}
+}
 
-	public String forgetPassword(Login login) {
+	public String forgetPassword(Login login)
+		throws CustomerNotFoundException {
 		Customer customer = customerRepository.findByUserId(login.getUserId());
-		if(customer==null) return "User not found";
+		if(customer==null) throw new CustomerNotFoundException("No customer exists with given User Id!");
 
 		Random random = new Random();
 		int randomNumber = random.nextInt(900000) + 100000;
@@ -73,25 +82,26 @@ public class CustomerService {
 		return customerRepository.findByUserId(userId);
 	}
 
-	public Customer getCustomerDetails(Long id) throws ResponseStatusException {
+	public Customer getCustomerDetails(Long id) throws CustomerNotFoundException {
 
 		Customer customer = null;
 		customer = customerRepository.findByUserId(id);
 		if (customer == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found! or Invalid user Id " + id);
+			throw new CustomerNotFoundException("User not found! or Invalid user Id " + id);
 		}
 
 		return customer;
 	}
-	public String forgetPasswordNew(Login login) {
+	public String forgetPasswordNew(Login login) throws CustomerNotFoundException {
 		// TODO Auto-generated method stub
 		Customer customer = customerRepository.findByUserId(login.getUserId());
-		if(customer==null) return null; 
+		if(customer==null) throw new CustomerNotFoundException("User not found! or Invalid user Id ");
 		customerRepository.save(customer);
 		loginRepository.save(login);
 
 		return login.getPswd();
 	}
+
 
 
 }

@@ -43,19 +43,16 @@ public class AccountController {
 			throws AccountNotFoundException, CustomerNotFoundException {
 
 		List<Account> response = accountService.viewAccount(userId);
-		if (response.isEmpty()) {
-			throw new AccountNotFoundException("No Accounts created!");
-		}
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@GetMapping("/getAccountDetails/{accNo}")
-	public Account getAccountDetails(@PathVariable("accNo") long accNo) throws ResponseStatusException {
+	public Account getAccountDetails(@PathVariable("accNo") long accNo) throws AccountNotFoundException {
 		return accountService.getAccountDetails(accNo);
 	}
 	
 	@GetMapping("/getAccountBalance/{accNo}")
-	public double getAccountBalance(@PathVariable("accNo") long accNo) throws ResponseStatusException {
+	public double getAccountBalance(@PathVariable("accNo") long accNo) throws AccountNotFoundException {
 		return accountService.getAccountBalance(accNo);
 	}
 

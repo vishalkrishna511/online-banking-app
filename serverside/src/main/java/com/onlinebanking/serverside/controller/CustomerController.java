@@ -33,12 +33,9 @@ public class CustomerController {
 
 	@PostMapping("/addCustomer")
 	public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer c)
-				throws InvalidInputException {
+			throws InvalidInputException, CustomerAlreadyExistsException {
 
 		Customer response = customerService.save(c);
-		if (response == null) {
-			throw new InvalidInputException("Customer details invalid. Please check!");
-		}
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 
 	}
@@ -47,21 +44,19 @@ public class CustomerController {
 	public ResponseEntity<?> resetPassword(@PathVariable("currentPassword") String currentPassword ,@RequestBody Login login)
 			throws InvalidInputException {
 		
-		Boolean setOrNot = customerService.resetPassword(login,currentPassword);
-		if(setOrNot == false) {throw new InvalidInputException("Not Able to change password");}
+		customerService.resetPassword(login,currentPassword);
 		return ResponseEntity.status(HttpStatus.OK).body("Password changed successfully");
 	}
 	@PostMapping("/genOtp")
 	public ResponseEntity<?> genOtp(@RequestBody Login login)
-			throws InvalidInputException {
+			throws CustomerNotFoundException {
 
 		String otp = customerService.forgetPassword(login);
-		if(otp.equals("User not found")) {throw new InvalidInputException("INVALID OTP");}
 		return ResponseEntity.status(HttpStatus.OK).body(otp);
 	}
 	@PostMapping("/forgetPasswordNew")
 	public ResponseEntity<?> forgetPasswordNew(@RequestBody Login login)
-			throws InvalidInputException {
+			throws InvalidInputException, CustomerNotFoundException {
 
 		String newPass = customerService.forgetPasswordNew(login);
 		if(newPass == null) {throw new InvalidInputException("INVALID OTP");}
@@ -74,7 +69,7 @@ public class CustomerController {
 	}
 
 	@GetMapping("/getCustomer/{id}")
-	public Customer getCustomerDetails(@PathVariable("id") Long id) throws ResponseStatusException {
+	public Customer getCustomerDetails(@PathVariable("id") Long id) throws CustomerNotFoundException {
 		return customerService.getCustomerDetails(id);
 	}
 }

@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.onlinebanking.serverside.exceptions.AccountNotFoundException;
 import com.onlinebanking.serverside.exceptions.TransactionDeclinedException;
 import com.onlinebanking.serverside.exceptions.InvalidTransactionException;
+import com.onlinebanking.serverside.exceptions.TransactionsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,34 +31,30 @@ public class TransactionController {
 	private TransactionService transactionService;
 
 	@PostMapping("/transact")
-	public ResponseEntity<?> addTransaction(@RequestBody @Valid Transaction transaction) throws InvalidTransactionException {
+	public ResponseEntity<?> addTransaction(@RequestBody @Valid Transaction transaction)
+			throws InvalidTransactionException, TransactionDeclinedException, AccountNotFoundException {
 		Transaction transacted = transactionService.transact(transaction);
-		if (transacted == null || transacted.getStatus().equals("FAIL")) {
+		if (transacted == null) {
 			throw new InvalidTransactionException("Invalid Transaction");
 		} else return ResponseEntity.status(HttpStatus.OK).body(transacted);
 	}
 	@GetMapping("/getTransactions/{Accnt}")
-	public List<Transaction> getTransactions(@PathVariable("Accnt") long Accnt){
+	public List<Transaction> getTransactions(@PathVariable("Accnt") long Accnt)
+		throws TransactionsNotFoundException {
 		return transactionService.getTransactions(Accnt);
 	}
 	
 	@PostMapping("/withdraw")
 	public ResponseEntity<?> withdrawMoney(@RequestBody @Valid Transaction transaction)
-			throws TransactionDeclinedException{
+			throws TransactionDeclinedException, AccountNotFoundException{
 		Transaction response = transactionService.withdrawMoney(transaction);
-		if (response == null) {
-			throw new TransactionDeclinedException("Withdrawal Declined");
-		}
 		return ResponseEntity.status(HttpStatus.OK).body("Withdraw success");
 	}
 	
 	@PostMapping("/deposit")
 	public ResponseEntity<?> depositMoney(@RequestBody @Valid Transaction transaction)
-			throws TransactionDeclinedException{
+			throws TransactionDeclinedException, AccountNotFoundException{
 		Transaction response = transactionService.depositMoney(transaction);
-		if (response == null) {
-			throw new TransactionDeclinedException("Transaction Declined");
-		}
 		return ResponseEntity.status(HttpStatus.OK).body("Deposit success");
 	}
 	
