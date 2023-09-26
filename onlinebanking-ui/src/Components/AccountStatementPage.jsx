@@ -285,7 +285,7 @@ export default function AccountStatementPage() {
               onClick={() => {
                 handleDownload();
               }}
-              disabled={statement.length < 0}
+              disabled={statement.length <= 0}
             >
               Download
             </Button>

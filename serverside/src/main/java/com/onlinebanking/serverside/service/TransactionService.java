@@ -1,5 +1,9 @@
 package com.onlinebanking.serverside.service;
 
+import com.onlinebanking.serverside.exceptions.AccountNotFoundException;
+import com.onlinebanking.serverside.exceptions.InvalidTransactionException;
+import com.onlinebanking.serverside.exceptions.TransactionDeclinedException;
+import com.onlinebanking.serverside.exceptions.TransactionsNotFoundException;
 import com.onlinebanking.serverside.model.Account;
 
 import java.time.LocalDateTime;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.onlinebanking.serverside.dao.AccRepository;
 import com.onlinebanking.serverside.dao.TransactionRepository;
 import com.onlinebanking.serverside.model.Transaction;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class TransactionService {
@@ -34,10 +39,14 @@ public class TransactionService {
 			return null;
 	}
 
-	public Transaction transact(Transaction transaction) {
+	public Transaction transact(Transaction transaction)
+			throws TransactionDeclinedException, AccountNotFoundException {
 		Account account = accRepository.findByAccNo(transaction.getDebitAccnt());
-		if (account == null || accRepository.findByAccNo(transaction.getCreditAccnt()) == null) {
-			return null;
+		if (account == null) {
+			throw new AccountNotFoundException("Debit Account Not Found!");
+		}
+		if (accRepository.findByAccNo(transaction.getCreditAccnt()) == null){
+			throw new AccountNotFoundException("Credit Account Not Found!");
 		}
 		double transactionAmt = transaction.getAmt();
 		boolean isCreditAccntDisabled = accRepository.findByAccNo(transaction.getCreditAccnt()).isDisabled();
@@ -47,6 +56,14 @@ public class TransactionService {
 		if (transactionAmt > balance || account.isDisabled() || isCreditAccntDisabled || isDebitAccntFD
 				|| isCreditAccntFD || transaction.getAmt() < 0) {
 			transaction.setStatus("FAIL");
+			String reason = "";
+			if (transactionAmt > balance) reason = "Amount exceeds the available balance!";
+			else if (account.isDisabled()) reason = "Your Account is disabled!";
+			else if (isCreditAccntDisabled) reason = "Creditor account is disabled!";
+			else if (isDebitAccntFD) reason = "Debitor account is a FD account!";
+			else if (isCreditAccntFD) reason = "Creditor account is a FD account!";
+			else reason = "Amount is less than zero!";
+			throw new TransactionDeclinedException("Transaction Failed: " + reason + "!");
 		} else {
 			Account accCredited = accRepository.findByAccNo(transaction.getCreditAccnt());
 			transaction.setStatus("SUCCESS");
@@ -62,15 +79,16 @@ public class TransactionService {
 		}
 		transaction.setAccNo(accRepository.findByAccNo(transaction.getDebitAccnt()));
 		transaction.setTimeStamp(getCurrentDateTimeStamp());
-		System.out.println("iugb" + transaction);
 		return transactionRepository.save(transaction);
 	}
 
-	public List<Transaction> getTransactions(long Accnt) {
+	public List<Transaction> getTransactions(long Accnt) throws TransactionsNotFoundException {
 		
 		List<Transaction> debtList = transactionRepository.findAllByDebitAccnt(Accnt);
 		List<Transaction> credList = transactionRepository.findAllByCreditAccnt(Accnt);
 		debtList.addAll(credList);
+		if (debtList.isEmpty())
+			throw new TransactionsNotFoundException("No transaction record for the provided account!");
 		return debtList;
 		
 	}
@@ -81,13 +99,14 @@ public class TransactionService {
 		return now.format(formatter);
 	}
 
-	public Transaction withdrawMoney(Transaction trsn) {
+	public Transaction withdrawMoney(Transaction trsn)
+			throws TransactionDeclinedException, AccountNotFoundException{
 		// TODO Auto-generated method stub
 		Account account = accRepository.findByAccNo(trsn.getDebitAccnt());
-		if (account == null || account.isDisabled() || account.getBalance() < trsn.getAmt() || trsn.getAmt() < 0) {
-			return null;
-
-		}
+		if (account == null ) throw new AccountNotFoundException("No account exists with the given account number!");
+		if (account.isDisabled()) throw new AccountNotFoundException("Account is disabled!");
+		if (account.getBalance() < trsn.getAmt()) throw new TransactionDeclinedException("Amount exceeds the balance!");
+		if (trsn.getAmt() < 0) throw new TransactionDeclinedException("Amount cannot be less than zero!");
 		account.setBalance(account.getBalance() - trsn.getAmt());
 		accRepository.save(account);
 		trsn.setAccNo(account);
@@ -100,12 +119,13 @@ public class TransactionService {
 		return trsn;
 	}
 
-	public Transaction depositMoney(Transaction trsn) {
+	public Transaction depositMoney(Transaction trsn)
+			throws TransactionDeclinedException, AccountNotFoundException{
 		Account account = accRepository.findByAccNo(trsn.getCreditAccnt());
-		if (account == null || account.isDisabled() || trsn.getAmt() < 0) {
-			return null;
+		if (account == null ) throw new AccountNotFoundException("No account exists with the given account number!");
+		if (account.isDisabled()) throw new AccountNotFoundException("Account is disabled!");
+		if (trsn.getAmt() < 0) throw new TransactionDeclinedException("Amount cannot be less than zero!");
 
-		}
 		account.setBalance(account.getBalance() + trsn.getAmt());
 		accRepository.save(account);
 		trsn.setAccNo(account);
