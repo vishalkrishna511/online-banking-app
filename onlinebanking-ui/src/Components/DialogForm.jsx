@@ -13,13 +13,13 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Typography } from "@mui/material";
 import Account from "./Account";
-import TransactionTable from "./TransactionTable"
+import TransactionTable from "./TransactionTable";
 
 export default function DialogForm(props) {
   const userData = props.formData;
   const [formData, setFormData] = useState({});
   const [transactions, setTransactions] = useState([]);
-  const [clicked, setClicked] = useState(false)
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     if (props.action === "Create") {
@@ -60,8 +60,10 @@ export default function DialogForm(props) {
   const handleDelete = async (accNo) => {
     console.log(accNo);
     try {
-      const response = await axios.delete(`http://localhost:8080/admin/deleteAccount/${accNo}`)
-      console.log(response)
+      const response = await axios.delete(
+        `http://localhost:8080/admin/deleteAccount/${accNo}`
+      );
+      console.log(response);
       enqueueSnackbar(`Account ${accNo} deleted...`, "success");
     } catch (error) {
       enqueueSnackbar(`An error occured: ${error.message}`, "error");
@@ -70,8 +72,11 @@ export default function DialogForm(props) {
 
   const handleDisable = async (accNo) => {
     try {
-      const response = await axios.put(`http://localhost:8080/admin/toggleAccount/${accNo}`)
+      const response = await axios.put(
+        `http://localhost:8080/admin/toggleAccount/${accNo}`
+      );
       enqueueSnackbar(`Account ${accNo} status changed...`, "success");
+      props.onConfirm && props.onConfirm();
     } catch (error) {
       enqueueSnackbar(`An error occured: ${error.message}`, "error");
     }
@@ -82,7 +87,10 @@ export default function DialogForm(props) {
     try {
       console.log(props.formData);
       let response;
-      response = await axios.put(`http://localhost:8080/admin/editCustomer/${props.formData.userId}`, props.formData)
+      response = await axios.put(
+        `http://localhost:8080/admin/editCustomer/${props.formData.userId}`,
+        props.formData
+      );
       enqueueSnackbar(`Customer Updated...`, "success");
       handleClose();
     } catch (error) {
@@ -92,7 +100,7 @@ export default function DialogForm(props) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(props.formData)
+    console.log(props.formData);
     props.setFormData({
       ...props.formData,
       [name]: value,
@@ -188,8 +196,11 @@ export default function DialogForm(props) {
               ))}
             </div>
             <div style={{ border: "1px solid black", margin: "20px" }}>
-              <div> 
-                <TransactionTable transactions={transactions} clicked={clicked}/>
+              <div>
+                <TransactionTable
+                  transactions={transactions}
+                  clicked={clicked}
+                />
               </div>
             </div>
           </div>
@@ -201,17 +212,21 @@ export default function DialogForm(props) {
           <form onSubmit={handleEdit}>
             <DialogTitle>{props.formTitle}</DialogTitle>
             <DialogContent>
-              {Object.keys(props.formData).map((key) => (key !== "accnts" && key !== "isAdmin" &&
-                <TextField
-                  key={key}
-                  label={key}
-                  name={key}
-                  value={props.formData[key] || ""}
-                  onChange={handleInputChange}
-                  fullWidth
-                  margin="normal"
-                />
-              ))}
+              {Object.keys(props.formData).map(
+                (key) =>
+                  key !== "accnts" &&
+                  key !== "isAdmin" && (
+                    <TextField
+                      key={key}
+                      label={key}
+                      name={key}
+                      value={props.formData[key] || ""}
+                      onChange={handleInputChange}
+                      fullWidth
+                      margin="normal"
+                    />
+                  )
+              )}
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
