@@ -279,11 +279,13 @@ export default function AccountStatementPage() {
 							</h2>
 						)}
 						<Divider style={{ marginBottom: "10px", marginTop: "10px" }} />
+
 						<Button
 							style={styles.button}
 							onClick={() => {
 								handleDownload();
 							}}
+							disabled={myStatement.length < 0}
 						>
 							Download
 						</Button>
