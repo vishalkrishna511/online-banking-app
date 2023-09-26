@@ -9,4 +9,7 @@ import com.onlinebanking.serverside.model.Login;
 public interface LoginRepository extends JpaRepository<Login, Long> {
 
 	public Login findByUserId(long userId) ;
+	
+
+	
 }

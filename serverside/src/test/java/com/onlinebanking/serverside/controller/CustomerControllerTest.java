@@ -15,6 +15,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,6 +31,7 @@ import com.onlinebanking.serverside.service.LoginService;
 import com.onlinebanking.serverside.service.TransactionService;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 @WebMvcTest
 public class CustomerControllerTest {
 
