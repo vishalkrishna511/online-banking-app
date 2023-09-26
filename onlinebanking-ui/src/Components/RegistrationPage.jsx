@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import StickyFooter from "./StickyFooter";
+import { Alert } from "@mui/material";
+import { useEffect } from "react";
 
 // function Copyright(props) {
 // 	return (
@@ -41,52 +43,6 @@ import StickyFooter from "./StickyFooter";
 const defaultTheme = createTheme();
 
 export default function RegistrationPage() {
-  const navigate = useNavigate();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    // boilerplate code to prevent page from reloading
-    try {
-      setLoading(false);
-      const response = await axios.post(
-        "http://localhost:8080/addCustomer",
-        {
-          name: name,
-          email: email,
-          mobile: mobile,
-          dob: dob,
-          aadhar: aadhar,
-          country: country,
-          city: city,
-          state: state,
-          pswd: password,
-          confirmPassword: confirmPassword,
-          fatherName: "",
-          motherName: "",
-          userId: 0,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.status >= 200 && response.status < 300) {
-        enqueueSnackbar(
-          `Registration successful, your User-ID is ${response.data.userId}`,
-          "success"
-        );
-        navigate("/login");
-      } else throw new Error("An error occured");
-      setError("");
-    } catch (e) {
-      console.log(e);
-      setError(e.message);
-      enqueueSnackbar(`An error occured ${e.message}`, "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   //setup state for all the text fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -98,9 +54,158 @@ export default function RegistrationPage() {
   const [state, setState] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isEmptyField, setIsEmptyField] = useState({
+    isEmpty: false,
+    field: "",
+  });
+
+  //   useEffect(() => {
+  //     checkFields();
+  //   }, [
+  //     name,
+  //     email,
+  //     mobile,
+  //     dob,
+  //     aadhar,
+  //     country,
+  //     city,
+  //     state,
+  //     password,
+  //     confirmPassword,
+  //   ]);
+  const navigate = useNavigate();
+  const checkFields = () => {
+    if (!name) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "Name",
+      });
+      return false;
+    }
+    if (!email) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "Email",
+      });
+      return false;
+    }
+    if (!mobile) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "Mobile",
+      });
+      return false;
+    }
+    if (!dob) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "dob",
+      });
+      return false;
+    }
+
+    if (!aadhar) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "aadhar",
+      });
+      return false;
+    }
+    if (!country) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "country",
+      });
+      return false;
+    }
+
+    if (!city) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "city",
+      });
+      return false;
+    }
+    if (!state) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "state",
+      });
+      return false;
+    }
+    if (!password) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "Password",
+      });
+      return false;
+    }
+    if (!confirmPassword) {
+      setIsEmptyField({
+        isEmpty: true,
+        field: "Password",
+      });
+      return false;
+    }
+    return true;
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsEmptyField({
+      isEmpty: false,
+      field: "",
+    });
+    // boilerplate code to prevent page from reloading
+    if (checkFields()) {
+      try {
+        if (password === confirmPassword) {
+          setLoading(false);
+          const response = await axios.post(
+            "http://localhost:8080/addCustomer",
+            {
+              name: name,
+              email: email,
+              mobile: mobile,
+              dob: dob,
+              aadhar: aadhar,
+              country: country,
+              city: city,
+              state: state,
+              pswd: password,
+              confirmPassword: confirmPassword,
+              fatherName: "",
+              motherName: "",
+              userId: 0,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.status >= 200 && response.status < 300) {
+            enqueueSnackbar(
+              `Registration successful, your User-ID is ${response.data.userId}`,
+              "success"
+            );
+            navigate("/login");
+          } else throw new Error("Error");
+          setError("");
+        } else {
+          enqueueSnackbar("Passwords are not matching");
+        }
+      } catch (e) {
+        console.log(e);
+        setError(e);
+
+        enqueueSnackbar(`An error occured ${e.response.data.message}`, "error");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   return (
     <>
@@ -129,6 +234,11 @@ export default function RegistrationPage() {
             >
               <Grid container spacing={1}>
                 <Grid item xs={12}>
+                  {isEmptyField.isEmpty && (
+                    <Alert severity="error">
+                      {`Please Enter ${isEmptyField.field} Field`}
+                    </Alert>
+                  )}
                   <TextField
                     required
                     fullWidth

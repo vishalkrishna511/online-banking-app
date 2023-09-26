@@ -57,11 +57,16 @@ const CardComponent = ({ userId, visible, onConfirm, onClose, gridNo }) => {
       console.log(response);
       onConfirm();
       enqueueSnackbar(
-        "Amount withdrawn from the account succesfully",
+        `Amount ${
+          gridNo === 1 ? "withdrawn" : "deposited"
+        } from the account succesfully`,
         "success"
       );
     } catch (err) {
-      enqueueSnackbar(`Failed Transaction: ${err.message}`, "error");
+      enqueueSnackbar(
+        `Failed Transaction: ${err.response.data.message}`,
+        "error"
+      );
       console.log(err);
     } finally {
       setTransactLoading(false);

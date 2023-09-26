@@ -34,96 +34,96 @@ import "./Button.css";
 // import LoadingScreen from "./LoadingScreen";
 // import axios from "axios";
 const NavBar = (props) => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const open = Boolean(anchorEl);
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
-	return (
-		<>
-			<AppBar style={{ background: "#D41C2C" }} position="static">
-				<Toolbar>
-					<IconButton
-						size="large"
-						edge="start"
-						color="inherit"
-						aria-label="menu"
-						sx={{ mr: 2 }}
-						onClick={() => navigate("/")}
-					>
-						{/* <MenuIcon /> */}
-						<CottageTwoToneIcon fontSize="large" />
-					</IconButton>
-					<Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-						Wells Fargo
-					</Typography>
-					<Button onClick={() => navigate("/payments")} color="inherit">
-						Payments
-					</Button>
-					<Button color="inherit">Deposits</Button>
-					<Button
-						color="inherit"
-						aria-controls={open ? "fade-menu" : undefined}
-						aria-haspopup="true"
-						aria-expanded={open ? "true" : undefined}
-						onClick={handleClick}
-					>
-						Account
-					</Button>
-					{props.isAdmin && (
-						<Button
-							color="inherit"
-							aria-controls={open ? "fade-menu" : undefined}
-							aria-haspopup="true"
-							aria-expanded={open ? "true" : undefined}
-							onClick={() => navigate("/admin")}
-						>
-							Admin
-						</Button>
-					)}
-					<Menu
-						sx={{ mt: 2, ml: -3 }}
-						id="fade-menu"
-						MenuListProps={{
-							"aria-labelledby": "fade-button",
-						}}
-						anchorEl={anchorEl}
-						open={open}
-						onClose={handleClose}
-						TransitionComponent={Fade}
-					>
-						<MenuItem onClick={handleClose}>
-							<Link
-								onClick={() => navigate("/changePassword")}
-								color="inherit"
-								underline="none"
-							>
-								Change Password
-							</Link>
-						</MenuItem>
-					</Menu>
-					<Button
-						onClick={() => {
-							sessionStorage.removeItem("userId");
-							window.location.reload();
-						}}
-						color="inherit"
-						sx={{
-							border: "3px solid #FCCC44",
-							borderRadius: "10px",
-						}}
-					>
-						Logout
-					</Button>
-				</Toolbar>
-			</AppBar>
-		</>
-	);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <>
+      <AppBar style={{ background: "#D41C2C" }} position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={() => navigate("/")}
+          >
+            {/* <MenuIcon /> */}
+            <CottageTwoToneIcon fontSize="large" />
+          </IconButton>
+          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+            Wells Fargo
+          </Typography>
+          <Button onClick={() => navigate("/payments")} color="inherit">
+            Payments
+          </Button>
+          {/* <Button color="inherit">Deposits</Button> */}
+          <Button
+            color="inherit"
+            aria-controls={open ? "fade-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            Account
+          </Button>
+          {props.isAdmin && (
+            <Button
+              color="inherit"
+              aria-controls={open ? "fade-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={() => navigate("/admin")}
+            >
+              Admin
+            </Button>
+          )}
+          <Menu
+            sx={{ mt: 2, ml: -3 }}
+            id="fade-menu"
+            MenuListProps={{
+              "aria-labelledby": "fade-button",
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            TransitionComponent={Fade}
+          >
+            <MenuItem onClick={handleClose}>
+              <Link
+                onClick={() => navigate("/changePassword")}
+                color="inherit"
+                underline="none"
+              >
+                Change Password
+              </Link>
+            </MenuItem>
+          </Menu>
+          <Button
+            onClick={() => {
+              sessionStorage.removeItem("userId");
+              window.location.reload();
+            }}
+            color="inherit"
+            sx={{
+              border: "3px solid #FCCC44",
+              borderRadius: "10px",
+            }}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </>
+  );
 };
 
 export default NavBar;

@@ -64,8 +64,13 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/login")
-	public Boolean validateCustomer(@RequestBody Login login) {
-		return loginService.validateCustomer(login);
+	public ResponseEntity<?> validateCustomer(@RequestBody Login login) {
+		Boolean b = loginService.validateCustomer(login);
+		if (b){
+			return ResponseEntity.status(HttpStatus.OK).body("Successful Login");
+
+		}
+		else return ResponseEntity.status(HttpStatus.CONFLICT).body("Please Check your Credentials and Login Again. Please Sign Up if you don't have an Account!");
 	}
 
 	@GetMapping("/getCustomer/{id}")

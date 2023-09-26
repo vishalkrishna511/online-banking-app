@@ -17,7 +17,6 @@ import axios from "axios";
 function ShowTransactions(props) {
   const { userName } = props;
   const userId = userName.userId;
-  // console.log(userId);
   const [accounts, setAccounts] = useState([]);
   const [transactions, setTransactions] = useState([]);
   // const [selectedAccount, setSelectedAccount] = useState([]);
@@ -33,6 +32,7 @@ function ShowTransactions(props) {
         console.error(error);
       });
   }, [userId, userName]);
+
   useEffect(() => {
     if (accounts.length > 0) {
       let promises = accounts.map((number) =>
