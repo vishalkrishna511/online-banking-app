@@ -60,7 +60,7 @@ public class AccountService {
 			account.setDisabled(false);
 			account.setOpeningDate(getCurrentDate());
 			response = accRepository.save(account);
-			if(account.getBalance()>0) {
+			if (account.getBalance() > 0) {
 				Transaction transaction = new Transaction();
 				transaction.setAccNo(account);
 				transaction.setAmt(account.getBalance());
@@ -72,18 +72,8 @@ public class AccountService {
 				transactionRepository.save(transaction);
 			}
 
+			return response;
 
-//			Transaction transaction = new Transaction();
-//			transaction.setAccNo(account);
-//			transaction.setAmt(account.getBalance());
-//			transaction.setDebitAccnt(account.getAccNo());
-//			transaction.setTimeStamp(getCurrentDateTimeStamp());
-//			transaction.setStatus("SUCCESS");
-//			transaction.setDebitAccnt(0L);
-//			transaction.setTxnType("Opening Deposit");
-			
-			return response; 
-			
 		}
 
 		throw new AccountAlreadyExistsException("Account already exists with the given account number");
