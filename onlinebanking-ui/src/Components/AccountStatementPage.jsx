@@ -15,9 +15,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import jsPDF from "jspdf";
-import { Kitesurfing } from "@mui/icons-material";
-import StickyFooter from "./StickyFooter";
-import { enqueueSnackbar } from "notistack";
 
 export default function AccountStatementPage() {
   const location = useLocation();

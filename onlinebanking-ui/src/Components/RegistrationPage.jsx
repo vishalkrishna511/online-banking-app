@@ -18,7 +18,9 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import StickyFooter from "./StickyFooter";
 import { Alert } from "@mui/material";
-import { useEffect } from "react";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 // function Copyright(props) {
 // 	return (
@@ -282,13 +284,14 @@ export default function RegistrationPage() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    name="Date of Birth"
-                    fullWidth
-                    id="Date of Birth"
-                    label="Date of Birth"
-                    onChange={(e) => setDob(e.target.value)}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      // referenceDate="dd-MM-yyyy HH:mm:ss.SSS"
+                      inputformat="DD-MM-YYYY"
+                      value={dob}
+                      onChange={(newValue) => setDob(newValue)}
+                    ></DatePicker>
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
