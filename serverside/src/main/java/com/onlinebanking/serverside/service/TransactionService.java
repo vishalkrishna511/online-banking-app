@@ -87,8 +87,8 @@ public class TransactionService {
 		List<Transaction> debtList = transactionRepository.findAllByDebitAccnt(Accnt);
 		List<Transaction> credList = transactionRepository.findAllByCreditAccnt(Accnt);
 		debtList.addAll(credList);
-		if (debtList.isEmpty())
-			throw new TransactionsNotFoundException("No transaction record for the provided account!");
+//		if (debtList.isEmpty())
+//			throw new TransactionsNotFoundException("No transaction record for the provided account!");
 		return debtList;
 		
 	}
@@ -130,7 +130,7 @@ public class TransactionService {
 		accRepository.save(account);
 		trsn.setAccNo(account);
 		trsn.setTimeStamp(getCurrentDateTimeStamp());
-		trsn.setStatus("Success");
+		trsn.setStatus("SUCCESS");
 		trsn.setDebitAccnt(0L);
 		trsn.setTxnType("Deposit");
 		transactionRepository.save(trsn);

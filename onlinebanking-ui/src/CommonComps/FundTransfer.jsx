@@ -46,11 +46,11 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
       console.log(response);
       onConfirm();
       enqueueSnackbar(
-        "Amount withdrawn from the account succesfully",
+        "Amount Transferred from the account successfully",
         "success"
       );
     } catch (err) {
-      enqueueSnackbar(`Failed Transaction: ${err.message}`, "error");
+      enqueueSnackbar(`${err.response.data.message}`, "error");
       console.log(err);
     } finally {
       setTransactLoading(false);
@@ -78,8 +78,8 @@ const FundTransfer = ({ userId, visible, onConfirm, onClose }) => {
       }
     } catch (e) {
       onClose();
-      setError(e.message);
-      enqueueSnackbar(e.message, "error");
+      setError(e.response.data.message);
+      enqueueSnackbar(e.response.data.message, "error");
     } finally {
       setLoading(false);
     }

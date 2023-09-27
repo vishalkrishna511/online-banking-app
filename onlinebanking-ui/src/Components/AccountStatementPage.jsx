@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Button, Typography, Box, Divider } from "@mui/material";
+import { Button, Typography, Box, Divider, Alert } from "@mui/material";
 import NavBar from "./NavBar";
 import { red } from "@mui/material/colors";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,8 +15,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import jsPDF from "jspdf";
-import { Kitesurfing } from "@mui/icons-material";
-import StickyFooter from "./StickyFooter";
 
 export default function AccountStatementPage() {
   const location = useLocation();
@@ -27,6 +25,8 @@ export default function AccountStatementPage() {
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [statement, setStatement] = useState([]);
+  const [isEmpty, setIsEmpty] = useState(false);
+  //   const [showNO, setShowNO] = useState(true);
   const handleBalanceClick = () => {
     setShowBalance(!showBalance);
     console.log(recievedData);
@@ -64,17 +64,26 @@ export default function AccountStatementPage() {
   const handleSearch = async () => {
     console.log(statement);
     try {
-      const body = {
-        fromDate: dayjs(fromDate).format("DD-MM-YYYY HH:mm:ss.SSS"),
-        toDate: dayjs(toDate).format("DD-MM-YYYY HH:mm:ss.SSS"),
-      };
-      console.log(body);
-      const response = await axios.post(
-        `http://localhost:8080/getAccountStatement/${recievedData.accNo}`,
-        body
-      );
-      setStatement(response.data);
-      console.log(response.data);
+      if (fromDate === null || toDate === null) {
+        setIsEmpty(true);
+      } else {
+        if (toDate > fromDate) {
+          const body = {
+            fromDate: dayjs(fromDate).format("DD-MM-YYYY HH:mm:ss.SSS"),
+            toDate: dayjs(toDate).format("DD-MM-YYYY HH:mm:ss.SSS"),
+          };
+          console.log(body);
+          setIsEmpty(false);
+          const response = await axios.post(
+            `http://localhost:8080/getAccountStatement/${recievedData.accNo}`,
+            body
+          );
+          setStatement(response.data);
+          console.log(response.data);
+        } else {
+          setIsEmpty(true);
+        }
+      }
     } catch (e) {
       console.log(e);
     }
@@ -142,6 +151,7 @@ export default function AccountStatementPage() {
                 ></DatePicker>
                 <DatePicker
                   // referenceDate="dd-MM-yyyy HH:mm:ss.SSS"
+                  //   defaultValue={}
                   style={styles.date}
                   value={toDate}
                   onChange={(newValue) => setToDate(newValue)}
@@ -158,6 +168,9 @@ export default function AccountStatementPage() {
             >
               Search
             </Button>
+            {isEmpty && (
+              <Alert severity="error"> Provide the Dates Properly</Alert>
+            )}
             <Divider style={{ marginBottom: "10px", marginTop: "10px" }} />
 
             {statement.length > 0 ? (

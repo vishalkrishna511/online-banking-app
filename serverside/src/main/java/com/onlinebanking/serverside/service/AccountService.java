@@ -41,10 +41,12 @@ public class AccountService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
+//	@Autowired
+//	TransactionService transactionService;
+
 	private static final Long counter = 100000000000L;
 
-	public Account save(Account account, Long userId)
-			throws CustomerNotFoundException, AccountAlreadyExistsException {
+	public Account save(Account account, Long userId) throws CustomerNotFoundException, AccountAlreadyExistsException {
 
 		Account response = accRepository.findByAccNo(account.getAccNo());
 		Customer customer = customerService.getCustomerDetails(userId);
@@ -57,7 +59,21 @@ public class AccountService {
 			account.setUser(customer);
 			account.setDisabled(false);
 			account.setOpeningDate(getCurrentDate());
-			return accRepository.save(account);
+			response = accRepository.save(account);
+			if (account.getBalance() > 0) {
+				Transaction transaction = new Transaction();
+				transaction.setAccNo(account);
+				transaction.setAmt(account.getBalance());
+				transaction.setDebitAccnt(0L);
+				transaction.setCreditAccnt(account.getAccNo());
+				transaction.setTimeStamp(getCurrentDateTimeStamp());
+				transaction.setStatus("SUCCESS");
+				transaction.setTxnType("Opening Deposit");
+				transactionRepository.save(transaction);
+			}
+
+			return response;
+
 		}
 
 		throw new AccountAlreadyExistsException("Account already exists with the given account number");
@@ -68,16 +84,21 @@ public class AccountService {
 		UUID uuid = UUID.randomUUID();
 		String uuidString = uuid.toString();
 		int hashCode = Math.abs(uuidString.hashCode());
-		long uniqueNum = (long)hashCode;
-		uniqueNum=uniqueNum+counter;
+		long uniqueNum = (long) hashCode;
+		uniqueNum = uniqueNum + counter;
 		return uniqueNum;
 	}
-	
 
 	private String getCurrentDate() {
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		return currentDate.format(formatter);
+	}
+
+	private static String getCurrentDateTimeStamp() {
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS");
+		return now.format(formatter);
 	}
 
 	private static String generateIFSC(String city, String state) {
@@ -98,11 +119,11 @@ public class AccountService {
 		return ifscCode;
 	}
 
-	public List<Account> viewAccount(long userId) throws CustomerNotFoundException{
+	public List<Account> viewAccount(long userId) throws CustomerNotFoundException {
 		Customer customer = customerService.getCustomer(userId);
 		if (customer == null) {
-            throw new CustomerNotFoundException("No customer exists with the given userId");
-        }
+			throw new CustomerNotFoundException("No customer exists with the given userId");
+		}
 		List<Account> accounts = accRepository.findByUser(customer);
 		if (accounts.isEmpty()) {
 			throw new AccountNotFoundException("No Accounts created!");
@@ -125,24 +146,27 @@ public class AccountService {
 
 		return getAccountDetails(accNo).getBalance();
 	}
+
 	public List<Transaction> getAccountStatement(long accNo, AccountStatement accountStatement)
-				throws TransactionsNotFoundException{
+			throws TransactionsNotFoundException {
 		List<Transaction> transactions = new ArrayList<>();
 		String fromDate = accountStatement.getFromDate();
 		String toDate = accountStatement.getToDate();
-		List<Transaction> successTransactions = transactionRepository.findAllByAccNoWhereStatusIsSuccess(accNo, "SUCCESS");
-		DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS");
+		List<Transaction> successTransactions = transactionRepository.findAllByAccNoWhereStatusIsSuccess(accNo,
+				"SUCCESS");
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS");
 		LocalDateTime startDate, endDate;
 		startDate = LocalDateTime.parse(fromDate, dateFormat);
 		endDate = LocalDateTime.parse(toDate, dateFormat);
 		IntStream.range(0, successTransactions.size()).forEach((idx) -> {
-			LocalDateTime timeOfTransaction = LocalDateTime.parse(successTransactions.get(idx).getTimeStamp(), dateFormat);
-			if(startDate.isBefore(timeOfTransaction) && endDate.isAfter(timeOfTransaction)){
+			LocalDateTime timeOfTransaction = LocalDateTime.parse(successTransactions.get(idx).getTimeStamp(),
+					dateFormat);
+			if (startDate.isBefore(timeOfTransaction) && endDate.isAfter(timeOfTransaction)) {
 				transactions.add(successTransactions.get(idx));
 			}
 		});
 
-		if (transactions.isEmpty()){
+		if (transactions.isEmpty()) {
 			throw new TransactionsNotFoundException("No transactions made for the given time period!");
 		}
 		return transactions;

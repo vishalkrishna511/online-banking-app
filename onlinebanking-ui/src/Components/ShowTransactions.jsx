@@ -17,10 +17,10 @@ import axios from "axios";
 function ShowTransactions(props) {
   const { userName } = props;
   const userId = userName.userId;
-  // console.log(userId);
   const [accounts, setAccounts] = useState([]);
   const [transactions, setTransactions] = useState([]);
   // const [selectedAccount, setSelectedAccount] = useState([]);
+  // console.log
 
   useEffect(() => {
     axios
@@ -28,25 +28,31 @@ function ShowTransactions(props) {
       .then((response) => {
         let numbers = response.data.map((accountNo) => accountNo.accNo);
         setAccounts(numbers);
+        // console.log(numbers);
+        // console.log(accounts);
       })
       .catch((error) => {
         console.error(error);
       });
   }, [userId, userName]);
+
   useEffect(() => {
     if (accounts.length > 0) {
-      let promises = accounts.map((number) =>
-        axios.get(`http://localhost:8080/getTransactions/${number}`)
-      );
-      Promise.all(promises)
-        .then((responses) => {
-          let txns = responses.map((response) => response.data);
-          setTransactions(txns);
-          // console.log(transactions);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      for (let cnt = 0; cnt < accounts.length; cnt++) {
+        let promises = accounts.map((number) =>
+          axios.get(`http://localhost:8080/getTransactions/${number}`)
+        );
+        Promise.all(promises)
+          .then((responses) => {
+            let txns = responses.map((response) => response.data);
+            setTransactions(txns);
+            // console.log(responses);
+            // console.log(transactions);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
     }
   }, [accounts]);
 
