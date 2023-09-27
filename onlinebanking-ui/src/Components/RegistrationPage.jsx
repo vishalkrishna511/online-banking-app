@@ -21,6 +21,7 @@ import { Alert } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
+import ConfettiExplosion from "react-confetti-explosion";
 
 // function Copyright(props) {
 // 	return (
@@ -58,6 +59,7 @@ export default function RegistrationPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [explode, setExplode] = useState(false);
   const [isEmptyField, setIsEmptyField] = useState({
     isEmpty: false,
     field: "",
@@ -192,16 +194,17 @@ export default function RegistrationPage() {
               `Registration successful, your User-ID is ${response.data.userId}`,
               "success"
             );
-            navigate("/login");
+            setExplode(true);
           } else throw new Error("Error");
           setError("");
         } else {
           enqueueSnackbar("Passwords are not matching");
+          setExplode(false);
         }
       } catch (e) {
         console.log(e);
         setError(e);
-
+        setExplode(false);
         enqueueSnackbar(`An error occured ${e.response.data.message}`, "error");
       } finally {
         setLoading(false);
@@ -234,6 +237,15 @@ export default function RegistrationPage() {
               onSubmit={handleSubmit}
               sx={{ mt: 3 }}
             >
+              {explode && (
+                <ConfettiExplosion
+                  force={0.6}
+                  width={1500}
+                  duration={2500}
+                  particleCount={800}
+                  onComplete={() => navigate("/login")}
+                />
+              )}
               <Grid container spacing={1}>
                 <Grid item xs={12}>
                   {isEmptyField.isEmpty && (
