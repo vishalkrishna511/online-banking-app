@@ -98,6 +98,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlinebanking.serverside.service.AccountService;
 import com.onlinebanking.serverside.service.AdminService;
 import com.onlinebanking.serverside.service.CustomerService;
@@ -132,6 +133,7 @@ public class AccountControllerTest {
 	TransactionService transactionService;
 	
 	@MockBean
+	ObjectMapper mapper = new ObjectMapper();
 	
 	
 	
