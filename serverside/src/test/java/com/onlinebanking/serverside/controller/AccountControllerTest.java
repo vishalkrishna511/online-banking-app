@@ -89,23 +89,53 @@
 
 package com.onlinebanking.serverside.controller;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.onlinebanking.serverside.model.Account;
+import com.onlinebanking.serverside.service.AccountService;
+import com.onlinebanking.serverside.service.AdminService;
+import com.onlinebanking.serverside.service.CustomerService;
+import com.onlinebanking.serverside.service.LoginService;
+import com.onlinebanking.serverside.service.TransactionService;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
 // add required annotations for running the test cases
 
-@SpringBootTest
-@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
+@WebMvcTest
 public class AccountControllerTest {
+	@Autowired
+	MockMvc mvc;
+	
+	@MockBean
+	CustomerService customerService;
+	
+	@MockBean
+	AccountService accountService;
+	
+	@MockBean
+	AdminService adminService;
+	
+	@MockBean
+	LoginService loginService;
+	
+	@MockBean
+	TransactionService transactionService;
+	
+	@MockBean
+	
+	
+	
+	
 
     @Test
     public void testAddAccount() throws Exception {
