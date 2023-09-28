@@ -87,25 +87,41 @@
 //    }
 //}
 
-package com.onlinebanking.serverside.controller;
+package com.onlinebanking.serverside;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onlinebanking.serverside.dao.AccRepository;
+import com.onlinebanking.serverside.model.Account;
 import com.onlinebanking.serverside.service.AccountService;
 import com.onlinebanking.serverside.service.AdminService;
 import com.onlinebanking.serverside.service.CustomerService;
 import com.onlinebanking.serverside.service.LoginService;
 import com.onlinebanking.serverside.service.TransactionService;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -116,39 +132,93 @@ import org.springframework.test.web.servlet.MockMvc;
 public class AccountControllerTest {
 	@Autowired
 	MockMvc mvc;
-	
+
 	@MockBean
 	CustomerService customerService;
-	
+
 	@MockBean
 	AccountService accountService;
-	
+
 	@MockBean
 	AdminService adminService;
-	
+
 	@MockBean
 	LoginService loginService;
-	
+
 	@MockBean
 	TransactionService transactionService;
-	
+
 	@MockBean
+	AccRepository accRespository;
+
 	ObjectMapper mapper = new ObjectMapper();
-	
-	
-	
-	
 
-    @Test
-    public void testAddAccount() throws Exception {
-    }
+	@Test
+	public void testAddAccount() throws Exception {
+		Account account = new Account();
+		account.setAccNo(123456789012L);
+		account.setAccType("Savings");
+		account.setBalance(1000000);
+		account.setBranch("Kolkata");
+		account.setIfsc("KOLK69855WB");
+		account.setDisabled(false);
+		account.setOpeningDate("18-09-2023");
 
-    @Test
-    public void viewAccount() {
-    }
+		Long userId = 1L;
 
-    @Test
-    public void getAccountDetails() {
-    }
+		Mockito.when(accountService.save(any(Account.class), eq(userId))).thenReturn(account);
+
+		String json = mapper.writeValueAsString(account);
+		mvc.perform(post("/addAccount/{userId}", 1L).contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+	}
+
+	@Test
+	public void viewAccount() throws Exception {
+
+		Account account = new Account();
+
+		account.setAccNo(123456789012L);
+		account.setAccType("Savings");
+		account.setBalance(1000000);
+		account.setBranch("Kolkata");
+		account.setIfsc("KOLK69855WB");
+		account.setDisabled(false);
+		account.setOpeningDate("18-09-2023");
+
+		Long userId = 1L;
+
+		List<Account> accList = new ArrayList<Account>();
+		accList.add(account);
+
+		Mockito.when(accountService.viewAccount(ArgumentMatchers.anyLong())).thenReturn(accList);
+
+		String json = mapper.writeValueAsString(accList);
+		mvc.perform(get("/fetchAccounts/{userId}", 1L).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+
+	}
+
+	@Test
+	public void getAccountDetails() throws Exception {
+		Account account = new Account();
+
+		account.setAccNo(123456789012L);
+		account.setAccType("Savings");
+		account.setBalance(1000000);
+		account.setBranch("Kolkata");
+		account.setIfsc("KOLK69855WB");
+		account.setDisabled(false);
+		account.setOpeningDate("18-09-2023");
+
+		Long accNo = 123456789012L;
+
+		Mockito.when(accountService.getAccountDetails(ArgumentMatchers.anyLong())).thenReturn(account);
+
+		String json = mapper.writeValueAsString(account);
+		mvc.perform(get("/getAccountDetails/{accNo}",123456789012L ).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+
+	}
 }
-//>>>>>>> ad681d7369731b49d622e656f38c39dc9ca9b756
