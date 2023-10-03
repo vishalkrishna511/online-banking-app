@@ -35,3 +35,9 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+onlinebanking-ui/.idea/misc.xml
+onlinebanking-ui/.idea/modules.xml
+onlinebanking-ui/.idea/onlinebanking-ui.iml
+onlinebanking-ui/.idea/vcs.xml
+Admin_Application/admin_app/package-lock.json
+onlinebanking-ui/package-lock.json

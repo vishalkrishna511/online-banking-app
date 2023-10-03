@@ -2,6 +2,7 @@ package com.onlinebanking.serverside.controller;
 
 import javax.validation.Valid;
 
+import com.onlinebanking.serverside.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,24 +32,49 @@ public class CustomerController {
 	LoginService loginService;
 
 	@PostMapping("/addCustomer")
-	public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer c) {
+	public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer c)
+			throws InvalidInputException, CustomerAlreadyExistsException {
 
 		Customer response = customerService.save(c);
-		if (response == null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Customer details Invalid");
-		}
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 
 	}
 
+	@PostMapping("/resetPassword/{currentPassword}")
+	public ResponseEntity<?> resetPassword(@PathVariable("currentPassword") String currentPassword ,@RequestBody Login login)
+			throws InvalidInputException {
+		
+		customerService.resetPassword(login,currentPassword);
+		return ResponseEntity.status(HttpStatus.OK).body("Password changed successfully");
+	}
+	@PostMapping("/genOtp")
+	public ResponseEntity<?> genOtp(@RequestBody Login login)
+			throws CustomerNotFoundException {
+
+		String otp = customerService.forgetPassword(login);
+		return ResponseEntity.status(HttpStatus.OK).body(otp);
+	}
+	@PostMapping("/forgetPasswordNew")
+	public ResponseEntity<?> forgetPasswordNew(@RequestBody Login login)
+			throws InvalidInputException, CustomerNotFoundException {
+
+		String newPass = customerService.forgetPasswordNew(login);
+		if(newPass == null) {throw new InvalidInputException("INVALID OTP");}
+		return ResponseEntity.status(HttpStatus.OK).body(newPass);
+	}
+	
 	@PostMapping("/login")
-	public Boolean validateCustomer(@RequestBody Login login) {
-		return loginService.validateCustomer(login);
+	public ResponseEntity<?> validateCustomer(@RequestBody Login login) {
+		Boolean b = loginService.validateCustomer(login);
+		if (b){
+			return ResponseEntity.status(HttpStatus.OK).body("Successful Login");
+
+		}
+		else return ResponseEntity.status(HttpStatus.CONFLICT).body("Please Check your Credentials and Login Again. Please Sign Up if you don't have an Account!");
 	}
 
 	@GetMapping("/getCustomer/{id}")
-	public Customer getCustomerDetails(@PathVariable("id") Long id) throws ResponseStatusException {
+	public Customer getCustomerDetails(@PathVariable("id") Long id) throws CustomerNotFoundException {
 		return customerService.getCustomerDetails(id);
 	}
-
 }

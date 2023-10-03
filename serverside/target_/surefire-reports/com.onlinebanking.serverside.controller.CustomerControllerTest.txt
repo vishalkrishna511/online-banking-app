@@ -1,0 +1,34 @@
+-------------------------------------------------------------------------------
+Test set: com.onlinebanking.serverside.controller.CustomerControllerTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.919 s <<< FAILURE! - in com.onlinebanking.serverside.controller.CustomerControllerTest
+testValidateCustomer  Time elapsed: 0.049 s  <<< ERROR!
+java.lang.Error: 
+Unresolved compilation problems: 
+	The import org.junit.Assert cannot be resolved
+	The import org.junit.Ignore cannot be resolved
+	The import org.junit.runner cannot be resolved
+	RunWith cannot be resolved to a type
+
+	at com.onlinebanking.serverside.controller.CustomerControllerTest.<init>(CustomerControllerTest.java:5)
+
+testAddCustomer  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.Error: 
+Unresolved compilation problems: 
+	The import org.junit.Assert cannot be resolved
+	The import org.junit.Ignore cannot be resolved
+	The import org.junit.runner cannot be resolved
+	RunWith cannot be resolved to a type
+
+	at com.onlinebanking.serverside.controller.CustomerControllerTest.<init>(CustomerControllerTest.java:5)
+
+testGetCustomerDetails  Time elapsed: 0.002 s  <<< ERROR!
+java.lang.Error: 
+Unresolved compilation problems: 
+	The import org.junit.Assert cannot be resolved
+	The import org.junit.Ignore cannot be resolved
+	The import org.junit.runner cannot be resolved
+	RunWith cannot be resolved to a type
+
+	at com.onlinebanking.serverside.controller.CustomerControllerTest.<init>(CustomerControllerTest.java:5)
+

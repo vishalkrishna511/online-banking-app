@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: com.onlinebanking.serverside.ServersideApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 5.056 s <<< FAILURE! - in com.onlinebanking.serverside.ServersideApplicationTests
+contextLoads  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.onlinebanking.serverside.service.AccountService] from ClassLoader [jdk.internal.loader.ClassLoaders$AppClassLoader@6d5380c2]
+Caused by: java.lang.NoClassDefFoundError: com/onlinebanking/serverside/dao/AccRepository
+Caused by: java.lang.ClassNotFoundException: com.onlinebanking.serverside.dao.AccRepository
+

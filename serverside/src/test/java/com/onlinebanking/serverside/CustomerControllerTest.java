@@ -1,12 +1,9 @@
-package com.onlinebanking.serverside.controller;
+package com.onlinebanking.serverside;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -14,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot. test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,6 +22,7 @@ import com.onlinebanking.serverside.dao.CustomerRepository;
 import com.onlinebanking.serverside.model.Customer;
 import com.onlinebanking.serverside.model.Login;
 import com.onlinebanking.serverside.service.AccountService;
+import com.onlinebanking.serverside.service.AdminService;
 import com.onlinebanking.serverside.service.CustomerService;
 import com.onlinebanking.serverside.service.LoginService;
 import com.onlinebanking.serverside.service.TransactionService;
@@ -44,6 +42,9 @@ public class CustomerControllerTest {
 
 	@MockBean
 	AccountService accountService;
+	
+	@MockBean
+	AdminService adminService;
 
 	@MockBean
 	TransactionService transService;
@@ -109,7 +110,8 @@ public class CustomerControllerTest {
 		Mockito.when(customerService.getCustomerDetails(ArgumentMatchers.any())).thenReturn(customer);
 
 //		System.out.println("test method");
-		mvc.perform(get("/getCustomer/{id}", 1).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.name", Matchers.equalTo(customer.getName())));
+		mvc.perform(get("/getCustomer/{id}", 1L).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).
+		andExpect(jsonPath("$.name", Matchers.equalTo(customer.getName())));
+				//.andExpect(jsonPath("$.city", Matchers.equalTo(customer.getCity())));
 	}
 }

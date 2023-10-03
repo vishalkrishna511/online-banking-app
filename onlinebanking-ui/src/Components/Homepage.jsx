@@ -1,13 +1,12 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import CameraFrontIcon from "@mui/icons-material/CameraFront";
+import MoveDownIcon from "@mui/icons-material/MoveDown";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import { red } from "@mui/material/colors";
-import { Grid } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -20,10 +19,22 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CardActionArea } from "@mui/material";
+import Menu from "@mui/material/Menu";
+import { styled } from "@mui/material/styles";
+import Switch from "@mui/material/Switch";
 
+import WalletIcon from "@mui/icons-material/Wallet";
 import "./Button.css";
 import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
+import { enqueueSnackbar } from "notistack";
+import NavBar from "./NavBar";
+import CardComponent from "../CommonComps/CardComponent";
+import ShowTransactions from "./ShowTransactions";
+import FundTransfer from "../CommonComps/FundTransfer";
+import SelfTransfer from "../CommonComps/SelfTransfer";
+import StickyFooter from "./StickyFooter";
+import Marque from "../CommonComps/Marque";
 
 export default function Homepage() {
   // change the color of the AppBar to match the theme
@@ -33,6 +44,54 @@ export default function Homepage() {
   // AppBar has a prop called sx
   // sx is a prop that takes an object
   // the object has a property called flexGrow
+
+  const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+    width: 62,
+    height: 34,
+    padding: 7,
+    "& .MuiSwitch-switchBase": {
+      margin: 1,
+      padding: 0,
+      transform: "translateX(6px)",
+      "&.Mui-checked": {
+        color: "#fff",
+        transform: "translateX(22px)",
+        "& .MuiSwitch-thumb:before": {
+          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+            "#fff"
+          )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+        },
+        "& + .MuiSwitch-track": {
+          opacity: 1,
+          backgroundColor:
+            theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
+        },
+      },
+    },
+    "& .MuiSwitch-thumb": {
+      backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+      width: 32,
+      height: 32,
+      "&:before": {
+        content: "''",
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        left: 0,
+        top: 0,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+          "#fff"
+        )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
+      },
+    },
+    "& .MuiSwitch-track": {
+      opacity: 1,
+      backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
+      borderRadius: 20 / 2,
+    },
+  }));
 
   React.useEffect(() => {
     GetUserData();
@@ -55,6 +114,34 @@ export default function Homepage() {
       setLoading(false);
     }
   };
+  const handleSubmit = async () => {
+    try {
+      console.log(data);
+      const body = {
+        balance: accType === "Savings" || accType === "FD" ? balance : 0,
+        accType: accType,
+      };
+      const response = await axios.post(
+        `http://localhost:8080/addAccount/${userId}`,
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.data);
+      if (response.status >= 200 && response.status < 300) {
+        enqueueSnackbar(`Account creation successful`, "success");
+      } else throw new Error("An error occured");
+      setError("");
+      setBalance("");
+    } catch (e) {
+      setError(e.message);
+      enqueueSnackbar(`An error occured ${e.message}`, "error");
+    }
+  };
 
   const [userId, setUserId] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
@@ -62,10 +149,49 @@ export default function Homepage() {
   const [data, setData] = React.useState({});
   const [open, setOpen] = React.useState(false);
   const [accType, setAccType] = React.useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
+  const [balance, setBalance] = React.useState("");
+  const [visible, setVisible] = React.useState(false);
+  const [gridNo, setGridNo] = React.useState(0);
+  const [ftVisible, setFtVisible] = React.useState(false);
+  const [stVisible, setStVisible] = React.useState(false);
+
+  const onCloseFt = () => {
+    setFtVisible(false);
+  };
+
+  const onConfirmFt = () => {
+    onCloseFt();
+  };
+
+  const onCloseSt = () => {
+    setStVisible(false);
+  };
+
+  const onConfirmSt = () => {
+    onCloseSt();
+  };
+
+  const onCloseWD = () => {
+    setVisible(false);
+  };
+
+  const onConfirmWD = () => {
+    onCloseWD();
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
 
   const handleChange = (event) => {
     setAccType(event.target.value);
   };
+
   const handleClickOpen = () => {
     // i want to make an API call here first then open the dialog
     setOpen(true);
@@ -81,47 +207,21 @@ export default function Homepage() {
         <LoadingScreen loadingText="Fetching your data..." />
       ) : (
         <Box color={red} sx={{ flexGrow: 1 }}>
-          <AppBar style={{ background: "#D41C2C" }} position="static">
-            <Toolbar>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Wells Fargo
-              </Typography>
-              <Button color="inherit">Payments</Button>
-              <Button color="inherit">Deposits</Button>
-              <Button color="inherit">Account</Button>
-              <Button
-                onClick={() => {
-                  sessionStorage.removeItem("userId");
-                  window.location.reload();
-                }}
-                color="inherit"
-              >
-                Logout
-              </Button>
-            </Toolbar>
-          </AppBar>
-
+          <NavBar isAdmin={data.isAdmin} />
           <div style={{ height: 100 }} />
-
           <Grid container>
             <Grid item xs={1} />
             <Grid container item md={10}>
               <label style={{ fontSize: 40 }}>Hello, {data.name}</label>
             </Grid>
             <Grid item xs={1} />
+            <Grid item xs={1} />
+            <Grid container item md={10}>
+              <Marque userName={{ userId }} />
+            </Grid>
+            <Grid item xs={1} />
           </Grid>
-
           <div style={{ height: 20 }} />
-
           <Grid container spacing={3}>
             <Grid item xs={1} />
             <Grid container item md={5}>
@@ -147,7 +247,7 @@ export default function Homepage() {
                 </CardActionArea>
               </Card>
               <Dialog open={open} onClose={handleClose} maxWidth="lg">
-                <div style={{ width: "300px", color: "#D41C2C" }}>
+                <div style={{ width: "500px", color: "#D41C2C" }}>
                   <DialogTitle>Customer Details</DialogTitle>
                   <DialogContent>
                     <DialogContentText>
@@ -165,7 +265,7 @@ export default function Homepage() {
                             size="small"
                           >
                             <InputLabel id="demo-select-small-label">
-                              Acc Type
+                              Type
                             </InputLabel>
                             <Select
                               labelId="demo-select-small-label"
@@ -174,21 +274,38 @@ export default function Homepage() {
                               label="Type"
                               onChange={handleChange}
                             >
-                              <MenuItem value="">
-                                <em>None</em>
-                              </MenuItem>
-                              <MenuItem value={10}>Savings</MenuItem>
-                              <MenuItem value={20}>Currents</MenuItem>
-                              <MenuItem value={30}>FD</MenuItem>
+                              <MenuItem value={"Savings"}>Savings</MenuItem>
+                              <MenuItem value={"Currents"}>Currents</MenuItem>
+                              <MenuItem value={"FD"}>FD Account</MenuItem>
                             </Select>
                           </FormControl>
                         </div>
+                        {(accType === "Savings" || accType === "FD") && (
+                          <div>
+                            <TextField
+                              id="standard-basic"
+                              label="Balance"
+                              variant="standard"
+                              value={balance}
+                              onChange={(e) => setBalance(e.target.value)}
+                            />
+                          </div>
+                        )}
                       </div>
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose}>Submit</Button>
+                    <Button
+                      disabled={accType === ""}
+                      onClick={() => {
+                        console.log(balance);
+                        handleSubmit();
+                        handleClose();
+                      }}
+                    >
+                      Submit
+                    </Button>
                   </DialogActions>
                 </div>
               </Dialog>
@@ -203,7 +320,12 @@ export default function Homepage() {
                 }}
               >
                 <CardActionArea>
-                  <CardContent>
+                  <CardContent
+                    onClick={() => {
+                      setVisible(true);
+                      setGridNo(0);
+                    }}
+                  >
                     <Typography
                       className="home-button-text"
                       variant="body2"
@@ -222,14 +344,194 @@ export default function Homepage() {
             </Grid>
             <Grid item xs={1} />
           </Grid>
-
+          <div style={{ height: 20 }} />
+          <CardComponent
+            onClose={onCloseWD}
+            onConfirm={onConfirmWD}
+            userId={userId}
+            visible={visible}
+            gridNo={gridNo}
+          />
+          <FundTransfer
+            onClose={onCloseFt}
+            onConfirm={onConfirmFt}
+            userId={userId}
+            visible={ftVisible}
+          />
+          <SelfTransfer
+            onClose={onCloseSt}
+            onConfirm={onConfirmSt}
+            userId={userId}
+            visible={stVisible}
+          />
+          <Grid container>
+            <Grid item xs={1} />
+            <Grid item container xs={10}>
+              <Grid item container xs={12} spacing={3}>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#d41c2d",
+                    }}
+                    className="action-button"
+                    onClick={() => {
+                      setVisible(true);
+                      setGridNo(1);
+                    }}
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <WalletIcon fontSize="large" />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Withdraw
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#d41c2d",
+                    }}
+                    className="action-button"
+                    onClick={() => {
+                      setVisible(true);
+                      setGridNo(2);
+                    }}
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <ArchiveIcon fontSize="large" />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Deposit
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#d41c2d",
+                    }}
+                    className="action-button"
+                    onClick={() => {
+                      setGridNo(3);
+                      setFtVisible(true);
+                    }}
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <MoveDownIcon fontSize="large" />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Transfer to an account
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+                <Grid item container xs={3}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 15,
+                      border: "4px solid #d41c2d",
+                      minHeight: 150,
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#d41c2d",
+                    }}
+                    className="action-button"
+                    onClick={() => {
+                      setStVisible(true);
+                      setGridNo(4);
+                    }}
+                  >
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 8,
+                      }}
+                    >
+                      <CameraFrontIcon fontSize="large" />
+                    </div>
+                    <div>
+                      <label
+                        style={{ fontSize: 18, fontWeight: "500" }}
+                        className="text-pointer"
+                      >
+                        Self transfer
+                      </label>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={1} />
+          </Grid>
           <div style={{ height: 80 }} />
-
           <Grid container>
             <Grid item xs={1} />
             <Grid container item md={10}>
               <label style={{ fontSize: 40 }}>Your Transactions</label>
+              <ShowTransactions userName={{ userId }} />
             </Grid>
+            <StickyFooter />
             <Grid item xs={1} />
           </Grid>
         </Box>

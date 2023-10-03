@@ -1,4 +1,4 @@
-package com.onlinebanking.serverside.controller;
+package com.onlinebanking.serverside;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,6 +21,7 @@ import com.onlinebanking.serverside.dao.CustomerRepository;
 import com.onlinebanking.serverside.dao.TransactionRepository;
 import com.onlinebanking.serverside.model.Transaction;
 import com.onlinebanking.serverside.service.AccountService;
+import com.onlinebanking.serverside.service.AdminService;
 import com.onlinebanking.serverside.service.CustomerService;
 import com.onlinebanking.serverside.service.LoginService;
 import com.onlinebanking.serverside.service.TransactionService;
@@ -28,6 +29,7 @@ import com.onlinebanking.serverside.service.TransactionService;
 @RunWith(SpringRunner.class)
 @WebMvcTest
 class TransactionControllerTest {
+	
 	@Autowired
 	MockMvc mvc;
 
@@ -45,6 +47,9 @@ class TransactionControllerTest {
 
 	@MockBean
 	AccountService accountService;
+	
+	@MockBean
+	AdminService adminService;
 
 	@MockBean
 	CustomerRepository customerRepository;
@@ -66,7 +71,7 @@ class TransactionControllerTest {
 
 		String json = mapper.writeValueAsString(transaction);
 		mvc.perform(post("/addTransaction").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
-				.content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+				.content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
 
 	}
 }

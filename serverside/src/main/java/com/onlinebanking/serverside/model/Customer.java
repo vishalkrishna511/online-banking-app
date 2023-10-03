@@ -18,7 +18,6 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Data
 public class Customer {
 	@Id
 	@Column(nullable = false)
@@ -46,7 +45,8 @@ public class Customer {
 	private String state;
 	@Column(nullable = false)
 	private String country;
-
+	@Column(nullable = false)
+	private boolean isAdmin;
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Account> accnts;
 
@@ -138,4 +138,11 @@ public class Customer {
 		this.accnts = accnts;
 	}
 
+	public void setIsAdmin(boolean admin) {
+		isAdmin = admin;
+	}
+
+	public boolean getIsAdmin() {
+		return isAdmin;
+	}
 }

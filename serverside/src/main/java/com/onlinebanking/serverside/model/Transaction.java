@@ -3,21 +3,22 @@ package com.onlinebanking.serverside.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 @Entity
-@Data
 public class Transaction {
 	
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false)
 	private long txnId;
 	@Column(nullable = false)
@@ -38,6 +39,7 @@ public class Transaction {
 
 	@ManyToOne
 	@JoinColumn(name = "accNo")
+	@JsonBackReference
 	private Account accNo;
 
 	public long getTxnId() {
